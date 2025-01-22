@@ -12,6 +12,6 @@ It allows the user to choose the algorithm, set the parameters, and visualize th
 
 ### Third-Party Licenses
 The project includes code and data from third-party sources:
-- Combinear by DevSec Studio, licensed under MIT License. See [LICENCES/Combinear_license.txt](LICENCES/Combinear-license.txt) for details.
+- Combinear by DevSec Studio, licensed under MIT License. See [LICENCES/Combinear_license.txt](LICENCES/Combinear_license.txt) for details.
 - JPL Three-Body Periodic Orbit Catalog data. See [Three Body Periodic Orbits](https://ssd.jpl.nasa.gov/tools/periodic_orbits.html) for details.
 
