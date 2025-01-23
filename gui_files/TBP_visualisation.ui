@@ -97,7 +97,7 @@
          <string>Wybierz orbitę</string>
         </property>
        </widget>
-       <widget class="QTableWidget" name="orbitTable">
+       <widget class="QTableWidget" name="orbit_table">
         <property name="geometry">
          <rect>
           <x>390</x>
