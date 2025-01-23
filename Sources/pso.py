@@ -1,11 +1,10 @@
+import random
+from copy import deepcopy
 from scipy import integrate
-
 import numpy as np
 from numpy import linalg
-import random
 from Sources.data_load import transfer_raw_data_to_trajectory, convert_to_metric_units
 from Sources.plot_functions import present_results
-from copy import deepcopy
 
 
 class Particle:
@@ -23,7 +22,8 @@ class Particle:
 
     def update_particle(self):
         """
-        Method updating particle's position and velocity (state) based on propagation results and meta-parameters
+        Method updating particle's position and velocity (state)
+        based on propagation results and meta-parameters
         :return: None
         """
         r1 = random.random()
@@ -47,7 +47,8 @@ class Particle:
     def propagate(self, time_vect, time_span):
         """
         Method propagating the initial conditions using the defined differential equations.
-        :param time_vect: points in time that are used to compare the original and propagated trajectory
+        :param time_vect: points in time that are used
+        to compare the original and propagated trajectory
         :param time_span: [0, time_span] is the time limit for the solver
         :return: propagated trajectory, which is a result of solve_ivp with its all atributes
         """
@@ -69,7 +70,7 @@ class Particle:
         r_sm = np.sqrt(((x1 + self.mu - 1) ** 2 + y1 ** 2 + z1 ** 2) ** 3)
 
         out_x1, out_x2 = np.array([x2, 2 * y2 + x1 - (1 - self.mu) *
-                                (x1 + self.mu) / r_se - self.mu * (x1 + self.mu - 1) / r_sm])
+                                   (x1 + self.mu) / r_se - self.mu * (x1 + self.mu - 1) / r_sm])
         out_y1, out_y2 = np.array(
             [y2, -2 * x2 + y1 - (1 - self.mu) * y1 / r_se - self.mu * y1 / r_sm])
         out_z1, out_z2 = np.array(
@@ -79,7 +80,8 @@ class Particle:
 
     def calculate_cost(self):
         """
-        Calculates the cost of each trajectory as a sum of differences between the expected and propagated results in
+        Calculates the cost of each trajectory as a sum of differences between
+        the expected and propagated results in
         :number_of_measurements: points.
         :return: None
         """
@@ -113,13 +115,13 @@ class Particle:
         Converts the LU and LU/TU units to km and km/s respectively
         :return: None
         """
-        LU_to_km_coeff = 389703
-        TU_to_s_coeff = 382981
-        self.state[:3] = self.state[:3] * LU_to_km_coeff
-        self.state[3:] = self.state[3:] * (LU_to_km_coeff / TU_to_s_coeff)
-        self.particle_best_state[:3] = self.particle_best_state[:3] * LU_to_km_coeff
-        self.particle_best_state[3:] = self.particle_best_state[3:] * \
-            (LU_to_km_coeff / TU_to_s_coeff)
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        self.state[:3] = self.state[:3] * lu_to_km_coeff
+        self.state[3:] = self.state[3:] * (lu_to_km_coeff / tu_to_s_coeff)
+        self.particle_best_state[:3] = self.particle_best_state[:3] * lu_to_km_coeff
+        self.particle_best_state[3:] = (self.particle_best_state[3:] *
+                                        (lu_to_km_coeff / tu_to_s_coeff))
 
 
 class Swarm:
@@ -154,7 +156,8 @@ class Swarm:
         """
         Generates a new population of Particle class objects,
         based on the initial points that are passed as an argument.
-        :param initial_random: list of 6-dimensional points representing each particle's initial position and velocity
+        :param initial_random: list of 6-dimensional points representing
+         each particle's initial position and velocity
         :param opt_multistart: if 1, multistart modificaiton is active
         :param opt_number_of_starts: if multistart active, create the swarm with 20 initial starts
         :return: None
@@ -216,7 +219,7 @@ class Swarm:
 
         if opt_setter == 1:
             step = (opt_starting_inertia - opt_stop_inertia) / \
-                self.max_iterations
+                   self.max_iterations
             self.inertia = self.inertia - step
 
         if opt_setter == 2:
@@ -244,7 +247,10 @@ class Swarm:
                 self.inertia = 0.65
 
     def n_setter(self, it, opt_setter=0):
-
+        """
+        :param it: iteration number
+        :param opt_setter: indicates the way social and cognitive coeffs change
+        """
         if not opt_setter:
             pass
 
@@ -287,10 +293,10 @@ class Swarm:
         Converts the LU and LU/TU units to km and km/s respectively
         :return: None
         """
-        LU_to_km_coeff = 389703
-        TU_to_s_coeff = 382981
-        self.global_best_state[:3] = self.global_best_state[:3] * LU_to_km_coeff
-        self.global_best_state[3:] = self.global_best_state[3:] * (LU_to_km_coeff / TU_to_s_coeff)
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        self.global_best_state[:3] = self.global_best_state[:3] * lu_to_km_coeff
+        self.global_best_state[3:] = self.global_best_state[3:] * (lu_to_km_coeff / tu_to_s_coeff)
 
 
 def multistart(
@@ -305,7 +311,8 @@ def multistart(
         best_velocity,
         sum_swarm):
     """
-    Generates a new population based on a few initial iterations that provide with the best particles of each one.
+    Generates a new population based on a few initial iterations
+    that provide with the best particles of each one.
     Parameters typical to PSO algorithm and used in all functions.
     :return: initial_population
     """
@@ -316,7 +323,8 @@ def multistart(
     for _ in range(number_of_starts):
         print("starting iteration nr", _)
         time_vect, states, initial_state, initial_random, chosen_states = (
-            transfer_raw_data_to_trajectory(file_path, population_size, number_of_measurements, opt_part2=1,
+            transfer_raw_data_to_trajectory(file_path, population_size, number_of_measurements,
+                                            opt_part2=1,
                                             opt_best_velocity=best_velocity))
 
         swarm = Swarm(
@@ -353,7 +361,7 @@ def multistart(
             range(
                 len(scores)),
             key=lambda i: scores[i])[
-            :number_of_top_elems]
+                     :number_of_top_elems]
         for idx in scores_idx:
             initial_population.append(
                 Particle(
@@ -428,12 +436,13 @@ def pso(
     :param if_inertia_adaptation: optional - modificates the inertia values based on iteration
     :param stop_inertia: optional - the final inertia achieved during the last iteration
     :param if_n_setter: optional - modificates the cognitive coeffs
-    :param if_best_velocity: optional - indicates if the best found velocity so far should impact further
-     algorithm's instances
-    :param opt_best_velocity: optional - if best velocity modification is ON, it provides with the value
+    :param if_best_velocity: optional - indicates if the best found velocity so far
+    should impact further algorithm's instances
+    :param opt_best_velocity: optional - if best velocity modification is ON,
+    it provides with the value
     :param if_multistart: optional - multistart modification
-    :param number_of_multistarts: optional - if multistart modification is ON, it indicates how many different
-     initial swarms it should generate
+    :param number_of_multistarts: optional - if multistart modification is ON, it indicates
+    how many different initial swarms it should generate
     :param orbit_filepath: path raw data from NASA database
     :return:
     """

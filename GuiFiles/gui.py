@@ -1,8 +1,8 @@
+import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QHeaderView
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 import numpy as np
-import sys
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -295,7 +295,8 @@ class App(QMainWindow):
             self.orbitTable.setColumnWidth(col, uniform_column_width)
 
     """
-    Functions of type 'button_clicked_<alg>' define the way each algorithm is started after choosing the 'Start' button.
+    Functions of type 'button_clicked_<alg>' define the way each algorithm is started after 
+    choosing the 'Start' button.
     self.plot_properties_list is a vector of result data that is later used for visualisation.
     """
 
@@ -416,7 +417,8 @@ class App(QMainWindow):
             self.plot_properties_list[3])
 
         fig1, fig2 = plot_functions.dim3_scatter_plot(
-            params[4], params[5], self.plot_properties_list[3], self.plot_properties_list[1].global_best_state)
+            params[4], params[5], self.plot_properties_list[3],
+            self.plot_properties_list[1].global_best_state)
         self.canvas = FigureCanvas(fig1)
         getattr(
             self.ui,
@@ -451,7 +453,8 @@ class App(QMainWindow):
             1)
 
     """
-    Functions of type combobox/checkbox_<alg>_<element>_<action> and similar attach an action to each interface element.
+    Functions of type combobox/checkbox_<alg>_<element>_<action> and similar 
+    attach an action to each interface element.
     :param index: indicates the method triggered by given interface element
     :param method: indicates the algorithm that will be used with the element
     :param checked: indicates the checkbox state

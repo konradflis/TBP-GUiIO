@@ -1,9 +1,9 @@
+from copy import deepcopy
+import random
 from scipy import integrate
 import numpy as np
 from numpy import linalg
-import random
 from Sources.data_load import transfer_raw_data_to_trajectory, convert_to_metric_units
-from copy import deepcopy
 
 
 class Swarm:
@@ -31,8 +31,10 @@ class Swarm:
 
     def generate_initial_population(self, initial_random):
         """
-        Generates a new population of Bee class objects, based on the initial points that are passed as an argument.
-        :param initial_random: list of 6-dimensional points representing each particle's initial position and velocity
+        Generates a new population of Bee class objects, based on the initial points
+        that are passed as an argument.
+        :param initial_random: list of 6-dimensional points representing each particle's
+        initial position and velocity
         :return: None
         """
         for idx in range(self.population_size):
@@ -45,10 +47,10 @@ class Swarm:
         Converts the LU and LU/TU units to km and km/s respectively
         :return: None
         """
-        LU_to_km_coeff = 389703
-        TU_to_s_coeff = 382981
-        self.global_best_state[:3] = self.global_best_state[:3] * LU_to_km_coeff
-        self.global_best_state[3:] = self.global_best_state[3:] * (LU_to_km_coeff / TU_to_s_coeff)
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        self.global_best_state[:3] = self.global_best_state[:3] * lu_to_km_coeff
+        self.global_best_state[3:] = self.global_best_state[3:] * (lu_to_km_coeff / tu_to_s_coeff)
 
 
 class Food:
@@ -69,7 +71,8 @@ class Food:
     def propagate(self, time_vect, time_span):
         """
         Method propagating the initial conditions using the defined differential equations.
-        :param time_vect: points in time that are used to compare the original and propagated trajectory
+        :param time_vect: points in time that are used to compare
+        the original and propagated trajectory
         :param time_span: [0, time_span] is the time limit for the solver
         :return: propagated trajectory, which is a result of solve_ivp with its all atributes
         """
@@ -115,10 +118,10 @@ class Food:
         :param dim_probability: defines the probability of a dimention's value change
         :return: self.neighbours: refreshed neighbours
         """
-        LU_to_km_coeff = 389703
-        TU_to_s_coeff = 382981
-        pos_limits = neighbours_pos_limits / LU_to_km_coeff
-        vel_limits = neighbours_vel_limits / (LU_to_km_coeff / TU_to_s_coeff)
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        pos_limits = neighbours_pos_limits / lu_to_km_coeff
+        vel_limits = neighbours_vel_limits / (lu_to_km_coeff / tu_to_s_coeff)
 
         self.neighbours = []
 
@@ -154,7 +157,8 @@ class Food:
 
     def choose_best_neighbour(self):
         """
-        Choosing the best neighbour source (or itself, if any neighbouring source decrease the score)
+        Choosing the best neighbour source (or itself,
+        if any neighbouring source decrease the score)
         :return: None
         """
         source_all_options = [self] + self.neighbours
@@ -166,7 +170,8 @@ class Food:
 
     def calculate_cost(self):
         """
-        Calculating the cost of each trajectory as a sum of differences between the expected and propagated results in
+        Calculating the cost of each trajectory as a sum of differences between
+        the expected and propagated results in
         :number_of_measurements: points.
         :return: None
         """
@@ -207,16 +212,18 @@ class Food:
         """
         Generates new source if a given one no longer offers any improvement.
         :param initial_state: the original trajectory's first point
-        :param generating_method: defines the way new source will be generated with respect to the initial state
-        :param vel_limits: defines the maximum tolerance of new velocity values with respect to the initial state
+        :param generating_method: defines the way new source will be generated
+        with respect to the initial state
+        :param vel_limits: defines the maximum tolerance of new velocity values
+        with respect to the initial state
         :return: None
         """
-        LU_to_km_coeff = 389703
-        TU_to_s_coeff = 382981
-        pos_limits = 250 / LU_to_km_coeff
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        pos_limits = 250 / lu_to_km_coeff
 
         if generating_method == 0:
-            vel_limits = 0.05 / (LU_to_km_coeff / TU_to_s_coeff)
+            vel_limits = 0.05 / (lu_to_km_coeff / tu_to_s_coeff)
             new_state = [np.random.uniform(-1 * pos_limits,
                                            pos_limits),
                          np.random.uniform(-1 * pos_limits,
@@ -231,8 +238,9 @@ class Food:
                                            1 * vel_limits)] + initial_state
 
         elif generating_method == 1:
-            """Alternative: new_state depending on current best global state - the best up-to-date result"""
-            pos_limits = 125 / LU_to_km_coeff
+            """Alternative: new_state depending on current best global state - the best 
+            up-to-date result"""
+            pos_limits = 125 / lu_to_km_coeff
             random_vel_factor = [
                 1 + np.random.uniform(-1 * vel_limits, 1 * vel_limits) for _ in range(3)]
             new_state = np.array([np.random.uniform(-1 * pos_limits,
@@ -246,7 +254,8 @@ class Food:
                                   random_vel_factor[2] * self.swarm.global_best_state[5]])
 
         elif generating_method == 2:
-            """Alternative 2: new_state depending on initial state (position) and global best state (velocity)"""
+            """Alternative 2: new_state depending on initial state (position) 
+            and global best state (velocity)"""
             random_vel_factor = [
                 1 + np.random.uniform(-1 * vel_limits, 1 * vel_limits) for _ in range(3)]
             new_state = np.array([np.random.uniform(-1 * pos_limits,
@@ -331,10 +340,12 @@ def abc_alg(
     :param inactive_cycles_limit: number of iterations where no improvement of a source is accepted
     :param inactive_cycles_setter: optional - modificates the number of inactive cycles
     depending on the current iteration
-    :param probability_distribution_setter: optional - changes the probability the onlooker bees choose the source with
+    :param probability_distribution_setter: optional - changes the probability
+    the onlooker bees choose the source with
     :param generating_method: optional - defines the way new source is generated
     :param neighbourhood_type: optional - defines the way neighbourhood is handled
-    :param neigh_percent: optional - defines the limits of velocity tolerance while generating new sources
+    :param neigh_percent: optional - defines the limits of velocity tolerance
+    while generating new sources
     :param dim_probability: optional - defines the probability of modyfing a given dimention value
     :param orbit_filepath: path to raw data from NASA database
     :return:
@@ -370,7 +381,7 @@ def abc_alg(
     best_scores_vector = []
 
     """
-    ============================BEGINNING OF THE ALGORITHM'S ITERATIONS PROCEDURE===========================
+    =======================BEGINNING OF THE ALGORITHM'S ITERATIONS PROCEDURE=====================
     """
     for it in range(max_iterations):
         print("iter. no. ", it)
@@ -464,7 +475,8 @@ def abc_alg(
         Score assessment phase
         Actions:
         1. Find the best score in this iteration.
-        2. If it is better than the previous best, update it and save the state for which the score is achieved.
+        2. If it is better than the previous best, update it and save the state 
+        for which the score is achieved.
         """
 
         iteration_best_score_idx = np.argmin(
@@ -478,7 +490,7 @@ def abc_alg(
 
         best_scores_vector.append(swarm.global_best_score)
     """
-    ==================================END OF ALGORITHM'S ITERATION PROCEDURE===================================
+    =============================END OF ALGORITHM'S ITERATION PROCEDURE=============================
     """
     final_swarm = deepcopy(swarm)
     return [

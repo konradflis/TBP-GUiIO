@@ -1,7 +1,7 @@
+from copy import deepcopy
 import matplotlib.pyplot as plt
 from Sources.data_load import convert_to_metric_units
 import numpy as np
-from copy import deepcopy
 
 
 def dim3_scatter_plot(
@@ -52,8 +52,8 @@ def dim3_scatter_plot(
     ax.set_zlabel('Z [km]')
     plt.legend(loc='upper left')
 
-    LU_to_km_coeff = 389703
-    pos_limits = 250 / LU_to_km_coeff
+    lu_to_km_coeff = 389703
+    pos_limits = 250 / lu_to_km_coeff
 
     if not opt_test:
         ax.set_xlim(initial_state[0] - 250, initial_state[0] + 250)
@@ -102,8 +102,8 @@ def dim3_scatter_plot(
     ax.set_ylabel('Y [km/s]')
     ax.set_zlabel('Z [km/s]')
 
-    TU_to_s_coeff = 382981
-    vel_limits = 0.1 / (LU_to_km_coeff / TU_to_s_coeff)
+    tu_to_s_coeff = 382981
+    vel_limits = 0.1 / (lu_to_km_coeff / tu_to_s_coeff)
 
     if not opt_test:
         ax.set_xlim(initial_state[3] - 0.1, initial_state[3] + 0.1)
