@@ -8,8 +8,8 @@ class MandatorySettingsPSO:
     Mandatory fields for PSO algorithm.
     """
     def __init__(self,
-                 max_iterations=100,
-                 population_size=100,
+                 max_iterations=10,
+                 population_size=10,
                  number_of_measurements=35,
                  inertia=0.9,
                  c1=1.49,
@@ -28,8 +28,8 @@ class MandatorySettingsABC:
     Mandatory fields for ABC algorithm.
     """
     def __init__(self,
-                 max_iterations=100,
-                 population_size=50,
+                 max_iterations=10,
+                 population_size=10,
                  number_of_measurements=35,
                  employee_phase_neighbours=2,
                  onlooker_phase_neighbours=2,

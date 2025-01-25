@@ -3,11 +3,12 @@ GUI implementation for PSO, PSO2 and ABC algorithms, using PyQt6.
 """
 import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication # pylint: disable=no-name-in-module
-from PyQt6 import uic # pylint: disable=no-name-in-module
+from PyQt6.QtCore import QCoreApplication, QTranslator #  pylint: disable=no-name-in-module
 import matplotlib.pyplot as plt
 from sources import abc_alg, pso
 from gui_files.user_inputs import UserInputs
 from gui_files.visualisation import Visualisation
+from TBP_visualisation import Ui_MainWindow
 
 class App(QMainWindow, UserInputs, Visualisation):
     # pylint: disable=R0902, R0903, R0913, R0917
@@ -16,10 +17,13 @@ class App(QMainWindow, UserInputs, Visualisation):
     """
     def __init__(self):
         super().__init__()
+
+        self.ui = Ui_MainWindow()  # Create an instance of the UI class
+        self.ui.setupUi(self)
         self.orbit_table = None
-        self.ui = uic.loadUi('TBP_visualisation.ui', self)
         self.canvas = None
         self.plot_properties_list = None
+        self.translator = QTranslator()
 
         self.set_user_inputs_ui(self.ui)
         self.set_visualisation_ui(self.ui)
@@ -32,6 +36,25 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.ui.PSOstartButton.clicked.connect(self.button_clicked_pso)
         self.ui.PSO2startButton.clicked.connect(self.button_clicked_pso2)
         self.ui.ABCstartButton.clicked.connect(self.button_clicked_abc)
+
+        self.ui.comboBoxLanguage.currentIndexChanged.connect(
+            self.combobox_language_selected)
+
+    def combobox_language_selected(self, index):
+        """
+        Combobox - response to language selection. Loads the English translation file if needed.
+        """
+        if index:
+            translation_file = "en_translation.qm"
+            if self.translator.load(translation_file):
+                QCoreApplication.installTranslator(self.translator)
+                self.setWindowTitle("Three-body problem - orbit visualisation")
+            else:
+                print(f"Could not load translation file: {translation_file}")
+        else:
+            QCoreApplication.removeTranslator(self.translator)
+            self.setWindowTitle("Problem trzech ciał - wizualizacja trajektorii")
+        self.ui.retranslateUi(self)
 
     def introduction_logic(self):
         """
@@ -109,6 +132,7 @@ class App(QMainWindow, UserInputs, Visualisation):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
 
     plt.rc('font', size=7)
     plt.rc('axes', titlesize=7)

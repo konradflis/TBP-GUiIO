@@ -3,10 +3,10 @@ name: Pylint
 on:
   push:
     branches:
-      - staging
+      - translations
   pull_request:
     branches:
-      - staging
+      - translations
 
 jobs:
   build:

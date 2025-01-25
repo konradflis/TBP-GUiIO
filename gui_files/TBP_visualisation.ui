@@ -131,6 +131,39 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;3. Szczegóły dotyczące parametrów poszczególnych algorytmów znajdują się w dokumentacji.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
+       <widget class="QComboBox" name="comboBoxLanguage">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>490</y>
+          <width>51</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>PL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>EN</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_28">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>470</y>
+          <width>121</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Wybierz język</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="PSO1">
        <attribute name="title">
@@ -486,8 +519,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>390</x>
           <y>10</y>
-          <width>391</width>
-          <height>381</height>
+          <width>371</width>
+          <height>361</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -502,8 +535,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridOrbit"/>
@@ -518,8 +551,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridPosition"/>
@@ -534,8 +567,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridVelocity"/>
@@ -550,8 +583,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridError"/>
@@ -575,10 +608,15 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>390</x>
-          <y>390</y>
-          <width>391</width>
-          <height>151</height>
+          <y>370</y>
+          <width>371</width>
+          <height>150</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="Line" name="line_3">
@@ -1222,8 +1260,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>390</x>
           <y>10</y>
-          <width>391</width>
-          <height>381</height>
+          <width>371</width>
+          <height>361</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -1238,8 +1276,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridOrbit2"/>
@@ -1254,8 +1292,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridPosition2"/>
@@ -1270,8 +1308,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridVelocity2"/>
@@ -1286,8 +1324,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridError2"/>
@@ -1298,10 +1336,15 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>390</x>
-          <y>390</y>
-          <width>391</width>
-          <height>151</height>
+          <y>370</y>
+          <width>371</width>
+          <height>150</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="Line" name="line_2">
@@ -1839,8 +1882,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>390</x>
           <y>10</y>
-          <width>391</width>
-          <height>381</height>
+          <width>371</width>
+          <height>361</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -1855,8 +1898,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridOrbit3"/>
@@ -1871,8 +1914,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridPosition3"/>
@@ -1887,8 +1930,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridVelocity3"/>
@@ -1903,8 +1946,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>-1</x>
             <y>-1</y>
-            <width>391</width>
-            <height>361</height>
+            <width>371</width>
+            <height>341</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="PSOgridError3"/>
@@ -1943,10 +1986,15 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>390</x>
-          <y>390</y>
-          <width>391</width>
-          <height>151</height>
+          <y>370</y>
+          <width>371</width>
+          <height>150</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="Line" name="line_4">
