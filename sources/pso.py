@@ -4,9 +4,8 @@ Particle Swarm Optimization implementation.
 import random
 from copy import deepcopy
 import numpy as np
-from sources.data_load import transfer_raw_data_to_trajectory
 from sources.data_structures import MandatorySettingsPSO, OptionalSettingsPSO
-from sources.common_elements import PropagatedElement, Swarm, solution_propagation
+from sources.common_elements import PropagatedElement, ModelProperties, Swarm
 
 
 class Particle(PropagatedElement):
@@ -14,8 +13,9 @@ class Particle(PropagatedElement):
     Class defining a particle - the fundamental concept of Particle Swarm Optimization.
     """
 
-    def __init__(self, state, swarm):
-        super().__init__(swarm, state)
+    def __init__(self, state, swarm, model):
+        super().__init__(state, model)
+        self.swarm = swarm
         self.inertia = self.swarm.inertia
         self.c1 = self.swarm.c1
         self.c2 = self.swarm.c2
@@ -76,45 +76,39 @@ class SwarmPSO(Swarm):
     def __init__(self,
                  max_iterations,
                  population_size,
-                 number_of_measurements,
-                 chosen_states,
+                 model,
                  inertia,
                  c1,
-                 c2,
-                 initial_state,
-                 period):
+                 c2):
         super().__init__(population_size,
-                         number_of_measurements,
                          max_iterations,
-                         chosen_states,
-                         initial_state,
-                         period)
+                         model
+                         )
         self.inertia = inertia
         self.c1 = c1
         self.c2 = c2
 
     def generate_initial_population(
             self,
-            initial_random,
             opt_multistart=0,
             opt_number_of_starts=20,
+            opt_if_two_stage_pso=0,
             opt_best_velocity=None):
         """
         Generates a new population of Particle class objects,
         based on the initial points that are passed as an argument.
-        :param initial_random: list of 6-dimensional points representing
-         each particle's initial position and velocity
         :param opt_multistart: if 1, multistart modification is active
         :param opt_number_of_starts: if multistart active, create the swarm with 20 initial starts
+        :param opt_if_two_stage_pso: if 1, PSO2 algorithm is used
         :param opt_best_velocity: if 1, best velocity from previous iterations has impact on
         new particles (used in PSO2)
         """
-        if opt_best_velocity is None:
-            opt_best_velocity = [0, 0, 0]
+        initial_random = super().generate_initial_population(opt_if_two_stage_pso, opt_best_velocity)
+
         if not opt_multistart:
             for idx in range(self.population_size):
                 initial_conditions = initial_random[idx]
-                particle_object = Particle(initial_conditions, self)
+                particle_object = Particle(initial_conditions, self, self.model)
                 self.elements.append(particle_object)
 
         if opt_multistart:
@@ -126,12 +120,13 @@ class SwarmPSO(Swarm):
                 c1=self.c1,
                 c2=self.c2
             )
+            optional = OptionalSettingsPSO(
+                number_of_multistarts=opt_number_of_starts
+            )
             self.elements = multistart(
+                self,
                 mandatory,
-                opt_best_velocity,
-                opt_number_of_starts,
-                self.filepath,
-                self)
+                optional)
 
 
     def inertia_setter(
@@ -203,43 +198,37 @@ class SwarmPSO(Swarm):
 
 
 def multistart(
+        sum_swarm,
         mandatory,
-        best_velocity,
-        number_of_starts,
-        file_path,
-        sum_swarm):
+        optional=None):
     """
     Generates a new population based on a few initial iterations
     that provide with the best particles of each one.
     Parameters typical to PSO algorithm and used in all functions.
     :return: initial_population - set of initial particles
     """
+    if optional is None:
+        optional = OptionalSettingsPSO()
+
+    if optional.best_velocity is None:
+        optional.best_velocity = [0, 0, 0]
 
     print('===MULTISTART===')
     initial_population = []
 
-    for _ in range(number_of_starts):
-        print("starting iteration nr", _)
-        period, _, initial_state, initial_random, chosen_states = (
-            transfer_raw_data_to_trajectory(file_path,
-                                            mandatory.population_size,
-                                            mandatory.number_of_measurements,
-                                            opt_if_two_stage_pso=1,
-                                            opt_best_velocity=best_velocity))
+    for _ in range(optional.number_of_multistarts):
+        print("===STARTING NEW SWARM===")
+        model = ModelProperties(optional.orbit_filepath, mandatory.number_of_measurements)
 
         swarm = SwarmPSO(
             mandatory.max_iterations,
             mandatory.population_size,
-            mandatory.number_of_measurements,
-            chosen_states,
+            model,
             mandatory.inertia,
             mandatory.c1,
-            mandatory.c2,
-            initial_state,
-            period)
-        swarm.generate_initial_population(initial_random, opt_multistart=0)
+            mandatory.c2)
 
-        solution_propagation(initial_state, swarm, chosen_states)
+        swarm.generate_initial_population()
 
         swarm.update_global_best()
         for _ in range(swarm.max_iterations):
@@ -249,18 +238,20 @@ def multistart(
             swarm.update_global_best()
             for particle in swarm.elements:
                 particle.update()
+            print(swarm.global_best_score)
         scores = [
             particle.score for particle in swarm.elements]
         #Creates a list in form of (index, score), sorts it and choses 1/n scores in each of n runs
         indexed_scores = list(enumerate(scores))
         indexed_scores.sort(key=lambda x: x[1])
         scores_idx = [index for index, _ in indexed_scores[
-                                            :(mandatory.population_size // number_of_starts)]]
+                                            :(mandatory.population_size // optional.number_of_multistarts)]]
         for idx in scores_idx:
             initial_population.append(
                 Particle(
                     swarm.elements[idx].state,
-                    sum_swarm))
+                    sum_swarm,
+                    model))
     return initial_population
 
 
@@ -297,31 +288,21 @@ def pso(
     if optional.best_velocity is None:
         optional.best_velocity = [0, 0, 0]
 
-    file_path = optional.orbit_filepath
-    period, _, initial_state, initial_random, chosen_states = \
-        (transfer_raw_data_to_trajectory(
-            file_path, mandatory.population_size, mandatory.number_of_measurements,
-            opt_if_two_stage_pso=optional.if_best_velocity,
-            opt_best_velocity=optional.best_velocity))
+    model = ModelProperties(optional.orbit_filepath, mandatory.number_of_measurements)
 
     swarm = SwarmPSO(
         mandatory.max_iterations,
         mandatory.population_size,
-        mandatory.number_of_measurements,
-        chosen_states,
+        model,
         mandatory.inertia,
         mandatory.c1,
-        mandatory.c2,
-        initial_state,
-        period)
-    swarm.filepath = file_path
+        mandatory.c2)
+
     swarm.generate_initial_population(
-        initial_random,
         opt_multistart=optional.multistart,
         opt_number_of_starts=optional.number_of_multistarts,
+        opt_if_two_stage_pso=optional.if_best_velocity,
         opt_best_velocity=optional.best_velocity)
-
-    solution_propagation(initial_state, swarm, chosen_states)
 
     initial_swarm = deepcopy(swarm)
     best_scores_vector = []
@@ -349,8 +330,8 @@ def pso(
     return [
         initial_swarm,
         final_swarm,
-        chosen_states,
-        initial_state,
+        model.chosen_states,
+        model.initial_state,
         mandatory.max_iterations,
         best_scores_vector]
 
@@ -358,7 +339,7 @@ def main():
     """
     A test instance - will not be run when algorithm used by GUI
     """
-    pso(MandatorySettingsPSO(), OptionalSettingsPSO(multistart=1, number_of_multistarts=3))
+    pso(MandatorySettingsPSO(), OptionalSettingsPSO(multistart=1, number_of_multistarts=5))
 
 if __name__ == '__main__':
     main()

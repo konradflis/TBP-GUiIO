@@ -1,6 +1,6 @@
 """
-Defines parent class for particle and food source. Adds a few common functionalities
-as solution_propagation() and personal dictionary structure.
+Defines parent class for particle and food source, for their swarms and a general class for
+the whole model - containing the information about the orbit and measurements.
 """
 from copy import deepcopy
 import numpy as np
@@ -9,32 +9,24 @@ from numpy import linalg
 from sources import data_load
 
 
-class PropagatedElement:
+class ModelProperties:
     """
-    Parent class for Particle and Food. It defines the common attributes and computing methods.
+    Class defining the three-body problem model properties - constants, orbits and other parameters.
+    It is used by both Swarm and Particle classes to access the model-based information, like
+    number of measurements of orbit, its initial state and original trajectory, period etc.
+    Model equations are defined here as well.
     """
-    def __init__(self, swarm, state):
+    def __init__(self,
+                 filepath,
+                 number_of_measurements):
         self.mu = 0.01215058560962404
-        self.swarm = swarm
-        self.state = state
-        self.score = np.inf
+        self.filepath = filepath
+        self.number_of_measurements = number_of_measurements
+        self.period, self.all_states, self.initial_state, self.chosen_states = (
+            data_load.transfer_raw_data_to_trajectory(self.filepath, self.number_of_measurements))
+        self.original_trajectory = self.initial_solution_propagation()
 
-    def propagate(self, time_vect, time_span):
-        """
-        Method propagating the initial conditions using the defined differential equations.
-        :param time_vect: points in time that are used
-        to compare the original and propagated trajectory
-        :param time_span: [0, time_span] is the time limit for the solver
-        :return: propagated trajectory, which is a result of solve_ivp with its all atributes
-        """
-        x, y, z, vx, vy, vz = self.state
-        propagated_trajectory = integrate.solve_ivp(
-            self._diff_equation, [
-                0, time_span], [
-                x, y, z, vx, vy, vz], t_eval=time_vect, method='DOP853')
-        return propagated_trajectory
-
-    def _diff_equation(self, t, parameters): # pylint: disable=unused-argument
+    def diff_equation(self, t, parameters): # pylint: disable=unused-argument
         """
         :param t: function handler parameter
         :param parameters: positions and velocities (6 parameters altogether)
@@ -53,21 +45,66 @@ class PropagatedElement:
 
         return [x2, y2, z2, out_x2, out_y2, out_z2]
 
+    def refresh_model(self):
+        """
+        If needed, model can be refreshed - based on a new file with new data or number of measurements.
+        """
+        self.period, self.all_states, self.initial_state, self.chosen_states = (
+            data_load.transfer_raw_data_to_trajectory(self.filepath, self.number_of_measurements))
+
+    def initial_solution_propagation(self):
+        """
+        Finding the original trajectory by propagating the initial state.
+        :return: original trajectory (a set of points with positions and velocities in given moments)
+        """
+        solution = PropagatedElement(self.initial_state, self)
+        time_vect = np.array(self.chosen_states['Time (TU)'])
+        time_span = time_vect[-1] + 0.01
+        propagate = solution.propagate(time_vect, time_span)
+        propagated_trajectory = propagate.y[:3]
+        original_trajectory = np.array(propagated_trajectory)
+        return original_trajectory
+
+
+class PropagatedElement:
+    """
+    Parent class for Particle and Food. It defines the common attributes and computing methods.
+    """
+    def __init__(self, state, model):
+        self.state = state
+        self.model = model
+        self.score = np.inf
+
+    def propagate(self, time_vect, time_span):
+        """
+        Method propagating the initial conditions using the defined differential equations.
+        :param time_vect: points in time that are used
+        to compare the original and propagated trajectory
+        :param time_span: [0, time_span] is the time limit for the solver
+        :return: propagated trajectory, which is a result of solve_ivp with its all atributes
+        """
+        x, y, z, vx, vy, vz = self.state
+        propagated_trajectory = integrate.solve_ivp(
+            self.model.diff_equation, [
+                0, time_span], [
+                x, y, z, vx, vy, vz], t_eval=time_vect, method='DOP853')
+        return propagated_trajectory
+
     def calculate_cost(self):
         """
         Calculates the cost of each trajectory as a sum of differences between
         the expected and propagated results in [number_of_measurements] points.
         """
-        time_vect = np.array(self.swarm.chosen_states['Time (TU)'])
+        time_vect = np.array(self.model.chosen_states['Time (TU)'])
         vect_size = len(time_vect)
         time_span = time_vect[vect_size - 1] + 0.01
         propagate = self.propagate(time_vect, time_span)
-        original_trajectory = self.swarm.original_trajectory.T
+        original_trajectory = self.model.original_trajectory.T
         propagated_trajectory = propagate.y
 
         error = 0
-        if propagated_trajectory.shape[1] == self.swarm.number_of_measurements:
-            for it in range(self.swarm.number_of_measurements):
+        if propagated_trajectory.shape[1] == self.model.number_of_measurements:
+            for it in range(self.model.number_of_measurements):
                 error += linalg.norm(original_trajectory[it,
                                      :3] - propagated_trajectory[:3, it])
             self.score = error
@@ -85,22 +122,51 @@ class Swarm:
     def __init__(
             self,
             population_size,
-            number_of_measurements,
             max_iterations,
-            chosen_states,
-            initial_state,
-            period):
+            model):
         self.population_size = population_size
-        self.number_of_measurements = number_of_measurements
         self.max_iterations = max_iterations
-        self.chosen_states = chosen_states
-        self.initial_state = initial_state
-        self.period = period
         self.elements = []
         self.global_best_score = np.inf
         self.global_best_state = []
-        self.original_trajectory = None
-        self.filepath = None
+        self.model = model
+
+    def generate_initial_population(self,
+            opt_if_two_stage_pso=0,
+            opt_best_velocity=None):
+        """
+        Creates an initial population of swarm elements.
+        :param opt_if_two_stage_pso: optional: defines the way points are generated in the search space
+        :param opt_best_velocity: optional: defines if best found velocity so far should impact
+        the new set of initial particles
+        """
+        # pylint: disable=R0914
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        pos_limits = 250 / lu_to_km_coeff
+        vel_limits = 0.1 / (lu_to_km_coeff / tu_to_s_coeff)
+        initial_random = []
+
+        if not opt_if_two_stage_pso:
+            for idx in range(self.population_size):
+                position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
+                velocity = [np.random.uniform(-vel_limits, vel_limits) for _ in range(3)]
+                random_vect = position + velocity
+                initial_random.append(self.model.initial_state + random_vect)
+        else:
+            for idx in range(self.population_size):
+                position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
+                velocity = [0, 0, 0]
+                random_vect = position + velocity
+                initial_random.append(self.model.initial_state + random_vect)
+
+            for elem in initial_random:
+                percent = 0.001
+                elem[3:] = [opt_best_velocity[0] + np.random.uniform(-1 * percent, percent),
+                            opt_best_velocity[1] + np.random.uniform(-1 * percent, percent),
+                            opt_best_velocity[2] + np.random.uniform(-1 * percent, percent)]
+        return initial_random
+
 
     def update_global_best(self):
         """
@@ -123,22 +189,6 @@ class Swarm:
         self.global_best_state[3:] = self.global_best_state[3:] * (lu_to_km_coeff / tu_to_s_coeff)
 
 
-def solution_propagation(initial_state, swarm, chosen_states):
-    """
-    :param initial_state: the 6-dimensional vector of satellite's initial position and velocity
-    :param swarm: Swarm class object where the propagated element belongs to
-    :param chosen_states: array of satelite's positions and velocities in given moments of time
-    """
-    solution = PropagatedElement(swarm, initial_state)
-    time_vect = np.array(chosen_states['Time (TU)'])
-    vect_size = len(time_vect)
-    time_span = time_vect[vect_size - 1] + 0.01
-    propagate = solution.propagate(time_vect, time_span)
-    propagated_trajectory = propagate.y[:3]
-    original_trajectory = np.array(propagated_trajectory)
-    swarm.original_trajectory = original_trajectory
-
-
 def final_plot(
         initial_swarm,
         final_swarm,
@@ -146,6 +196,7 @@ def final_plot(
         initial_state,
         density=1,
         periods=1):
+    # pylint: disable=R0902, R0903, R0913, R0917
     """
     Creating a set of information necessary to plot the results.
     :param initial_swarm: initial Swarm class instance
@@ -167,10 +218,8 @@ def final_plot(
     for source in final_swarm.elements:
         series2.append(data_load.convert_to_metric_units(deepcopy(source.state)))
 
-    found_solution = PropagatedElement(final_swarm, final_swarm.global_best_state)
-    found_solution.calculate_cost()
-    global_best_solution = PropagatedElement(initial_swarm, initial_state)
-    global_best_solution.calculate_cost()
+    found_solution = PropagatedElement(final_swarm.global_best_state, final_swarm.model)
+    global_best_solution = PropagatedElement(initial_state, initial_swarm.model)
 
     original_trajectory = []
     propagated_trajectory = []
@@ -180,17 +229,17 @@ def final_plot(
         time_span = time_vect[-1] + 0.01
         original_trajectory = data_load.convert_to_metric_units(
             deepcopy(initial_swarm.original_trajectory))
-        propagate = found_solution.propagate(time_vect, time_span)
-        propagated_trajectory = data_load.convert_to_metric_units(propagate.y[:3])
+        propagated_trajectory = data_load.convert_to_metric_units(
+            found_solution.propagate(time_vect, time_span).y[:3])
 
     if density == 1:
-        time_span = initial_swarm.period
+        time_span = initial_swarm.model.period
         time_vect = np.linspace(0, time_span, 500)
         original_propagate = global_best_solution.propagate(time_vect, time_span)
         original_trajectory = data_load.convert_to_metric_units(original_propagate.y[:3])
         time_vect = np.linspace(0, float(time_span * periods), int(500 * periods))
-        propagate = found_solution.propagate(time_vect, time_span * periods)
-        propagated_trajectory = data_load.convert_to_metric_units(propagate.y[:3])
+        propagated_trajectory = data_load.convert_to_metric_units(
+            found_solution.propagate(time_vect, time_span * periods).y[:3])
 
     return (original_trajectory, propagated_trajectory, initial_state[:3] * 389703,
             final_swarm.global_best_state[:3] * 389703, series1, series2)
