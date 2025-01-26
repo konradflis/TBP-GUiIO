@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"? language="pl_PL">
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
@@ -303,7 +303,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="TBP_visualisation.ui" line="1586"/>
         <source>Granice sąsiedztwa - położenie</source>
-        <translation> Neighbourhood limits - pos.</translation>
+        <translation>Neighbourhood limits - pos.</translation>
     </message>
     <message>
         <location filename="TBP_visualisation.ui" line="1599"/>

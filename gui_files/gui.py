@@ -5,10 +5,10 @@ import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication # pylint: disable=no-name-in-module
 from PyQt6.QtCore import QCoreApplication, QTranslator #  pylint: disable=no-name-in-module
 import matplotlib.pyplot as plt
+from gui_files.TBP_visualisation import Ui_MainWindow
 from sources import abc_alg, pso
 from gui_files.user_inputs import UserInputs
 from gui_files.visualisation import Visualisation
-from TBP_visualisation import Ui_MainWindow
 
 class App(QMainWindow, UserInputs, Visualisation):
     # pylint: disable=R0902, R0903, R0913, R0917
@@ -24,6 +24,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.canvas = None
         self.plot_properties_list = None
         self.translator = QTranslator()
+        self.language_version = "PL"
 
         self.set_user_inputs_ui(self.ui)
         self.set_visualisation_ui(self.ui)
@@ -44,17 +45,22 @@ class App(QMainWindow, UserInputs, Visualisation):
         """
         Combobox - response to language selection. Loads the English translation file if needed.
         """
-        if index:
+        if index: # index is set to 1 only if EN language is selected
             translation_file = "en_translation.qm"
             if self.translator.load(translation_file):
                 QCoreApplication.installTranslator(self.translator)
+                self.ui.retranslateUi(self)
                 self.setWindowTitle("Three-body problem - orbit visualisation")
-            else:
-                print(f"Could not load translation file: {translation_file}")
-        else:
+                self.language_version = "EN"
+                self.refresh_widgets()
+
+        else: # default PL
             QCoreApplication.removeTranslator(self.translator)
+            self.ui.retranslateUi(self)
             self.setWindowTitle("Problem trzech ciał - wizualizacja trajektorii")
-        self.ui.retranslateUi(self)
+            self.language_version = "PL"
+            self.refresh_widgets()
+
 
     def introduction_logic(self):
         """
@@ -85,7 +91,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.optional_pso
         )
 
-        self.plotting_charts("")
+        self.plotting_charts("PSO")
         self.ui.outputLabel.setVisible(False)
 
         self.show_results("PSO")
@@ -114,7 +120,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.mandatory_pso2_2,
             self.optional_pso2_2
         )
-        self.plotting_charts(2)
+        self.plotting_charts("PSO2")
         self.show_results("PSO2")
 
     def button_clicked_abc(self):
@@ -126,7 +132,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.optional_abc
         )
 
-        self.plotting_charts(3)
+        self.plotting_charts("ABC")
         self.show_results("ABC")
 
 

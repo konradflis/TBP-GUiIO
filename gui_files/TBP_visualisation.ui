@@ -539,7 +539,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridOrbit"/>
+          <layout class="QGridLayout" name="gridOrbitPSO"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSOtabPosition">
@@ -555,7 +555,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridPosition"/>
+          <layout class="QGridLayout" name="gridPositionPSO"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSOtabVelocity">
@@ -571,7 +571,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridVelocity"/>
+          <layout class="QGridLayout" name="gridVelocityPSO"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSOtabError">
@@ -587,7 +587,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridError"/>
+          <layout class="QGridLayout" name="gridErrorPSO"/>
          </widget>
         </widget>
        </widget>
@@ -1280,7 +1280,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridOrbit2"/>
+          <layout class="QGridLayout" name="gridOrbitPSO2"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO2tabPosition">
@@ -1296,7 +1296,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridPosition2"/>
+          <layout class="QGridLayout" name="gridPositionPSO2"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO2tabVelocity">
@@ -1312,7 +1312,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridVelocity2"/>
+          <layout class="QGridLayout" name="gridVelocityPSO2"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO2tabError">
@@ -1328,7 +1328,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridError2"/>
+          <layout class="QGridLayout" name="gridErrorPSO2"/>
          </widget>
         </widget>
        </widget>
@@ -1827,6 +1827,11 @@ p, li { white-space: pre-wrap; }
           <height>16</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
        </widget>
        <widget class="QLabel" name="label_24">
         <property name="geometry">
@@ -1849,6 +1854,11 @@ p, li { white-space: pre-wrap; }
           <width>51</width>
           <height>16</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
         </property>
        </widget>
        <widget class="QLabel" name="label_25">
@@ -1902,7 +1912,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridOrbit3"/>
+          <layout class="QGridLayout" name="gridOrbitABC"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO3tabPosition">
@@ -1918,7 +1928,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridPosition3"/>
+          <layout class="QGridLayout" name="gridPositionABC"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO3tabVelocity">
@@ -1934,7 +1944,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridVelocity3"/>
+          <layout class="QGridLayout" name="gridVelocityABC"/>
          </widget>
         </widget>
         <widget class="QWidget" name="PSO3tabError">
@@ -1950,7 +1960,7 @@ p, li { white-space: pre-wrap; }
             <height>341</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="PSOgridError3"/>
+          <layout class="QGridLayout" name="gridErrorABC"/>
          </widget>
         </widget>
        </widget>

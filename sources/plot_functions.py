@@ -125,13 +125,13 @@ def plot_propagated_trajectories(
     xs1 = [el[0] for el in original_trajectory]
     ys1 = [el[1] for el in original_trajectory]
     zs1 = [el[2] for el in original_trajectory]
-    ax.scatter(xs1, ys1, zs1, color='g', label='oryginalna orbita.')
+    ax.scatter(xs1, ys1, zs1, color='g', label='oryginalna orbita')
 
     xs2 = list(propagated_trajectory[0])
     ys2 = list(propagated_trajectory[1])
     zs2 = list(propagated_trajectory[2])
 
-    ax.scatter(xs2, ys2, zs2, color='b', label='otrzymana orbita.')
+    ax.scatter(xs2, ys2, zs2, color='b', label='otrzymana orbita')
 
     ax.scatter(
         original_initial[0],

@@ -7,6 +7,7 @@ import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from sources import plot_functions, data_load, common_elements
+from sources.data_structures import Translations
 
 class MplCanvas(FigureCanvas):
     """
@@ -29,6 +30,7 @@ class Visualisation:
         self.results = None
         self.canvas = None
         self._plot_properties_list = None
+        self._language_version = "PL"
 
     @property
     def plot_properties_list(self):
@@ -39,6 +41,16 @@ class Visualisation:
     def plot_properties_list(self, value):
         """Setter for plot_properties_list"""
         self._plot_properties_list = value
+
+    @property
+    def language_version(self):
+        """Passes language_version from gui.py"""
+        return self._language_version
+
+    @language_version.setter
+    def language_version(self, value):
+        """Setter for language_version"""
+        self._language_version = value
 
     def set_visualisation_ui(self, ui):
         """Passes UI item from gui.py"""
@@ -103,7 +115,7 @@ class Visualisation:
         self.canvas = FigureCanvas(fig)
         getattr(
             self.ui,
-            f"PSOgridOrbit{method}").addWidget(
+            f"gridOrbit{method}").addWidget(
             self.canvas,
             0,
             0,
@@ -120,7 +132,7 @@ class Visualisation:
         self.canvas = FigureCanvas(fig1)
         getattr(
             self.ui,
-            f"PSOgridPosition{method}").addWidget(
+            f"gridPosition{method}").addWidget(
             self.canvas,
             0,
             0,
@@ -129,7 +141,7 @@ class Visualisation:
         self.canvas = FigureCanvas(fig2)
         getattr(
             self.ui,
-            f"PSOgridVelocity{method}").addWidget(
+            f"gridVelocity{method}").addWidget(
             self.canvas,
             0,
             0,
@@ -141,15 +153,34 @@ class Visualisation:
         fig.tight_layout(pad=6.0)
         self.canvas = FigureCanvas(fig)
         self.canvas.draw()
+        print(self.canvas.figure.gca().legend())
         getattr(
             self.ui,
-            f"PSOgridError{method}").addWidget(
+            f"gridError{method}").addWidget(
             self.canvas,
             0,
             0,
             1,
             1)
 
+    def refresh_widgets(self):
+        """
+        Refreshes the widgets that are not translated within .qm files. Uses a nested dictionary
+        defined in data_structures.py.
+        :return:
+        """
+        for method in ["PSO", "PSO2", "ABC"]:
+            #If number of rows > 0, this element must have been initialised and thus it can me modified
+            if getattr(self.ui, f"{method}resultTable").rowCount() > 0:
+                #Choose the table's header translation based on language.
+                getattr(self.ui, f"{method}resultTable").setVerticalHeaderLabels(
+                    Translations().get_translation("Table", self._language_version))
+                for plot_type in ["gridOrbit", "gridPosition", "gridVelocity"]:
+                    #For all the plot widgets, find a translation and update the legend with draw()
+                    getattr(self.ui, f"{plot_type}{method}").itemAt(0).widget().figure.gca().legend(
+                        Translations().get_translation("Plot", self._language_version, plot_type)
+                    )
+                    getattr(self.ui, f"{plot_type}{method}").itemAt(0).widget().draw()
 
     def show_results(self, method):
         """
@@ -161,8 +192,14 @@ class Visualisation:
         getattr(self.ui, f"{method}resultTable").setColumnCount(6)
         getattr(self.ui, f"{method}resultTable").setHorizontalHeaderLabels(
             ["x", "y", "z", "vx", "vy", "vz"])
-        getattr(self.ui, f"{method}resultTable").setVerticalHeaderLabels(
-            ["cel", "wynik", "|różnica|", "|odległość|", "fun. celu"])
+
+        if self._language_version == "PL":
+            getattr(self.ui, f"{method}resultTable").setVerticalHeaderLabels(
+                ["cel", "wynik", "|różnica|", "|odległość|", "fun. celu"])
+
+        if self._language_version == "EN":
+            getattr(self.ui, f"{method}resultTable").setVerticalHeaderLabels(
+                ["objective", "result", "|diff|", "|distance|", "obj. fun. value"])
 
         for row in range(3):
             for col in range(6):

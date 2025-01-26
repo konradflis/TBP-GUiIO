@@ -1,6 +1,7 @@
 # pylint: disable=R0902, R0903, R0913, R0917
 """
-Classes defining data structures for mandatory and optional parameters.
+Classes defining data structures for mandatory and optional parameters,
+structures for translating dynamic widgets.
 """
 
 class MandatorySettingsPSO:
@@ -91,3 +92,45 @@ class OptionalSettingsABC:
         self.neigh_percent = neigh_percent
         self.dim_probability = dim_probability
         self.orbit_filepath = orbit_filepath
+
+
+class Translations:
+    """
+    Class defining a dictionary of translations for widgets.
+    """
+    def __init__(self):
+        self.dictionary = {
+            "Table": {
+                "PL": ["cel", "wynik", "|różnica|", "|odległość|", "fun. celu"],
+                "EN": ["objective", "result", "|diff|", "|distance|", "obj. fun. value"]
+                },
+            "Plot": {
+                "gridOrbit" : {
+                    "PL" : ["oryginalna orbita", "otrzymana orbita"],
+                    "EN" : ["original orbit", "propagated orbit"]
+                },
+                "gridPosition" : {
+                    "PL" : ["położenia początkowe", "położenia końcowe"],
+                    "EN" : ["initial positions", "final positions"]
+                },
+                "gridVelocity" : {
+                    "PL" : ["prędkości początkowe", "prędkości końcowe"],
+                    "EN" : ["initial velocities", "final velocities"]
+                }
+            }
+        }
+
+    def get_translation(self, widget_type, language, plot_type=None):
+        """
+        Get a specific translation for the given widget type, algorithm, and key.
+        """
+        try:
+            if plot_type:
+                return self.dictionary[widget_type][plot_type][language]
+            else:
+                return self.dictionary[widget_type][language]
+        except KeyError:
+            raise KeyError(
+                f"No translation for language={language}, "
+                f"widget_type={widget_type}, plot type={plot_type}"
+            )
