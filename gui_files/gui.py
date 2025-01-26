@@ -6,9 +6,9 @@ from PyQt6.QtWidgets import QMainWindow, QApplication # pylint: disable=no-name-
 from PyQt6.QtCore import QCoreApplication, QTranslator #  pylint: disable=no-name-in-module
 import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
-from sources import abc_alg, pso
 from gui_files.user_inputs import UserInputs
 from gui_files.visualisation import Visualisation
+from sources import abc_alg, pso
 
 class App(QMainWindow, UserInputs, Visualisation):
     # pylint: disable=R0902, R0903, R0913, R0917
@@ -93,8 +93,8 @@ class App(QMainWindow, UserInputs, Visualisation):
 
         self.plotting_charts("PSO")
         self.ui.outputLabel.setVisible(False)
-
         self.show_results("PSO")
+        self.refresh_widgets()
 
     def button_clicked_pso2(self):
         """
@@ -122,6 +122,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         )
         self.plotting_charts("PSO2")
         self.show_results("PSO2")
+        self.refresh_widgets()
 
     def button_clicked_abc(self):
         """
@@ -134,6 +135,7 @@ class App(QMainWindow, UserInputs, Visualisation):
 
         self.plotting_charts("ABC")
         self.show_results("ABC")
+        self.refresh_widgets()
 
 
 if __name__ == '__main__':

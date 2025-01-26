@@ -102,7 +102,7 @@ class Translations:
         self.dictionary = {
             "Table": {
                 "PL": ["cel", "wynik", "|różnica|", "|odległość|", "fun. celu"],
-                "EN": ["objective", "result", "|diff|", "|distance|", "obj. fun. value"]
+                "EN": ["objective", "result", "|diff|", "|distance|", "obj. fun. val."]
                 },
             "Plot": {
                 "gridOrbit" : {
@@ -116,6 +116,10 @@ class Translations:
                 "gridVelocity" : {
                     "PL" : ["prędkości początkowe", "prędkości końcowe"],
                     "EN" : ["initial velocities", "final velocities"]
+                },
+                "gridError" : {
+                    "PL" : ["Numer iteracji", "Wartość błędu/funkcji celu [LU]"],
+                    "EN" : ["Iteration number", "Objective function value [LU]"]
                 }
             }
         }
@@ -127,10 +131,9 @@ class Translations:
         try:
             if plot_type:
                 return self.dictionary[widget_type][plot_type][language]
-            else:
-                return self.dictionary[widget_type][language]
-        except KeyError:
+            return self.dictionary[widget_type][language]
+        except KeyError as not_found_error:
             raise KeyError(
                 f"No translation for language={language}, "
                 f"widget_type={widget_type}, plot type={plot_type}"
-            )
+            ) from not_found_error
