@@ -88,12 +88,14 @@ class Swarm:
             number_of_measurements,
             max_iterations,
             chosen_states,
-            initial_state):
+            initial_state,
+            period):
         self.population_size = population_size
         self.number_of_measurements = number_of_measurements
         self.max_iterations = max_iterations
         self.chosen_states = chosen_states
         self.initial_state = initial_state
+        self.period = period
         self.elements = []
         self.global_best_score = np.inf
         self.global_best_state = []
@@ -141,13 +143,19 @@ def final_plot(
         initial_swarm,
         final_swarm,
         chosen_states,
-        initial_state):
+        initial_state,
+        density=1,
+        periods=1):
     """
     Creating a set of information necessary to plot the results.
     :param initial_swarm: initial Swarm class instance
     :param final_swarm: final Swarm class instance
     :param chosen_states: states to be compared between orbits
     :param initial_state: the first point of the original orbit
+    :param density: the way plot will be generated
+    :> 0: default: only the measurement point
+    :> 1: dense: seemingly-continuous orbits
+    :param periods: time span of the plot, multiple of one period
     :return: set of data used by plotting functions
     """
     series1 = []
@@ -159,14 +167,30 @@ def final_plot(
     for source in final_swarm.elements:
         series2.append(data_load.convert_to_metric_units(deepcopy(source.state)))
 
-    solution = PropagatedElement(final_swarm, final_swarm.global_best_state)
-    solution.calculate_cost()
-    time_vect = np.array(chosen_states['Time (TU)'])
-    vect_size = len(time_vect)
-    time_span = time_vect[vect_size - 1] + 0.01
-    propagate = solution.propagate(time_vect, time_span)
-    propagated_trajectory = propagate.y[:3] * 389703
-    original_trajectory = np.array(chosen_states)[:, 1:4] * 389703
+    found_solution = PropagatedElement(final_swarm, final_swarm.global_best_state)
+    found_solution.calculate_cost()
+    global_best_solution = PropagatedElement(initial_swarm, initial_state)
+    global_best_solution.calculate_cost()
+
+    original_trajectory = []
+    propagated_trajectory = []
+
+    if density == 0:
+        time_vect = np.array(chosen_states['Time (TU)'])
+        time_span = time_vect[-1] + 0.01
+        original_trajectory = data_load.convert_to_metric_units(
+            deepcopy(initial_swarm.original_trajectory))
+        propagate = found_solution.propagate(time_vect, time_span)
+        propagated_trajectory = data_load.convert_to_metric_units(propagate.y[:3])
+
+    if density == 1:
+        time_span = initial_swarm.period
+        time_vect = np.linspace(0, time_span, 500)
+        original_propagate = global_best_solution.propagate(time_vect, time_span)
+        original_trajectory = data_load.convert_to_metric_units(original_propagate.y[:3])
+        time_vect = np.linspace(0, float(time_span * periods), int(500 * periods))
+        propagate = found_solution.propagate(time_vect, time_span * periods)
+        propagated_trajectory = data_load.convert_to_metric_units(propagate.y[:3])
 
     return (original_trajectory, propagated_trajectory, initial_state[:3] * 389703,
             final_swarm.global_best_state[:3] * 389703, series1, series2)

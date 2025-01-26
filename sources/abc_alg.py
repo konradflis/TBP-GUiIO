@@ -198,7 +198,7 @@ def abc_alg(
 
     file_path = optional.orbit_filepath
 
-    _, _, initial_state, initial_random, chosen_states = (
+    period, _, initial_state, initial_random, chosen_states = (
         transfer_raw_data_to_trajectory(
             file_path, mandatory.population_size, mandatory.number_of_measurements))
 
@@ -207,7 +207,8 @@ def abc_alg(
         mandatory.number_of_measurements,
         mandatory.max_iterations,
         chosen_states,
-        initial_state)
+        initial_state,
+        period)
     swarm.generate_initial_population(initial_random)
 
     solution_propagation(initial_state, swarm, chosen_states)

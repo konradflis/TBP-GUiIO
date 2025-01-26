@@ -81,12 +81,14 @@ class SwarmPSO(Swarm):
                  inertia,
                  c1,
                  c2,
-                 initial_state):
+                 initial_state,
+                 period):
         super().__init__(population_size,
                          number_of_measurements,
                          max_iterations,
                          chosen_states,
-                         initial_state)
+                         initial_state,
+                         period)
         self.inertia = inertia
         self.c1 = c1
         self.c2 = c2
@@ -218,7 +220,7 @@ def multistart(
 
     for _ in range(number_of_starts):
         print("starting iteration nr", _)
-        _, _, initial_state, initial_random, chosen_states = (
+        period, _, initial_state, initial_random, chosen_states = (
             transfer_raw_data_to_trajectory(file_path,
                                             mandatory.population_size,
                                             mandatory.number_of_measurements,
@@ -233,7 +235,8 @@ def multistart(
             mandatory.inertia,
             mandatory.c1,
             mandatory.c2,
-            initial_state)
+            initial_state,
+            period)
         swarm.generate_initial_population(initial_random, opt_multistart=0)
 
         solution_propagation(initial_state, swarm, chosen_states)
@@ -295,7 +298,7 @@ def pso(
         optional.best_velocity = [0, 0, 0]
 
     file_path = optional.orbit_filepath
-    _, _, initial_state, initial_random, chosen_states = \
+    period, _, initial_state, initial_random, chosen_states = \
         (transfer_raw_data_to_trajectory(
             file_path, mandatory.population_size, mandatory.number_of_measurements,
             opt_if_two_stage_pso=optional.if_best_velocity,
@@ -309,7 +312,8 @@ def pso(
         mandatory.inertia,
         mandatory.c1,
         mandatory.c2,
-        initial_state)
+        initial_state,
+        period)
     swarm.filepath = file_path
     swarm.generate_initial_population(
         initial_random,

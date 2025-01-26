@@ -60,7 +60,7 @@ def transfer_raw_data_to_trajectory(
     step = len(states) / number_of_measurements
     idx = [int(i * step) for i in range(number_of_measurements)]
     chosen_states = df_new_units.loc[idx].reset_index(drop=True)
-    return time_vect, states, initial_state, initial_random, chosen_states
+    return time_vect.iloc[-1], states, initial_state, initial_random, chosen_states
 
 
 def convert_to_metric_units(vect):
@@ -72,5 +72,6 @@ def convert_to_metric_units(vect):
     lu_to_km_coeff = 389703
     tu_to_s_coeff = 382981
     vect[:3] = vect[:3] * lu_to_km_coeff
-    vect[3:] = vect[3:] * (lu_to_km_coeff / tu_to_s_coeff)
+    if len(vect) > 3:
+        vect[3:] = vect[3:] * (lu_to_km_coeff / tu_to_s_coeff)
     return vect
