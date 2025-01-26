@@ -1,6 +1,7 @@
 # pylint: disable=R0902, R0903, R0913, R0917
 """
-Classes defining data structures for mandatory and optional parameters.
+Classes defining data structures for mandatory and optional parameters,
+structures for translating dynamic widgets.
 """
 
 class MandatorySettingsPSO:
@@ -8,8 +9,8 @@ class MandatorySettingsPSO:
     Mandatory fields for PSO algorithm.
     """
     def __init__(self,
-                 max_iterations=100,
-                 population_size=100,
+                 max_iterations=10,
+                 population_size=10,
                  number_of_measurements=35,
                  inertia=0.9,
                  c1=1.49,
@@ -28,8 +29,8 @@ class MandatorySettingsABC:
     Mandatory fields for ABC algorithm.
     """
     def __init__(self,
-                 max_iterations=100,
-                 population_size=50,
+                 max_iterations=10,
+                 population_size=10,
                  number_of_measurements=35,
                  employee_phase_neighbours=2,
                  onlooker_phase_neighbours=2,
@@ -91,3 +92,48 @@ class OptionalSettingsABC:
         self.neigh_percent = neigh_percent
         self.dim_probability = dim_probability
         self.orbit_filepath = orbit_filepath
+
+
+class Translations:
+    """
+    Class defining a dictionary of translations for widgets.
+    """
+    def __init__(self):
+        self.dictionary = {
+            "Table": {
+                "PL": ["cel", "wynik", "|różnica|", "|odległość|", "fun. celu"],
+                "EN": ["objective", "result", "|diff|", "|distance|", "obj. fun. val."]
+                },
+            "Plot": {
+                "gridOrbit" : {
+                    "PL" : ["oryginalna orbita", "otrzymana orbita"],
+                    "EN" : ["original orbit", "propagated orbit"]
+                },
+                "gridPosition" : {
+                    "PL" : ["położenia początkowe", "położenia końcowe"],
+                    "EN" : ["initial positions", "final positions"]
+                },
+                "gridVelocity" : {
+                    "PL" : ["prędkości początkowe", "prędkości końcowe"],
+                    "EN" : ["initial velocities", "final velocities"]
+                },
+                "gridError" : {
+                    "PL" : ["Numer iteracji", "Wartość błędu/funkcji celu [LU]"],
+                    "EN" : ["Iteration number", "Objective function value [LU]"]
+                }
+            }
+        }
+
+    def get_translation(self, widget_type, language, plot_type=None):
+        """
+        Get a specific translation for the given widget type, algorithm, and key.
+        """
+        try:
+            if plot_type:
+                return self.dictionary[widget_type][plot_type][language]
+            return self.dictionary[widget_type][language]
+        except KeyError as not_found_error:
+            raise KeyError(
+                f"No translation for language={language}, "
+                f"widget_type={widget_type}, plot type={plot_type}"
+            ) from not_found_error

@@ -193,7 +193,6 @@ class UserInputs:
         self.ui.ABCinactiveCyclesCheckBox.toggled.connect(
             self.inactive_cycles_mod)
 
-
     def combobox_pso_inertia_selected(self, index, method):
         """
         Combobox response definition.
