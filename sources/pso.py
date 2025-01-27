@@ -12,7 +12,6 @@ class Particle(PropagatedElement):
     """
     Class defining a particle - the fundamental concept of Particle Swarm Optimization.
     """
-
     def __init__(self, state, swarm, model):
         super().__init__(state, model)
         self.swarm = swarm
@@ -90,10 +89,11 @@ class SwarmPSO(Swarm):
 
     def generate_initial_population(
             self,
-            opt_multistart=0,
-            opt_number_of_starts=20,
             opt_if_two_stage_pso=0,
-            opt_best_velocity=None):
+            opt_best_velocity=None,
+            opt_multistart=0,
+            opt_number_of_starts=20
+    ):
         """
         Generates a new population of Particle class objects,
         based on the initial points that are passed as an argument.
@@ -103,7 +103,8 @@ class SwarmPSO(Swarm):
         :param opt_best_velocity: if 1, best velocity from previous iterations has impact on
         new particles (used in PSO2)
         """
-        initial_random = super().generate_initial_population(opt_if_two_stage_pso, opt_best_velocity)
+        initial_random = super().generate_initial_population(
+            opt_if_two_stage_pso, opt_best_velocity)
 
         if not opt_multistart:
             for idx in range(self.population_size):
@@ -245,7 +246,8 @@ def multistart(
         indexed_scores = list(enumerate(scores))
         indexed_scores.sort(key=lambda x: x[1])
         scores_idx = [index for index, _ in indexed_scores[
-                                            :(mandatory.population_size // optional.number_of_multistarts)]]
+                                            :(mandatory.population_size
+                                              // optional.number_of_multistarts)]]
         for idx in scores_idx:
             initial_population.append(
                 Particle(
@@ -287,6 +289,9 @@ def pso(
 
     if optional.best_velocity is None:
         optional.best_velocity = [0, 0, 0]
+
+    print(vars(mandatory))
+    print(vars(optional))
 
     model = ModelProperties(optional.orbit_filepath, mandatory.number_of_measurements)
 

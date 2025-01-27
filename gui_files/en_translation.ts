@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"? language="pl_PL">
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="pl_PL">
 <context>
     <name>MainWindow</name>
     <message>
@@ -72,11 +72,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="TBP_visualisation.ui" line="145"/>
+        <location filename="TBP_visualisation.ui" line="2158"/>
         <source>PL</source>
         <translation>PL</translation>
     </message>
     <message>
         <location filename="TBP_visualisation.ui" line="150"/>
+        <location filename="TBP_visualisation.ui" line="2163"/>
         <source>EN</source>
         <translation>EN</translation>
     </message>
@@ -87,291 +89,326 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="TBP_visualisation.ui" line="170"/>
+        <source>Ustawienia</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="201"/>
+        <source>Trajektorie</source>
+        <translation>Trajectories</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="214"/>
+        <source>Wybierz sposób generowania trajektorii</source>
+        <translation>Choose a method of trajectory generation</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="227"/>
+        <source>Tylko w punktach pomiarowych</source>
+        <translation>only in measurement points</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="240"/>
+        <source>W zagęszczeniu (między punktami pomiarowymi)</source>
+        <translation>densely (between measurement points)</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="253"/>
+        <source>Określ czas propagacji orbity (wielokrotność okresu orbity odniesienia)</source>
+        <translation>Define the propagation time (multiple periods of the original orbit)</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="281"/>
+        <source>okr. orbity odniesienia</source>
+        <translation>periods of original orbit</translation>
+    </message>
+    <message>
+        <location filename="TBP_visualisation.ui" line="287"/>
         <source>Algorytm PSO</source>
         <translation>PSO algorithm</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="197"/>
-        <location filename="TBP_visualisation.ui" line="645"/>
-        <location filename="TBP_visualisation.ui" line="1015"/>
-        <location filename="TBP_visualisation.ui" line="1474"/>
+        <location filename="TBP_visualisation.ui" line="314"/>
+        <location filename="TBP_visualisation.ui" line="767"/>
+        <location filename="TBP_visualisation.ui" line="1137"/>
+        <location filename="TBP_visualisation.ui" line="1601"/>
         <source>Liczba iteracji</source>
         <translation>Max iterations</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="210"/>
-        <location filename="TBP_visualisation.ui" line="692"/>
-        <location filename="TBP_visualisation.ui" line="884"/>
-        <location filename="TBP_visualisation.ui" line="1502"/>
+        <location filename="TBP_visualisation.ui" line="327"/>
+        <location filename="TBP_visualisation.ui" line="814"/>
+        <location filename="TBP_visualisation.ui" line="1006"/>
+        <location filename="TBP_visualisation.ui" line="1629"/>
         <source>Wielkość populacji</source>
         <translation>Population size</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="223"/>
-        <location filename="TBP_visualisation.ui" line="744"/>
-        <location filename="TBP_visualisation.ui" line="1002"/>
-        <location filename="TBP_visualisation.ui" line="1957"/>
+        <location filename="TBP_visualisation.ui" line="340"/>
+        <location filename="TBP_visualisation.ui" line="866"/>
+        <location filename="TBP_visualisation.ui" line="1124"/>
+        <location filename="TBP_visualisation.ui" line="2094"/>
         <source>Liczba pkt. pomiarowych orbity</source>
         <translation>Measurements per orbit</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="236"/>
-        <location filename="TBP_visualisation.ui" line="395"/>
-        <location filename="TBP_visualisation.ui" line="705"/>
-        <location filename="TBP_visualisation.ui" line="871"/>
+        <location filename="TBP_visualisation.ui" line="353"/>
+        <location filename="TBP_visualisation.ui" line="512"/>
+        <location filename="TBP_visualisation.ui" line="827"/>
+        <location filename="TBP_visualisation.ui" line="993"/>
         <source>Inercja</source>
         <translation>Inertia</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="249"/>
-        <location filename="TBP_visualisation.ui" line="718"/>
-        <location filename="TBP_visualisation.ui" line="858"/>
+        <location filename="TBP_visualisation.ui" line="366"/>
+        <location filename="TBP_visualisation.ui" line="840"/>
+        <location filename="TBP_visualisation.ui" line="980"/>
         <source>Wsk. samooceny</source>
         <translation>Cognitive coeff.</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="262"/>
-        <location filename="TBP_visualisation.ui" line="731"/>
-        <location filename="TBP_visualisation.ui" line="927"/>
+        <location filename="TBP_visualisation.ui" line="379"/>
+        <location filename="TBP_visualisation.ui" line="853"/>
+        <location filename="TBP_visualisation.ui" line="1049"/>
         <source>Wsk. społecznościowy</source>
         <translation>Social coeff.</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="290"/>
-        <location filename="TBP_visualisation.ui" line="363"/>
-        <location filename="TBP_visualisation.ui" line="832"/>
-        <location filename="TBP_visualisation.ui" line="845"/>
-        <location filename="TBP_visualisation.ui" line="955"/>
-        <location filename="TBP_visualisation.ui" line="1058"/>
-        <location filename="TBP_visualisation.ui" line="1670"/>
+        <location filename="TBP_visualisation.ui" line="407"/>
+        <location filename="TBP_visualisation.ui" line="480"/>
+        <location filename="TBP_visualisation.ui" line="954"/>
+        <location filename="TBP_visualisation.ui" line="967"/>
+        <location filename="TBP_visualisation.ui" line="1077"/>
+        <location filename="TBP_visualisation.ui" line="1180"/>
+        <location filename="TBP_visualisation.ui" line="1797"/>
         <source>Modyfikacja</source>
         <translation>Modification</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="382"/>
-        <location filename="TBP_visualisation.ui" line="1148"/>
-        <location filename="TBP_visualisation.ui" line="1770"/>
+        <location filename="TBP_visualisation.ui" line="499"/>
+        <location filename="TBP_visualisation.ui" line="1270"/>
+        <location filename="TBP_visualisation.ui" line="1897"/>
         <source>Modyfikacje</source>
         <translation>Modifications</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="419"/>
-        <location filename="TBP_visualisation.ui" line="1198"/>
-        <location filename="TBP_visualisation.ui" line="1400"/>
+        <location filename="TBP_visualisation.ui" line="536"/>
+        <location filename="TBP_visualisation.ui" line="1320"/>
+        <location filename="TBP_visualisation.ui" line="1527"/>
         <source>liniowa</source>
         <translation>linear</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="424"/>
-        <location filename="TBP_visualisation.ui" line="1203"/>
-        <location filename="TBP_visualisation.ui" line="1405"/>
+        <location filename="TBP_visualisation.ui" line="541"/>
+        <location filename="TBP_visualisation.ui" line="1325"/>
+        <location filename="TBP_visualisation.ui" line="1532"/>
         <source>dynamiczna - wariant 1</source>
         <translation>dynamic - variant #1</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="429"/>
-        <location filename="TBP_visualisation.ui" line="1208"/>
-        <location filename="TBP_visualisation.ui" line="1410"/>
+        <location filename="TBP_visualisation.ui" line="546"/>
+        <location filename="TBP_visualisation.ui" line="1330"/>
+        <location filename="TBP_visualisation.ui" line="1537"/>
         <source>dynamiczna - wariant 2</source>
         <translation>dynamic - variant #2</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="443"/>
+        <location filename="TBP_visualisation.ui" line="560"/>
         <source>Wskaźniki</source>
         <translation>Coefficients</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="467"/>
-        <location filename="TBP_visualisation.ui" line="1123"/>
-        <location filename="TBP_visualisation.ui" line="1435"/>
+        <location filename="TBP_visualisation.ui" line="584"/>
+        <location filename="TBP_visualisation.ui" line="1245"/>
+        <location filename="TBP_visualisation.ui" line="1562"/>
         <source>dynamiczne - wariant 1</source>
         <translation>dynamic - variant #1</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="472"/>
-        <location filename="TBP_visualisation.ui" line="1128"/>
-        <location filename="TBP_visualisation.ui" line="1440"/>
+        <location filename="TBP_visualisation.ui" line="589"/>
+        <location filename="TBP_visualisation.ui" line="1250"/>
+        <location filename="TBP_visualisation.ui" line="1567"/>
         <source>dynamiczne - wariant 2</source>
         <translation>dynamic - variant #2</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="501"/>
-        <location filename="TBP_visualisation.ui" line="1222"/>
+        <location filename="TBP_visualisation.ui" line="618"/>
+        <location filename="TBP_visualisation.ui" line="1344"/>
         <source>stop</source>
         <translation>stop</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="514"/>
-        <location filename="TBP_visualisation.ui" line="1250"/>
-        <location filename="TBP_visualisation.ui" line="1867"/>
+        <location filename="TBP_visualisation.ui" line="631"/>
+        <location filename="TBP_visualisation.ui" line="1372"/>
+        <location filename="TBP_visualisation.ui" line="2004"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="531"/>
-        <location filename="TBP_visualisation.ui" line="1267"/>
-        <location filename="TBP_visualisation.ui" line="1884"/>
+        <location filename="TBP_visualisation.ui" line="648"/>
+        <location filename="TBP_visualisation.ui" line="1389"/>
+        <location filename="TBP_visualisation.ui" line="2021"/>
         <source>Orbita</source>
         <translation>Orbit</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="547"/>
-        <location filename="TBP_visualisation.ui" line="1283"/>
-        <location filename="TBP_visualisation.ui" line="1900"/>
+        <location filename="TBP_visualisation.ui" line="664"/>
+        <location filename="TBP_visualisation.ui" line="1405"/>
+        <location filename="TBP_visualisation.ui" line="2037"/>
         <source>Położenia</source>
         <translation>Positions</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="563"/>
-        <location filename="TBP_visualisation.ui" line="1299"/>
-        <location filename="TBP_visualisation.ui" line="1916"/>
+        <location filename="TBP_visualisation.ui" line="680"/>
+        <location filename="TBP_visualisation.ui" line="1421"/>
+        <location filename="TBP_visualisation.ui" line="2053"/>
         <source>Prędkości</source>
         <translation>Velocities</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="579"/>
-        <location filename="TBP_visualisation.ui" line="1315"/>
-        <location filename="TBP_visualisation.ui" line="1932"/>
+        <location filename="TBP_visualisation.ui" line="696"/>
+        <location filename="TBP_visualisation.ui" line="1437"/>
+        <location filename="TBP_visualisation.ui" line="2069"/>
         <source>Błąd</source>
         <translation>Fitness</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="604"/>
+        <location filename="TBP_visualisation.ui" line="721"/>
         <source>Trwają obliczenia...</source>
         <translation>Calculating...</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="633"/>
+        <location filename="TBP_visualisation.ui" line="755"/>
         <source>Złożenie algorytmów PSO</source>
         <translation>Two-stage PSO algorithm</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="679"/>
+        <location filename="TBP_visualisation.ui" line="801"/>
         <source>Algorytm estymujący prędkości</source>
         <translation>Stage 1 - estimating velocities</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="989"/>
+        <location filename="TBP_visualisation.ui" line="1111"/>
         <source>Algorytm końcowy</source>
         <translation>Stage 2 - main PSO</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1071"/>
+        <location filename="TBP_visualisation.ui" line="1193"/>
         <source>Wielokrotny start</source>
         <translation>Multistart</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1084"/>
+        <location filename="TBP_visualisation.ui" line="1206"/>
         <source>Aktywuj</source>
         <translation>Activate</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1161"/>
+        <location filename="TBP_visualisation.ui" line="1283"/>
         <source>Inercja - alg. estymujący</source>
         <translation>Inertia - stage 1</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1174"/>
+        <location filename="TBP_visualisation.ui" line="1296"/>
         <source>Wskaźniki - alg. estymujący</source>
         <translation>Coeffs - stage 1</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1363"/>
+        <location filename="TBP_visualisation.ui" line="1490"/>
         <source>Inercja - alg. końcowy</source>
         <translation>Inertia - stage 2</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1376"/>
+        <location filename="TBP_visualisation.ui" line="1503"/>
         <source>Wskaźniki - alg. końcowy</source>
         <translation>Coeffs - stage 2</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1462"/>
+        <location filename="TBP_visualisation.ui" line="1589"/>
         <source>Algorytm ABC</source>
         <translation>ABC algorithm</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1545"/>
+        <location filename="TBP_visualisation.ui" line="1672"/>
         <source>Liczba pszczół-sąsiadów (I etap)</source>
         <translation>Neigh. bees (stage 1)</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1558"/>
+        <location filename="TBP_visualisation.ui" line="1685"/>
         <source>Liczba pszczół-sąsiadów (II etap)</source>
         <translation>Neigh. bees (stage 2)</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1586"/>
+        <location filename="TBP_visualisation.ui" line="1713"/>
         <source>Granice sąsiedztwa - położenie</source>
         <translation>Neighbourhood limits - pos.</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1599"/>
+        <location filename="TBP_visualisation.ui" line="1726"/>
         <source>Granice sąsiedztwa - prędkość</source>
         <translation>Neighbourhood limits - vel.</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1642"/>
+        <location filename="TBP_visualisation.ui" line="1769"/>
         <source>Liczba nieaktywnych cyklów</source>
         <translation>Inactive cycles</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1683"/>
+        <location filename="TBP_visualisation.ui" line="1810"/>
         <source>Rozdział na kole ruletki</source>
         <translation>Roulette wheel selection</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1702"/>
+        <location filename="TBP_visualisation.ui" line="1829"/>
         <source>1 - liniowo proporcjonalny</source>
         <translation>linear</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1707"/>
+        <location filename="TBP_visualisation.ui" line="1834"/>
         <source>2 - odwrotnie proporcjonalny</source>
         <translation>inversly proportional</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1721"/>
+        <location filename="TBP_visualisation.ui" line="1848"/>
         <source>Generowanie nowych rozwiązań</source>
         <translation>New solutions generation</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1740"/>
+        <location filename="TBP_visualisation.ui" line="1867"/>
         <source>1 - podstawowa</source>
         <translation>default</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1745"/>
+        <location filename="TBP_visualisation.ui" line="1872"/>
         <source>2 - obszar wokół GNR</source>
         <translation>close to GBS</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1750"/>
+        <location filename="TBP_visualisation.ui" line="1877"/>
         <source>3 - prędkość GNR</source>
         <translation>velocity of GBS</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1783"/>
+        <location filename="TBP_visualisation.ui" line="1910"/>
         <source>Modyf. wymiary sąsiedztwa</source>
         <translation>Number of mod. neigh. dims</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1802"/>
+        <location filename="TBP_visualisation.ui" line="1929"/>
         <source>1 - wszystkie</source>
         <translation>all</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1807"/>
+        <location filename="TBP_visualisation.ui" line="1934"/>
         <source>2 - część</source>
         <translation>random</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1831"/>
+        <location filename="TBP_visualisation.ui" line="1963"/>
         <source>Prawd.</source>
         <translation>Prob.</translation>
     </message>
     <message>
-        <location filename="TBP_visualisation.ui" line="1854"/>
+        <location filename="TBP_visualisation.ui" line="1991"/>
         <source>% pręd.</source>
         <translation>% of vel.</translation>
     </message>

@@ -47,7 +47,8 @@ class ModelProperties:
 
     def refresh_model(self):
         """
-        If needed, model can be refreshed - based on a new file with new data or number of measurements.
+        If needed, model can be refreshed - based on a new file
+        with new data or number of measurements.
         """
         self.period, self.all_states, self.initial_state, self.chosen_states = (
             data_load.transfer_raw_data_to_trajectory(self.filepath, self.number_of_measurements))
@@ -55,7 +56,8 @@ class ModelProperties:
     def initial_solution_propagation(self):
         """
         Finding the original trajectory by propagating the initial state.
-        :return: original trajectory (a set of points with positions and velocities in given moments)
+        :return: original trajectory (a set of points with
+        positions and velocities in given moments)
         """
         solution = PropagatedElement(self.initial_state, self)
         time_vect = np.array(self.chosen_states['Time (TU)'])
@@ -136,8 +138,10 @@ class Swarm:
             opt_best_velocity=None):
         """
         Creates an initial population of swarm elements.
-        :param opt_if_two_stage_pso: optional: defines the way points are generated in the search space
-        :param opt_best_velocity: optional: defines if best found velocity so far should impact
+        :param opt_if_two_stage_pso: optional: defines the way
+        points are generated in the search space
+        :param opt_best_velocity: optional: defines if best
+        found velocity so far should impact
         the new set of initial particles
         """
         # pylint: disable=R0914
@@ -148,13 +152,13 @@ class Swarm:
         initial_random = []
 
         if not opt_if_two_stage_pso:
-            for idx in range(self.population_size):
+            for _ in range(self.population_size):
                 position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
                 velocity = [np.random.uniform(-vel_limits, vel_limits) for _ in range(3)]
                 random_vect = position + velocity
                 initial_random.append(self.model.initial_state + random_vect)
         else:
-            for idx in range(self.population_size):
+            for _ in range(self.population_size):
                 position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
                 velocity = [0, 0, 0]
                 random_vect = position + velocity
@@ -194,8 +198,7 @@ def final_plot(
         final_swarm,
         chosen_states,
         initial_state,
-        density=1,
-        periods=1):
+        settings):
     # pylint: disable=R0902, R0903, R0913, R0917
     """
     Creating a set of information necessary to plot the results.
@@ -203,10 +206,11 @@ def final_plot(
     :param final_swarm: final Swarm class instance
     :param chosen_states: states to be compared between orbits
     :param initial_state: the first point of the original orbit
-    :param density: the way plot will be generated
+    :param settings: the way plot will be generated
+    :settings.density:
     :> 0: default: only the measurement point
     :> 1: dense: seemingly-continuous orbits
-    :param periods: time span of the plot, multiple of one period
+    :settings.period: time span of the plot, multiple of one period
     :return: set of data used by plotting functions
     """
     series1 = []
@@ -224,22 +228,23 @@ def final_plot(
     original_trajectory = []
     propagated_trajectory = []
 
-    if density == 0:
+    if settings.density == 0:
         time_vect = np.array(chosen_states['Time (TU)'])
         time_span = time_vect[-1] + 0.01
         original_trajectory = data_load.convert_to_metric_units(
-            deepcopy(initial_swarm.original_trajectory))
+            deepcopy(initial_swarm.model.original_trajectory))
         propagated_trajectory = data_load.convert_to_metric_units(
             found_solution.propagate(time_vect, time_span).y[:3])
 
-    if density == 1:
+    if settings.density == 1:
         time_span = initial_swarm.model.period
         time_vect = np.linspace(0, time_span, 500)
         original_propagate = global_best_solution.propagate(time_vect, time_span)
         original_trajectory = data_load.convert_to_metric_units(original_propagate.y[:3])
-        time_vect = np.linspace(0, float(time_span * periods), int(500 * periods))
+        time_vect = np.linspace(0, float(
+            time_span * settings.periods), int(500 * settings.periods))
         propagated_trajectory = data_load.convert_to_metric_units(
-            found_solution.propagate(time_vect, time_span * periods).y[:3])
+            found_solution.propagate(time_vect, time_span * settings.periods).y[:3])
 
     return (original_trajectory, propagated_trajectory, initial_state[:3] * 389703,
             final_swarm.global_best_state[:3] * 389703, series1, series2)

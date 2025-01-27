@@ -2,7 +2,8 @@
 Class handling the fields/checkboxes/comboboxes that are entered or selected by the user.
 """
 from sources.data_structures import (MandatorySettingsPSO, MandatorySettingsABC,
-                                     OptionalSettingsPSO, OptionalSettingsABC)
+                                     OptionalSettingsPSO, OptionalSettingsABC,
+                                     PlotSettings, Validations)
 
 class UserInputs:
     """
@@ -20,6 +21,8 @@ class UserInputs:
         self.optional_pso2_1 = OptionalSettingsPSO()
         self.optional_pso2_2 = OptionalSettingsPSO()
         self.optional_abc = OptionalSettingsABC()
+        self.settings = PlotSettings()
+        self.validations = Validations()
         self.filepath = "../orbits/L2_7days.txt"
 
     def set_user_inputs_ui(self, ui):
@@ -33,6 +36,34 @@ class UserInputs:
         """
         return input_box.text()
 
+    def general_settings(self):
+        """
+        Combines the actions related to settings.
+        """
+        self.ui.multiplePeriods.setEnabled(False) #by default, this option is disabled
+        self.ui.onlyMeasurementsButton.clicked.connect(self.radiobutton_plot_type_clicked)
+        self.ui.densePlotButton.clicked.connect(self.radiobutton_plot_type_clicked)
+        self.ui.multiplePeriods.editingFinished.connect(lambda: setattr(
+            self.settings, 'periods', int(self.ui.multiplePeriods.text())))
+
+    def input_validation(self):
+        """Validates the user inputs. If it's not valid, it asks the user to try again."""
+        validation_input = self.sender()
+        try:
+            self.validations.dictionary[validation_input.objectName()]
+        except KeyError as key_error:
+            raise KeyError(f"GUI element {validation_input.objectName()} "
+                           f"not defined in validation dictionary") from key_error
+        validation_data = validation_input.text()
+        if validation_data.isdigit():
+            validation_data = int(validation_data)
+        else:
+            try:
+                validation_data = float(validation_data)
+            except ValueError:
+                pass
+        #TBA
+
     def pso_logic(self):
         """
         Combines the actions related to basic PSO implementation.
@@ -41,8 +72,9 @@ class UserInputs:
         self.ui.PSOstopInertia.setEnabled(False)
         self.ui.PSOinertiaComboBox.setEnabled(False)
         self.ui.PSOvelocityComboBox.setEnabled(False)
-        self.ui.PSOmaxIterations.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'max_iterations', int(self.ui.PSOmaxIterations.text())))
+        #self.ui.PSOmaxIterations.editingFinished.connect(lambda: setattr(
+        #    self.mandatory_pso, 'max_iterations', int(self.ui.PSOmaxIterations.text())))
+        self.ui.PSOmaxIterations.editingFinished.connect(self.input_validation)
         self.ui.PSOpopulationSize.editingFinished.connect(lambda: setattr(
             self.mandatory_pso, 'population_size', int(self.ui.PSOpopulationSize.text())))
         self.ui.PSOinertia.editingFinished.connect(lambda: setattr(
@@ -192,6 +224,15 @@ class UserInputs:
             self.combobox_wheel_method)
         self.ui.ABCinactiveCyclesCheckBox.toggled.connect(
             self.inactive_cycles_mod)
+
+    def radiobutton_plot_type_clicked(self):
+        if self.ui.onlyMeasurementsButton.isChecked():
+            self.settings.density = 0
+            self.ui.multiplePeriods.setText("1")
+            self.ui.multiplePeriods.setEnabled(False)
+        else:
+            self.ui.multiplePeriods.setEnabled(True)
+            self.settings.density = 1
 
     def combobox_pso_inertia_selected(self, index, method):
         """

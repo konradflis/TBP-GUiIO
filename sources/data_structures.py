@@ -94,6 +94,16 @@ class OptionalSettingsABC:
         self.orbit_filepath = orbit_filepath
 
 
+class PlotSettings:
+    """
+    Settings for plotting trajectories.
+    """
+    def __init__(self,
+                 density=0,
+                 periods=1):
+        self.density = density
+        self.periods = periods
+
 class Translations:
     """
     Class defining a dictionary of translations for widgets.
@@ -137,3 +147,58 @@ class Translations:
                 f"No translation for language={language}, "
                 f"widget_type={widget_type}, plot type={plot_type}"
             ) from not_found_error
+
+
+class ValidatedElement:
+    """
+    Class defining the properties of validated element - its expected type, min and max values.
+    """
+    def __init__(self,
+                 expected_type,
+                 min_value,
+                 max_value):
+        self.expected_type = expected_type
+        self.min_value = min_value
+        self.max_value = max_value
+
+
+class Validations:
+    """
+    Class defining a dictionary of validations for user inputs.
+    """
+    def __init__(self):
+        self.dictionary = {
+            "PSOmaxIterations": ValidatedElement(int, 1, 1000),
+            "PSOpopulationSize": ValidatedElement(int, 1, 1000),
+            "PSOnumberOfMeasurements": ValidatedElement(int, 1, 250),
+            "PSOinertia": ValidatedElement(float, 0, 2),
+            "PSOc1": ValidatedElement(float, 0, 4),
+            "PSOc2": ValidatedElement(float, 0, 4),
+            "PSOstopInertia": ValidatedElement(float, 0, 2),
+            "PSO2maxIterations1": ValidatedElement(int, 1, 1000),
+            "PSO2maxIterations2": ValidatedElement(int, 1, 1000),
+            "PSO2populationSize1": ValidatedElement(int, 1, 1000),
+            "PSO2populationSize2": ValidatedElement(int, 1, 1000),
+            "PSO2numberOfMeasurements1": ValidatedElement(int, 1, 250),
+            "PSO2numberOfMeasurements2": ValidatedElement(int, 1, 250),
+            "PSO2inertia1": ValidatedElement(float, 0, 2),
+            "PSO2inertia2": ValidatedElement(float, 0, 2),
+            "PSO2c11": ValidatedElement(float, 0, 4),
+            "PSO2c21": ValidatedElement(float, 0, 4),
+            "PSO2c12": ValidatedElement(float, 0, 4),
+            "PSO2c22": ValidatedElement(float, 0, 4),
+            "PSO2multistart2": ValidatedElement(int, 1, 25),
+            "PSO21stopInertia": ValidatedElement(float, 0, 2),
+            "PSO22stopInertia": ValidatedElement(float, 0, 2),
+            "ABCmaxIterations": ValidatedElement(int, 1, 1000),
+            "ABCpopulationSize": ValidatedElement(int, 1, 1000),
+            "ABCnumberOfMeasurements": ValidatedElement(int, 1, 250),
+            "ABCemployeePhaseNeighbours": ValidatedElement(int, 1, 20),
+            "ABConlookerPhaseNeighbours": ValidatedElement(int, 1, 20),
+            "ABCneighboursPosLimits": ValidatedElement(float, 1, 250),
+            "ABCneighboursVelLimits": ValidatedElement(float, 0, 0.1),
+            "ABCinactiveCyclesLimit": ValidatedElement(int, 1, 100),
+            "ABCneighbourhoodPercent": ValidatedElement(float, 0, 1),
+            "ABCdimProbability": ValidatedElement(float, 0, 1),
+            "ABCneighPercent": ValidatedElement(float, 0, 1)
+        }

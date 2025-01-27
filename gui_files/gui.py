@@ -2,7 +2,7 @@
 GUI implementation for PSO, PSO2 and ABC algorithms, using PyQt6.
 """
 import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication # pylint: disable=no-name-in-module
+from PyQt6.QtWidgets import QMainWindow, QApplication, QMenuBar # pylint: disable=no-name-in-module
 from PyQt6.QtCore import QCoreApplication, QTranslator #  pylint: disable=no-name-in-module
 import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
@@ -30,6 +30,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.set_visualisation_ui(self.ui)
 
         self.introduction_logic()
+        self.general_settings()
         self.pso_logic()
         self.pso2_logic()
         self.abc_logic()
@@ -40,6 +41,7 @@ class App(QMainWindow, UserInputs, Visualisation):
 
         self.ui.comboBoxLanguage.currentIndexChanged.connect(
             self.combobox_language_selected)
+
 
     def combobox_language_selected(self, index):
         """
@@ -91,7 +93,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.optional_pso
         )
 
-        self.plotting_charts("PSO")
+        self.plotting_charts("PSO", self.settings)
         self.ui.outputLabel.setVisible(False)
         self.show_results("PSO")
         self.refresh_widgets()
@@ -120,7 +122,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.mandatory_pso2_2,
             self.optional_pso2_2
         )
-        self.plotting_charts("PSO2")
+        self.plotting_charts("PSO2", self.settings)
         self.show_results("PSO2")
         self.refresh_widgets()
 
@@ -133,7 +135,7 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.optional_abc
         )
 
-        self.plotting_charts("ABC")
+        self.plotting_charts("ABC", self.settings)
         self.show_results("ABC")
         self.refresh_widgets()
 
