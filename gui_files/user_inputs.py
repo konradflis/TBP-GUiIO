@@ -36,6 +36,7 @@ class UserInputs:
         """
         return input_box.text()
 
+
     def general_settings(self):
         """
         Combines the actions related to settings.
@@ -46,24 +47,6 @@ class UserInputs:
         self.ui.multiplePeriods.editingFinished.connect(lambda: setattr(
             self.settings, 'periods', int(self.ui.multiplePeriods.text())))
 
-    def input_validation(self):
-        """Validates the user inputs. If it's not valid, it asks the user to try again."""
-        validation_input = self.sender()
-        try:
-            self.validations.dictionary[validation_input.objectName()]
-        except KeyError as key_error:
-            raise KeyError(f"GUI element {validation_input.objectName()} "
-                           f"not defined in validation dictionary") from key_error
-        validation_data = validation_input.text()
-        if validation_data.isdigit():
-            validation_data = int(validation_data)
-        else:
-            try:
-                validation_data = float(validation_data)
-            except ValueError:
-                pass
-        #TBA
-
     def pso_logic(self):
         """
         Combines the actions related to basic PSO implementation.
@@ -72,17 +55,14 @@ class UserInputs:
         self.ui.PSOstopInertia.setEnabled(False)
         self.ui.PSOinertiaComboBox.setEnabled(False)
         self.ui.PSOvelocityComboBox.setEnabled(False)
-        #self.ui.PSOmaxIterations.editingFinished.connect(lambda: setattr(
-        #    self.mandatory_pso, 'max_iterations', int(self.ui.PSOmaxIterations.text())))
-        self.ui.PSOmaxIterations.editingFinished.connect(self.input_validation)
+        self.ui.PSOmaxIterations.editingFinished.connect(lambda: setattr(
+            self.mandatory_pso, 'max_iterations', int(self.ui.PSOmaxIterations.text())))
         self.ui.PSOpopulationSize.editingFinished.connect(lambda: setattr(
             self.mandatory_pso, 'population_size', int(self.ui.PSOpopulationSize.text())))
         self.ui.PSOinertia.editingFinished.connect(lambda: setattr(
             self.mandatory_pso, 'inertia', float(self.ui.PSOinertia.text())))
-        self.ui.PSOc1.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso, 'c1', float(
-                    self.ui.PSOc1.text())))
+        self.ui.PSOc1.editingFinished.connect(lambda: setattr(
+            self.mandatory_pso, 'c1', float(self.ui.PSOc1.text())))
         self.ui.PSOc2.editingFinished.connect(
             lambda: setattr(
                 self.mandatory_pso, 'c2', float(

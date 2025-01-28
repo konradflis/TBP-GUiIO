@@ -2,8 +2,12 @@
 GUI implementation for PSO, PSO2 and ABC algorithms, using PyQt6.
 """
 import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication, QMenuBar # pylint: disable=no-name-in-module
-from PyQt6.QtCore import QCoreApplication, QTranslator #  pylint: disable=no-name-in-module
+
+from PyQt6.QtGui import QIntValidator, QDoubleValidator # pylint: disable=no-name-in-module
+from PyQt6.QtWidgets import (QMainWindow, QApplication,
+                             QLineEdit) # pylint: disable=no-name-in-module
+from PyQt6.QtCore import (QCoreApplication, QTranslator,
+                          QLocale) #  pylint: disable=no-name-in-module
 import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
 from gui_files.user_inputs import UserInputs
@@ -18,7 +22,7 @@ class App(QMainWindow, UserInputs, Visualisation):
     def __init__(self):
         super().__init__()
 
-        self.ui = Ui_MainWindow()  # Create an instance of the UI class
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.orbit_table = None
         self.canvas = None
@@ -29,6 +33,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.set_user_inputs_ui(self.ui)
         self.set_visualisation_ui(self.ui)
 
+        self.set_validations()
         self.introduction_logic()
         self.general_settings()
         self.pso_logic()
@@ -42,6 +47,22 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.ui.comboBoxLanguage.currentIndexChanged.connect(
             self.combobox_language_selected)
 
+    def set_validations(self):
+        """
+        Configures the validations used for user manual input fields.
+        """
+        for obj_name, limitation in self.validations.dictionary.items():
+            validated_field = self.findChild(QLineEdit, obj_name)
+            if limitation.expected_type is int:
+                int_validator = QIntValidator(limitation.min_value, limitation.max_value)
+                validated_field.setValidator(int_validator)
+            if limitation.expected_type is float:
+                double_validator = (QDoubleValidator(limitation.min_value,
+                                                     limitation.max_value, 2))
+                double_validator.setLocale(QLocale(QLocale.Language.English,
+                                                   QLocale.Country.UnitedStates))
+                validated_field.setValidator(double_validator)
+            print(validated_field.validator())
 
     def combobox_language_selected(self, index):
         """
@@ -54,14 +75,14 @@ class App(QMainWindow, UserInputs, Visualisation):
                 self.ui.retranslateUi(self)
                 self.setWindowTitle("Three-body problem - orbit visualisation")
                 self.language_version = "EN"
-                self.refresh_widgets()
 
         else: # default PL
             QCoreApplication.removeTranslator(self.translator)
             self.ui.retranslateUi(self)
             self.setWindowTitle("Problem trzech ciał - wizualizacja trajektorii")
             self.language_version = "PL"
-            self.refresh_widgets()
+
+        self.refresh_widgets()
 
 
     def introduction_logic(self):
