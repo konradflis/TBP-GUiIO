@@ -59,10 +59,13 @@ class App(QMainWindow, UserInputs, Visualisation):
             if limitation.expected_type is float:
                 double_validator = (QDoubleValidator(limitation.min_value,
                                                      limitation.max_value, 2))
+                double_validator.setNotation(QDoubleValidator.Notation.StandardNotation)
                 double_validator.setLocale(QLocale(QLocale.Language.English,
                                                    QLocale.Country.UnitedStates))
                 validated_field.setValidator(double_validator)
-            print(validated_field.validator())
+            
+            validated_field.editingFinished.connect(lambda: setattr(
+                self, limitation.mapped_attribute, validated_field.text()))
 
     def combobox_language_selected(self, index):
         """

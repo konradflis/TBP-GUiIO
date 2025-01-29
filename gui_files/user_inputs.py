@@ -51,27 +51,7 @@ class UserInputs:
         """
         Combines the actions related to basic PSO implementation.
         """
-        self.ui.outputLabel.setVisible(False)
-        self.ui.PSOstopInertia.setEnabled(False)
-        self.ui.PSOinertiaComboBox.setEnabled(False)
-        self.ui.PSOvelocityComboBox.setEnabled(False)
-        self.ui.PSOmaxIterations.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'max_iterations', int(self.ui.PSOmaxIterations.text())))
-        self.ui.PSOpopulationSize.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'population_size', int(self.ui.PSOpopulationSize.text())))
-        self.ui.PSOinertia.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'inertia', float(self.ui.PSOinertia.text())))
-        self.ui.PSOc1.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'c1', float(self.ui.PSOc1.text())))
-        self.ui.PSOc2.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso, 'c2', float(
-                    self.ui.PSOc2.text())))
-        self.ui.PSOnumberOfMeasurements.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso, 'number_of_measurements',
-            int(self.ui.PSOnumberOfMeasurements.text())))
-        self.ui.PSOstopInertia.editingFinished.connect(lambda: setattr(
-            self.optional_pso, 'stop_inertia', float(self.ui.PSOstopInertia.text())))
+
 
         self.ui.PSOinertiaComboBox.currentIndexChanged.connect(
             lambda index: self.combobox_pso_inertia_selected(index, "PSO"))
