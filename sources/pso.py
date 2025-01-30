@@ -290,9 +290,6 @@ def pso(
     if optional.best_velocity is None:
         optional.best_velocity = [0, 0, 0]
 
-    print(vars(mandatory))
-    print(vars(optional))
-
     model = ModelProperties(optional.orbit_filepath, mandatory.number_of_measurements)
 
     swarm = SwarmPSO(

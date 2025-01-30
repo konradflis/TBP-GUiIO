@@ -36,7 +36,6 @@ class UserInputs:
         """
         return input_box.text()
 
-
     def general_settings(self):
         """
         Combines the actions related to settings.
@@ -51,8 +50,6 @@ class UserInputs:
         """
         Combines the actions related to basic PSO implementation.
         """
-
-
         self.ui.PSOinertiaComboBox.currentIndexChanged.connect(
             lambda index: self.combobox_pso_inertia_selected(index, "PSO"))
         self.ui.PSOvelocityComboBox.currentIndexChanged.connect(
@@ -61,8 +58,6 @@ class UserInputs:
             lambda checked: self.checkbox_pso_inertia_selected(checked, "PSO"))
         self.ui.PSOvelocityCheckBox.stateChanged.connect(
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO"))
-
-
 
     def pso2_logic(self):
         """
@@ -74,52 +69,7 @@ class UserInputs:
         self.ui.PSO22inertiaComboBox.setEnabled(False)
         self.ui.PSO21velocityComboBox.setEnabled(False)
         self.ui.PSO22velocityComboBox.setEnabled(False)
-        self.ui.PSO2maxIterations1.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_1, 'max_iterations', int(self.ui.PSO2maxIterations1.text())))
-        self.ui.PSO2maxIterations2.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_2, 'max_iterations', int(self.ui.PSO2maxIterations2.text())))
-        self.ui.PSO2populationSize1.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_1, 'population_size', int(self.ui.PSO2populationSize1.text())))
-        self.ui.PSO2populationSize2.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_2, 'population_size', int(self.ui.PSO2populationSize2.text())))
-        self.ui.PSO2inertia1.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_1, 'inertia', float(self.ui.PSO2inertia1.text())))
-        self.ui.PSO2inertia2.editingFinished.connect(lambda: setattr(
-            self.mandatory_pso2_2, 'inertia', float(self.ui.PSO2inertia2.text())))
-        self.ui.PSO2c11.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_1, 'c1', float(
-                    self.ui.PSO2c11.text())))
-        self.ui.PSO2c21.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_1, 'c2', float(
-                    self.ui.PSO2c21.text())))
-        self.ui.PSO2c12.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_2, 'c1', float(
-                    self.ui.PSO2c12.text())))
-        self.ui.PSO2c22.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_2, 'c2', float(
-                    self.ui.PSO2c22.text())))
-        self.ui.PSO2numberOfMeasurements1.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_1, 'number_of_measurements', int(
-                    self.ui.PSO2numberOfMeasurements1.text())))
-        self.ui.PSO2numberOfMeasurements2.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_pso2_2, 'number_of_measurements', int(
-                    self.ui.PSO2numberOfMeasurements2.text())))
-        self.ui.PSO2multistart2.editingFinished.connect(
-            lambda: setattr(
-                self.optional_pso2_2, 'number_of_multistarts', int(
-                    self.ui.PSO2multistart2.text())))
-        self.ui.PSO2multistartCheckBox2.toggled.connect(self.multistart_setter)
 
-        self.ui.PSO21stopInertia.editingFinished.connect(lambda: setattr(
-            self.optional_pso2_1, 'stop_inertia', float(self.ui.PSO21stopInertia.text())))
-        self.ui.PSO22stopInertia.editingFinished.connect(lambda: setattr(
-            self.optional_pso2_2, 'stop_inertia', float(self.ui.PSO22stopInertia.text())))
         self.ui.PSO21inertiaComboBox.currentIndexChanged.connect(
             lambda index: self.combobox_pso_inertia_selected(index, "PSO21"))
         self.ui.PSO22inertiaComboBox.currentIndexChanged.connect(
@@ -147,35 +97,6 @@ class UserInputs:
         # ACTIONS 3 - ABC
         self.ui.ABCneighPercent.setEnabled(False)
         self.ui.ABCdimProbability.setEnabled(False)
-        self.ui.ABCmaxIterations.editingFinished.connect(lambda: setattr(
-            self.mandatory_abc, 'max_iterations', int(self.ui.ABCmaxIterations.text())))
-        self.ui.ABCpopulationSize.editingFinished.connect(lambda: setattr(
-            self.mandatory_abc, 'population_size', int(self.ui.ABCpopulationSize.text())))
-        self.ui.ABCnumberOfMeasurements.editingFinished.connect(lambda: setattr(
-            self.mandatory_abc, 'number_of_measurements',
-            int(self.ui.ABCnumberOfMeasurements.text())))
-        self.ui.ABCneighboursFirst.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_abc, 'employee_phase_neighbours', int(
-                    self.ui.ABCneighboursFirst.text())))
-        self.ui.ABCneighboursSecond.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_abc, 'onlooker_phase_neighbours', int(
-                    self.ui.ABCneighboursSecond.text())))
-        self.ui.ABCplaceLimits.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_abc, 'neighbours_pos_limits', float(
-                    self.ui.ABCplaceLimits.text())))
-        self.ui.ABCvelocityLimit.editingFinished.connect(
-            lambda: setattr(
-                self.mandatory_abc, 'neighbours_vel_limits', float(
-                    self.ui.ABCvelocityLimit.text())))
-        self.ui.ABCinactiveCycles.editingFinished.connect(lambda: setattr(
-            self.mandatory_abc, 'inactive_cycles_limit', int(self.ui.ABCinactiveCycles.text())))
-        self.ui.ABCneighPercent.editingFinished.connect(lambda: setattr(
-            self.optional_abc, 'neigh_percent', float(self.ui.ABCneighPercent.text())))
-        self.ui.ABCdimProbability.editingFinished.connect(lambda: setattr(
-            self.optional_abc, 'dim_probability', float(self.ui.ABCdimProbability.text())))
         self.ui.ABCneighbourhoodTypeComboBox.currentIndexChanged.connect(
             self.combobox_generating_method)
         self.ui.ABCneighbourhoodDimComboBox.currentIndexChanged.connect(

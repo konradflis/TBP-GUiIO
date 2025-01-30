@@ -1,13 +1,14 @@
+# pylint: disable=no-name-in-module
 """
 GUI implementation for PSO, PSO2 and ABC algorithms, using PyQt6.
 """
 import sys
 
-from PyQt6.QtGui import QIntValidator, QDoubleValidator # pylint: disable=no-name-in-module
+from PyQt6.QtGui import QIntValidator, QDoubleValidator
 from PyQt6.QtWidgets import (QMainWindow, QApplication,
-                             QLineEdit) # pylint: disable=no-name-in-module
+                             QLineEdit)
 from PyQt6.QtCore import (QCoreApplication, QTranslator,
-                          QLocale) #  pylint: disable=no-name-in-module
+                          QLocale, QTimer)
 import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
 from gui_files.user_inputs import UserInputs
@@ -50,22 +51,72 @@ class App(QMainWindow, UserInputs, Visualisation):
     def set_validations(self):
         """
         Configures the validations used for user manual input fields.
+        PyQt cannot assess correctly if number is bigger than the set limit (for instance,
+        it lets user insert 99 when the limit is 50). This method should block it.
         """
         for obj_name, limitation in self.validations.dictionary.items():
             validated_field = self.findChild(QLineEdit, obj_name)
+            parent_object_name, child_name = limitation.mapped_attribute.rsplit(".", 1)
+            validated_field.setPlaceholderText(str(getattr(getattr(self, parent_object_name),
+                                                       child_name, limitation.min_value)))
             if limitation.expected_type is int:
-                int_validator = QIntValidator(limitation.min_value, limitation.max_value)
+                int_validator = QIntValidator()
                 validated_field.setValidator(int_validator)
+
+            #Validation limits will be overridden in self.additional_validation()
             if limitation.expected_type is float:
-                double_validator = (QDoubleValidator(limitation.min_value,
-                                                     limitation.max_value, 2))
+                double_validator = QDoubleValidator(bottom=0, top=999, decimals=4)
                 double_validator.setNotation(QDoubleValidator.Notation.StandardNotation)
                 double_validator.setLocale(QLocale(QLocale.Language.English,
                                                    QLocale.Country.UnitedStates))
                 validated_field.setValidator(double_validator)
-            
-            validated_field.editingFinished.connect(lambda: setattr(
-                self, limitation.mapped_attribute, validated_field.text()))
+
+            #Connections: created once, in a loop. Lambda function passes all necessary information.
+            validated_field.editingFinished.connect(lambda field=validated_field,
+                                                           obj_name=parent_object_name,
+                                                           attr=child_name,
+                                                           limits=limitation:
+                                                    self.additional_validation(field, obj_name, attr, limits))
+
+    def additional_validation(self,
+                              validated_field,
+                              parent_object_name,
+                              child_name,
+                              limitation):
+        """
+        PyQt cannot assess correctly if number is bigger than the set limit (for instance,
+        it lets user insert 99 when the limit is 50). This method should block it.
+        :param validated_field: the user input field
+        :param parent_object_name: the group name of a given parameter (e.g. "mandatory_pso")
+        :param child_name: the parameter name (e.g. "max_iterations")
+        :param limitation: ValidatedElement() object containing limits for each field
+        """
+        value = limitation.expected_type(validated_field.text())
+        #If within limits, set the value and make the field background green
+        if limitation.min_value <= value <= limitation.max_value:
+            setattr(getattr(self, parent_object_name), child_name, value)
+            validated_field.setStyleSheet("")
+            validated_field.setStyleSheet("background-color: #81a17a; "
+                                          "color: black;")
+            QTimer.singleShot(500, lambda: validated_field.setStyleSheet(""))
+        #If exceeds limits, print an error message and make the field background red.
+        else:
+            self.show_error(f"Invalid input: value must be of {limitation.expected_type} type "
+                            f"between {limitation.min_value} and {limitation.max_value}.")
+            validated_field.clear()
+            previous_value = getattr(getattr(self, parent_object_name), child_name, limitation.min_value)
+            validated_field.setText(str(previous_value))
+            validated_field.setFocus()
+            validated_field.setStyleSheet("background-color: #80464e; "
+                                          "color: black;")
+            QTimer.singleShot(500, lambda: validated_field.setStyleSheet(""))
+
+    def show_error(self, message):
+        """
+        Prints an error message in the status bar.
+        :param message: error message to be displayed
+        """
+        self.statusBar().showMessage(message, 5000)
 
     def combobox_language_selected(self, index):
         """
@@ -106,7 +157,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         """
         Starts the PSO algorithm as a response to clicking the button.
         """
-        self.ui.outputLabel.setVisible(True)
+
         if not self.ui.PSOinertiaCheckBox.isChecked():
             self.optional_pso.inertia_setter = 0
         if not self.ui.PSOvelocityCheckBox.isChecked():

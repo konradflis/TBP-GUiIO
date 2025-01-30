@@ -21,7 +21,8 @@ class SwarmABC(Swarm):
         Generates a new population of Food class objects, based on the initial points
         that are passed as an argument.
         """
-        initial_random = super().generate_initial_population(opt_if_two_stage_pso, opt_best_velocity)
+        initial_random = super().generate_initial_population(opt_if_two_stage_pso,
+                                                             opt_best_velocity)
         for idx in range(self.population_size):
             initial_conditions = initial_random[idx]
             food_object = Food(initial_conditions, self, self.model)
