@@ -16,6 +16,7 @@ class ModelProperties:
     number of measurements of orbit, its initial state and original trajectory, period etc.
     Model equations are defined here as well.
     """
+    # pylint: disable=R0902, R0903, R0913, R0917
     def __init__(self,
                  filepath,
                  number_of_measurements):

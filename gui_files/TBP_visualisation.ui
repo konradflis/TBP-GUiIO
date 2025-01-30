@@ -27,7 +27,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="usesScrollButtons">
        <bool>true</bool>
@@ -706,19 +706,6 @@ p, li { white-space: pre-wrap; }
           <layout class="QGridLayout" name="gridErrorPSO"/>
          </widget>
         </widget>
-       </widget>
-       <widget class="QLabel" name="outputLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>180</y>
-          <width>111</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Trwają obliczenia...</string>
-        </property>
        </widget>
        <widget class="QTableWidget" name="PSOresultTable">
         <property name="geometry">

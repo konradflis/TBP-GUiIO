@@ -12,6 +12,7 @@ class Particle(PropagatedElement):
     """
     Class defining a particle - the fundamental concept of Particle Swarm Optimization.
     """
+    # pylint: disable=R0902, R0903, R0913, R0917
     def __init__(self, state, swarm, model):
         super().__init__(state, model)
         self.swarm = swarm

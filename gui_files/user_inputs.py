@@ -107,6 +107,9 @@ class UserInputs:
             self.inactive_cycles_mod)
 
     def radiobutton_plot_type_clicked(self):
+        """
+        Controls the radiobutton behaviour when choosing plot properties.
+        """
         if self.ui.onlyMeasurementsButton.isChecked():
             self.settings.density = 0
             self.ui.multiplePeriods.setText("1")

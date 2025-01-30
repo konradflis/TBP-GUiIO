@@ -76,7 +76,10 @@ class App(QMainWindow, UserInputs, Visualisation):
                                                            obj_name=parent_object_name,
                                                            attr=child_name,
                                                            limits=limitation:
-                                                    self.additional_validation(field, obj_name, attr, limits))
+                                                           self.additional_validation(field,
+                                                                                      obj_name,
+                                                                                      attr,
+                                                                                      limits))
 
     def additional_validation(self,
                               validated_field,
@@ -104,7 +107,8 @@ class App(QMainWindow, UserInputs, Visualisation):
             self.show_error(f"Invalid input: value must be of {limitation.expected_type} type "
                             f"between {limitation.min_value} and {limitation.max_value}.")
             validated_field.clear()
-            previous_value = getattr(getattr(self, parent_object_name), child_name, limitation.min_value)
+            previous_value = getattr(getattr(self, parent_object_name),
+                                     child_name, limitation.min_value)
             validated_field.setText(str(previous_value))
             validated_field.setFocus()
             validated_field.setStyleSheet("background-color: #80464e; "
@@ -169,7 +173,6 @@ class App(QMainWindow, UserInputs, Visualisation):
         )
 
         self.plotting_charts("PSO", self.settings)
-        self.ui.outputLabel.setVisible(False)
         self.show_results("PSO")
         self.refresh_widgets()
 
