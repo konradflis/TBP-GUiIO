@@ -165,6 +165,122 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="Settings">
+       <attribute name="title">
+        <string>Ustawienia</string>
+       </attribute>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>301</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Trajektorie</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_30">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>301</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Wybierz sposób generowania trajektorii</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="onlyMeasurementsButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>60</y>
+          <width>301</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Tylko w punktach pomiarowych</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="densePlotButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>301</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>W zagęszczeniu (między punktami pomiarowymi)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_32">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>110</y>
+          <width>401</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Określ czas propagacji orbity (wielokrotność okresu orbity odniesienia)</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="multiplePeriods">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>130</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_33">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>130</y>
+          <width>151</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>okr. orbity odniesienia</string>
+        </property>
+       </widget>
+      </widget>
       <widget class="QWidget" name="PSO1">
        <attribute name="title">
         <string>Algorytm PSO</string>
@@ -590,19 +706,6 @@ p, li { white-space: pre-wrap; }
           <layout class="QGridLayout" name="gridErrorPSO"/>
          </widget>
         </widget>
-       </widget>
-       <widget class="QLabel" name="outputLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>180</y>
-          <width>111</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Trwają obliczenia...</string>
-        </property>
        </widget>
        <widget class="QTableWidget" name="PSOresultTable">
         <property name="geometry">
@@ -2036,6 +2139,16 @@ p, li { white-space: pre-wrap; }
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="language_PL">
+   <property name="text">
+    <string>PL</string>
+   </property>
+  </action>
+  <action name="language_EN">
+   <property name="text">
+    <string>EN</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

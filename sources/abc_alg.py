@@ -4,8 +4,7 @@ Artificial Bee Colony Algorithm implementation
 from copy import deepcopy
 import random
 import numpy as np
-from sources.data_load import transfer_raw_data_to_trajectory
-from sources.common_elements import PropagatedElement, Swarm, solution_propagation
+from sources.common_elements import PropagatedElement, ModelProperties, Swarm
 from sources.data_structures import MandatorySettingsABC, OptionalSettingsABC
 
 
@@ -15,16 +14,18 @@ class SwarmABC(Swarm):
     Defines its basic characteristics.
     """
 
-    def generate_initial_population(self, initial_random):
+    def generate_initial_population(self,
+                                    opt_if_two_stage_pso=0,
+                                    opt_best_velocity=None):
         """
-        Generates a new population of Bee class objects, based on the initial points
+        Generates a new population of Food class objects, based on the initial points
         that are passed as an argument.
-        :param initial_random: list of 6-dimensional points representing each particle's
-        initial position and velocity
         """
+        initial_random = super().generate_initial_population(opt_if_two_stage_pso,
+                                                             opt_best_velocity)
         for idx in range(self.population_size):
             initial_conditions = initial_random[idx]
-            food_object = Food(initial_conditions, self)
+            food_object = Food(initial_conditions, self, self.model)
             self.elements.append(food_object)
 
 
@@ -33,8 +34,9 @@ class Food(PropagatedElement):
     Defines a food source (the fundamental concept of ABC algorithm) and all its properties.
     """
 
-    def __init__(self, state, swarm):
-        super().__init__(swarm, state)
+    def __init__(self, state, swarm, model):
+        super().__init__(state, model)
+        self.swarm = swarm
         self.probability = 0
         self.neighbours = []
         self.active_flag = False
@@ -71,7 +73,7 @@ class Food(PropagatedElement):
                 for dim in range(3, 6):
                     new_state[dim] = self.state[dim] + \
                                      random.uniform(-1 * vel_limits, vel_limits)
-                new_food_source = Food(new_state, self.swarm)
+                new_food_source = Food(new_state, self.swarm, self.model)
                 new_food_source.calculate_cost()
                 self.neighbours.append(new_food_source)
 
@@ -88,7 +90,7 @@ class Food(PropagatedElement):
                         new_state[dim] += random.uniform(-1 *
                                                          vel_limits, vel_limits)
 
-                new_food_source = Food(new_state, self.swarm)
+                new_food_source = Food(new_state, self.swarm, self.model)
                 new_food_source.calculate_cost()
                 self.neighbours.append(new_food_source)
 
@@ -160,7 +162,7 @@ class Food(PropagatedElement):
                                 + [random_vel_factor[i] * self.swarm.global_best_state[i + 3]
                                    for i in range(3)])
 
-        new_source = Food(new_state, self.swarm)
+        new_source = Food(new_state, self.swarm, self.model)
         new_source.calculate_cost()
         self.update(new_source)
 
@@ -196,21 +198,14 @@ def abc_alg(
     if optional is None:
         optional = OptionalSettingsABC()
 
-    file_path = optional.orbit_filepath
-
-    _, _, initial_state, initial_random, chosen_states = (
-        transfer_raw_data_to_trajectory(
-            file_path, mandatory.population_size, mandatory.number_of_measurements))
+    model = ModelProperties(optional.orbit_filepath, mandatory.number_of_measurements)
 
     swarm = SwarmABC(
         mandatory.population_size,
-        mandatory.number_of_measurements,
         mandatory.max_iterations,
-        chosen_states,
-        initial_state)
-    swarm.generate_initial_population(initial_random)
+        model)
 
-    solution_propagation(initial_state, swarm, chosen_states)
+    swarm.generate_initial_population()
 
     for source in swarm.elements:
         source.calculate_cost()
@@ -221,7 +216,7 @@ def abc_alg(
         print("iter. no. ", it)
         employee_phase(mandatory, optional, swarm)
         onlooker_phase(mandatory, optional, swarm)
-        scout_phase(mandatory, optional, swarm, initial_state, it)
+        scout_phase(mandatory, optional, swarm, model.initial_state, it)
         swarm.update_global_best()
 
         print('global best score: ', swarm.global_best_score)
@@ -231,8 +226,8 @@ def abc_alg(
     return [
         initial_swarm,
         final_swarm,
-        chosen_states,
-        initial_state,
+        model.chosen_states,
+        model.initial_state,
         mandatory.max_iterations,
         best_scores_vector]
 

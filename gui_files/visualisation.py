@@ -96,13 +96,14 @@ class Visualisation:
         for col in range(self.ui.orbit_table.columnCount()):
             self.ui.orbit_table.setColumnWidth(col, uniform_column_width)
 
-    def plotting_charts(self, method):
+    def plotting_charts(self, method, settings):
         """
         Creates the set of plots for each algorithm.
+        :param settings: general trajectory plot settings like density and number of periods.
         :param method: value specific for each algorithm (PSO/PSO2/ABC)
         :return: None
         """
-        params = common_elements.final_plot(*self._plot_properties_list[:4])
+        params = common_elements.final_plot(*self._plot_properties_list[:4], settings)
 
         self.results = plot_functions.present_results(
             self._plot_properties_list[3],

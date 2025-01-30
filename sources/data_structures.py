@@ -94,6 +94,16 @@ class OptionalSettingsABC:
         self.orbit_filepath = orbit_filepath
 
 
+class PlotSettings:
+    """
+    Settings for plotting trajectories.
+    """
+    def __init__(self,
+                 density=0,
+                 periods=1):
+        self.density = density
+        self.periods = periods
+
 class Translations:
     """
     Class defining a dictionary of translations for widgets.
@@ -137,3 +147,93 @@ class Translations:
                 f"No translation for language={language}, "
                 f"widget_type={widget_type}, plot type={plot_type}"
             ) from not_found_error
+
+
+class ValidatedElement:
+    """
+    Class defining the properties of validated element - its expected type, min and max values.
+    """
+    def __init__(self,
+                 expected_type,
+                 min_value,
+                 max_value,
+                 mapped_attribute):
+        self.expected_type = expected_type
+        self.min_value = min_value
+        self.max_value = max_value
+        self.mapped_attribute = mapped_attribute
+
+
+class Validations:
+    """
+    Class defining a dictionary of validations for user inputs.
+    """
+    def __init__(self):
+        self.dictionary = {
+            "PSOmaxIterations": ValidatedElement(int, 1, 999,
+                                                 "mandatory_pso.max_iterations"),
+            "PSOpopulationSize": ValidatedElement(int, 1, 999,
+                                                  "mandatory_pso.population_size"),
+            "PSOnumberOfMeasurements": ValidatedElement(int, 1, 250,
+                                                        "mandatory_pso.number_of_measurements"),
+            "PSOinertia": ValidatedElement(float, 0, 2,
+                                           "mandatory_pso.inertia"),
+            "PSOc1": ValidatedElement(float, 0, 4,
+                                      "mandatory_pso.c1"),
+            "PSOc2": ValidatedElement(float, 0, 4,
+                                      "mandatory_pso.c2"),
+            "PSOstopInertia": ValidatedElement(float, 0, 2,
+                                               "optional_pso.stop_inertia"),
+            "PSO2maxIterations1": ValidatedElement(int, 1, 999,
+                                                   "mandatory_pso2_1.max_iterations"),
+            "PSO2maxIterations2": ValidatedElement(int, 1, 999,
+                                                   "mandatory_pso2_2.max_iterations"),
+            "PSO2populationSize1": ValidatedElement(int, 1, 999,
+                                                    "mandatory_pso2_1.population_size"),
+            "PSO2populationSize2": ValidatedElement(int, 1, 999,
+                                                    "mandatory_pso2_2.population_size"),
+            "PSO2numberOfMeasurements1": ValidatedElement(int, 1, 250,
+                                                    "mandatory_pso2_1.number_of_measurements"),
+            "PSO2numberOfMeasurements2": ValidatedElement(int, 1, 250,
+                                                    "mandatory_pso2_2.number_of_measurements"),
+            "PSO2inertia1": ValidatedElement(float, 0, 2,
+                                             "mandatory_pso2_1.inertia"),
+            "PSO2inertia2": ValidatedElement(float, 0, 2,
+                                             "mandatory_pso2_2.inertia"),
+            "PSO2c11": ValidatedElement(float, 0, 4,
+                                        "mandatory_pso2_1.c1"),
+            "PSO2c21": ValidatedElement(float, 0, 4,
+                                        "mandatory_pso2_1.c2"),
+            "PSO2c12": ValidatedElement(float, 0, 4,
+                                        "mandatory_pso2_2.c1"),
+            "PSO2c22": ValidatedElement(float, 0, 4,
+                                        "mandatory_pso2_2.c2"),
+            "PSO2multistart2": ValidatedElement(int, 1, 25,
+                                                "optional_pso2_2.number_of_multistarts"),
+            "PSO21stopInertia": ValidatedElement(float, 0, 2,
+                                                 "optional_pso2_1.stop_inertia"),
+            "PSO22stopInertia": ValidatedElement(float, 0, 2,
+                                                 "optional_pso2_2.stop_inertia"),
+            "ABCmaxIterations": ValidatedElement(int, 1, 999,
+                                                 "mandatory_abc.max_iterations"),
+            "ABCpopulationSize": ValidatedElement(int, 1, 999,
+                                                  "mandatory_abc.population_size"),
+            "ABCnumberOfMeasurements": ValidatedElement(int, 1, 250,
+                                                        "mandatory_abc.number_of_measurements"),
+            "ABCneighboursFirst": ValidatedElement(int, 1, 20,
+                                                    "mandatory_abc.employee_phase_neighbours"),
+            "ABCneighboursSecond": ValidatedElement(int, 1, 20,
+                                                    "mandatory_abc.onlooker_phase_neighbours"),
+            "ABCplaceLimits": ValidatedElement(float, 1, 250,
+                                                       "mandatory_abc.neighbours_pos_limits"),
+            "ABCvelocityLimit": ValidatedElement(float, 0, 0.1,
+                                                       "mandatory_abc.neighbours_vel_limits"),
+            "ABCinactiveCycles": ValidatedElement(int, 1, 99,
+                                                       "mandatory_abc.inactive_cycles_limit"),
+            "ABCdimProbability": ValidatedElement(float, 0, 1,
+                                                  "optional_abc.dim_probability"),
+            "ABCneighPercent": ValidatedElement(float, 0, 1,
+                                                "optional_abc.neigh_percent"),
+            "multiplePeriods": ValidatedElement(int, 0, 99,
+                                                "optional_abc.multiple_periods")
+        }
