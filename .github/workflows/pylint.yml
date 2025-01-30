@@ -3,10 +3,10 @@ name: Pylint
 on:
   push:
     branches:
-      - app_adjustments
+      - main
   pull_request:
     branches:
-      - app_adjustments
+      - main
 
 jobs:
   build:
