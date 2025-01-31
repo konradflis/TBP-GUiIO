@@ -1,3 +1,7 @@
+"""
+This module provides with unit-tests related to PSO and ABC algorithms.
+"""
+
 import pytest
 import numpy as np
 from sources import pso, abc_alg
@@ -19,7 +23,7 @@ def test_can_algorithm_be_run(algorithm, mandatory_settings, optional_settings):
     :param mandatory_settings: mandatory set of information
     :param optional_settings: optional set of information
     """
-    result = algorithm(mandatory_settings)
+    result = algorithm(mandatory_settings, optional_settings)
     assert result is not None
 
 
@@ -36,9 +40,9 @@ def test_do_algorithms_return_proper_output(algorithm, mandatory_settings, optio
     :param mandatory_settings: mandatory set of information
     :param optional_settings: optional set of information
     """
-    result = algorithm(mandatory_settings)
-    assert type(result[0]) is not None #initial swarm is defined
-    assert type(result[1]) is not None #final swarm is defined
+    result = algorithm(mandatory_settings, optional_settings)
+    assert result[0] is not None #initial swarm is defined
+    assert result[1] is not None #final swarm is defined
     #Number of chosen states is equal to number of measurements:
     assert len(result[2]) == mandatory_settings.number_of_measurements
     #Initial state is a 6-dim vector:
@@ -83,15 +87,13 @@ def test_propagated_element_initialization(filepath, number_of_measurements, sta
 
 
 @pytest.mark.parametrize("filepath, number_of_measurements, "
-                         "population_size, max_iterations,"
                          "opt_if_two_stage_pso, opt_best_velocity,"
                          "opt_multistart", [
-    ("../orbits/L2_7days.txt", 20, 50, 2, 0, [0, 0, 0], 0),
-    ("../orbits/L2_7days.txt", 20, 50, 2, 0, [0, 0, 0], 1),
-    ("../orbits/ID_16.txt", 15, 50, 2, 1, [1, 10 , 1], 0)
+    ("../orbits/L2_7days.txt", 20, 0, [0, 0, 0], 0),
+    ("../orbits/L2_7days.txt", 20, 0, [0, 0, 0], 1),
+    ("../orbits/ID_16.txt", 15, 1, [1, 10 , 1], 0)
 ])
 def test_swarm_initialization(filepath, number_of_measurements,
-                              population_size, max_iterations,
                               opt_if_two_stage_pso, opt_best_velocity,
                               opt_multistart):
     """
@@ -100,12 +102,12 @@ def test_swarm_initialization(filepath, number_of_measurements,
     within a specified range of [-0.1, +0.1].
     :param filepath: the filepath with the orbit data.
     :param number_of_measurements: number of points in the trajectory to be compared.
-    :param population_size: number of particles in the swarm.
-    :param max_iterations: maximum number of iterations.
     :param opt_if_two_stage_pso: used by two-stage PSO to initialize the second stage with
     the best particle's velocity from the first stage.
     :param opt_best_velocity: the best velocity from the first stage.
     """
+    population_size = 50
+    max_iterations = 2
     model = ModelProperties(filepath, number_of_measurements)
     swarm = Swarm(population_size, max_iterations, model)
     initial_random = swarm.generate_initial_population(opt_if_two_stage_pso, opt_best_velocity)
@@ -173,4 +175,4 @@ def test_generating_neighbours_abc(mandatory, optional):
     max_vel_diff = max(max(elem[3:]) for elem in diff_vector)
     assert max_pos_diff <= mandatory.neighbours_pos_limits / 389703
     assert max_vel_diff <= mandatory.neighbours_vel_limits / (389703/382981)
-    
+
