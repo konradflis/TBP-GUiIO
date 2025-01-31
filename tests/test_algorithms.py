@@ -175,4 +175,3 @@ def test_generating_neighbours_abc(mandatory, optional):
     max_vel_diff = max(max(elem[3:]) for elem in diff_vector)
     assert max_pos_diff <= mandatory.neighbours_pos_limits / 389703
     assert max_vel_diff <= mandatory.neighbours_vel_limits / (389703/382981)
-
