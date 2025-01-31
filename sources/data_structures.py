@@ -59,7 +59,7 @@ class OptionalSettingsPSO:
                  if_best_velocity=0,
                  best_velocity=None,
                  multistart=0,
-                 number_of_multistarts=20,
+                 number_of_multistarts=5,
                  orbit_filepath="../orbits/L2_7days.txt"
                  ):
         self.inertia_setter = inertia_setter

@@ -4,3 +4,7 @@ scipy
 pandas
 PyQt6
 matplotlib
+pytest
+pytest-qt
+pytest-cov
+pytest-mock
