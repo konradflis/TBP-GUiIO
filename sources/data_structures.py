@@ -3,6 +3,7 @@
 Classes defining data structures for mandatory and optional parameters,
 structures for translating dynamic widgets.
 """
+from pathlib import Path
 
 class MandatorySettingsPSO:
     """
@@ -60,7 +61,7 @@ class OptionalSettingsPSO:
                  best_velocity=None,
                  multistart=0,
                  number_of_multistarts=5,
-                 orbit_filepath="../orbits/L2_7days.txt"
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
         self.inertia_setter = inertia_setter
         self.stop_inertia = stop_inertia
@@ -83,7 +84,7 @@ class OptionalSettingsABC:
                  neighbourhood_type=0,
                  neigh_percent=0.02,
                  dim_probability=0.5,
-                 orbit_filepath="../orbits/L2_7days.txt"
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
         self.inactive_cycles_setter = inactive_cycles_setter
         self.probability_distribution_setter = probability_distribution_setter

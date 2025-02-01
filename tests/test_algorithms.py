@@ -4,6 +4,7 @@ This module provides with unit-tests related to PSO and ABC algorithms.
 
 import pytest
 import numpy as np
+from pathlib import Path
 from sources import pso, abc_alg
 from sources.common_elements import ModelProperties, PropagatedElement, Swarm
 from sources.data_structures import (MandatorySettingsPSO, OptionalSettingsPSO,
@@ -51,16 +52,17 @@ def test_do_algorithms_return_proper_output(algorithm, mandatory_settings, optio
     assert len(result[5]) == mandatory_settings.max_iterations
 
 
-@pytest.mark.parametrize("filepath, number_of_measurements", [
-    ("../orbits/L2_7days.txt", 20),
-    ("../orbits/ID_16.txt", 15)
+@pytest.mark.parametrize("filename, number_of_measurements", [
+    ("L2_7days.txt", 20),
+    ("ID_16.txt", 15)
 ])
-def test_model_initialization(filepath, number_of_measurements):
+def test_model_initialization(filename, number_of_measurements):
     """
     Checks if the model is initialized correctly.
-    :param filepath: the filepath with the orbit data.
+    :param filename: the filename with the orbit data.
     :param number_of_measurements: number of points in the trajectory to be compared.
     """
+    filepath = Path(__file__).resolve().parent.parent / "orbits" / filename
     model = ModelProperties(filepath, number_of_measurements)
     assert model.period > 0
     assert len(model.chosen_states) == number_of_measurements
@@ -69,43 +71,45 @@ def test_model_initialization(filepath, number_of_measurements):
     assert model.original_trajectory.shape[0] == 3
 
 
-@pytest.mark.parametrize("filepath, number_of_measurements, state", [
-    ("../orbits/L2_7days.txt", 20, 6 * [0]),
-    ("../orbits/ID_16.txt", 15, 6 * [0])
+@pytest.mark.parametrize("filename, number_of_measurements, state", [
+    ("L2_7days.txt", 20, 6 * [0]),
+    ("ID_16.txt", 15, 6 * [0])
 ])
-def test_propagated_element_initialization(filepath, number_of_measurements, state):
+def test_propagated_element_initialization(filename, number_of_measurements, state):
     """
     Checks if the propagated element is initialized correctly.
-    :param filepath: the filepath with the orbit data.
+    :param filename: the filename with the orbit data.
     :param number_of_measurements: number of points in the trajectory to be compared.
     :param state: element state (in 6-dim space).
     """
+    filepath = Path(__file__).resolve().parent.parent / "orbits" / filename
     model = ModelProperties(filepath, number_of_measurements)
     element = PropagatedElement(state, model)
     element.calculate_cost()
     assert 0 < element.score < 10000
 
 
-@pytest.mark.parametrize("filepath, number_of_measurements, "
+@pytest.mark.parametrize("filename, number_of_measurements, "
                          "opt_if_two_stage_pso, opt_best_velocity,"
                          "opt_multistart", [
-    ("../orbits/L2_7days.txt", 20, 0, [0, 0, 0], 0),
-    ("../orbits/L2_7days.txt", 20, 0, [0, 0, 0], 1),
-    ("../orbits/ID_16.txt", 15, 1, [1, 10 , 1], 0)
+    ("L2_7days.txt", 20, 0, [0, 0, 0], 0),
+    ("L2_7days.txt", 20, 0, [0, 0, 0], 1),
+    ("ID_16.txt", 15, 1, [1, 10 , 1], 0)
 ])
-def test_swarm_initialization(filepath, number_of_measurements,
+def test_swarm_initialization(filename, number_of_measurements,
                               opt_if_two_stage_pso, opt_best_velocity,
                               opt_multistart):
     """
     Checks if the swarm is initialized correctly.
     This test assumes that the mean velocity from 200 particles can be asserted
     within a specified range of [-0.1, +0.1].
-    :param filepath: the filepath with the orbit data.
+    :param filename: the filename with the orbit data.
     :param number_of_measurements: number of points in the trajectory to be compared.
     :param opt_if_two_stage_pso: used by two-stage PSO to initialize the second stage with
     the best particle's velocity from the first stage.
     :param opt_best_velocity: the best velocity from the first stage.
     """
+    filepath = Path(__file__).resolve().parent.parent / "orbits" / filename
     population_size = 50
     max_iterations = 2
     model = ModelProperties(filepath, number_of_measurements)
