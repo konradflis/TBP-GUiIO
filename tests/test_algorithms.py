@@ -149,10 +149,10 @@ def test_dynamic_parameters_pso(mandatory, optional):
 
 
 @pytest.mark.parametrize("mandatory, optional", [
-    (MandatorySettingsABC(), OptionalSettingsABC(neighbourhood_type=1)),
-    (MandatorySettingsABC(onlooker_phase_neighbours=6,
-                          neighbours_pos_limits=150,
-                          neighbours_vel_limits=0.01),
+    (MandatorySettingsABC(), OptionalSettingsABC()),
+    (MandatorySettingsABC(onlooker_phase_neighbours=4,
+                          neighbours_pos_limits=30,
+                          neighbours_vel_limits=0.03),
      OptionalSettingsABC(neighbourhood_type=1)),
 ])
 def test_generating_neighbours_abc(mandatory, optional):
