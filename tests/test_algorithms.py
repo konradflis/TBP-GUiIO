@@ -2,9 +2,9 @@
 This module provides with unit-tests related to PSO and ABC algorithms.
 """
 
+from pathlib import Path
 import pytest
 import numpy as np
-from pathlib import Path
 from sources import pso, abc_alg
 from sources.common_elements import ModelProperties, PropagatedElement, Swarm
 from sources.data_structures import (MandatorySettingsPSO, OptionalSettingsPSO,
