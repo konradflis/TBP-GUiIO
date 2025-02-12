@@ -81,7 +81,7 @@ class Food(PropagatedElement):
             accepted_dims = [dim for dim in range(
                 6) if random.random() < dim_probability]
             for _ in range(number_of_neighbours):
-                new_state = self.state
+                new_state = deepcopy(self.state)
                 for dim in accepted_dims:
                     if dim < 3:
                         new_state[dim] += random.uniform(-1 *
@@ -89,7 +89,6 @@ class Food(PropagatedElement):
                     elif dim >= 3:
                         new_state[dim] += random.uniform(-1 *
                                                          vel_limits, vel_limits)
-
                 new_food_source = Food(new_state, self.swarm, self.model)
                 new_food_source.calculate_cost()
                 self.neighbours.append(new_food_source)

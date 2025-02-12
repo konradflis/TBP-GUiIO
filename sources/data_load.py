@@ -11,12 +11,8 @@ def transfer_raw_data_to_trajectory(
     """
     Transfers the data downloaded from NASA database into formatted data vectors.
     :param file_path: text file's path containing original orbit's measurements (NASA database)
-    :param population_size: number of particles/sources (swarm's elements)
     :param number_of_measurements: number of time samples when the position
     is calculated and compared
-    :param opt_if_two_stage_pso: optional: defines the way points are generated in the search space
-    :param opt_best_velocity: optional: defines if best found velocity so far should impact
-    the new set of initial particles
     :return: set of information (time vector, selected points from the input trajectory file)
     necessary for further calculations
     """

@@ -93,7 +93,7 @@ class SwarmPSO(Swarm):
             opt_if_two_stage_pso=0,
             opt_best_velocity=None,
             opt_multistart=0,
-            opt_number_of_starts=20
+            opt_number_of_starts=5
     ):
         """
         Generates a new population of Particle class objects,
@@ -243,7 +243,7 @@ def multistart(
             print(swarm.global_best_score)
         scores = [
             particle.score for particle in swarm.elements]
-        #Creates a list in form of (index, score), sorts it and choses 1/n scores in each of n runs
+        #Creates a list in form of (index, score), sorts it and chooses 1/n scores in each of n runs
         indexed_scores = list(enumerate(scores))
         indexed_scores.sort(key=lambda x: x[1])
         scores_idx = [index for index, _ in indexed_scores[
