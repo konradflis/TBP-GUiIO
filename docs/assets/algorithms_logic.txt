@@ -1,0 +1,86 @@
+@startuml classes_CommonElements
+set namespaceSeparator none
+skinparam linetype ortho
+class "ModelProperties" as sources.common_elements.ModelProperties {
+  all_states : df
+  chosen_states : df
+  filepath : str
+  initial_state : ndarray
+  mu : float
+  number_of_measurements : int
+  original_trajectory : ndarray
+  period : float
+  diff_equation(t, parameters)
+  initial_solution_propagation()
+  refresh_model()
+}
+class "PropagatedElement" as sources.common_elements.PropagatedElement {
+  model : ModelProperties
+  score : float
+  state : ndarray
+  calculate_cost()
+  propagate(time_vect, time_span)
+}
+class "Swarm" as sources.common_elements.Swarm {
+  elements : list
+  global_best_score : float
+  global_best_state : list
+  max_iterations : int
+  model : ModelProperties
+  population_size : int
+  convert_to_metric_units()
+  generate_initial_population(\n opt_if_two_stage_pso, \n opt_best_velocity)
+  update_global_best()
+}
+class "Particle" as sources.pso.Particle {
+  best_score : int
+  best_state : ndarray
+  c1 : float
+  c2 : float
+  inertia : float
+  state : ndarray
+  swarm : SwarmPSO
+  velocity : ndarray
+  check_if_best()
+  convert_to_metric_units()
+  update()
+}
+
+class "Food" as sources.abc_alg.Food {
+  active_flag : bool
+  inactive_cycles : int
+  neighbours : list
+  probability : int
+  score : float
+  state : ndarray
+  swarm : SwarmABC
+  choose_best_neighbour()
+  generate_neighbours(\n number_of_neighbours,\n limits, \n neighbourhood_type, \n dim_probability)
+  scout_new_source(\n initial_state, \n generating_method, \n vel_limits)
+  update(new_source)
+}
+
+
+class "SwarmABC" as sources.abc_alg.SwarmABC {
+  generate_initial_population(\n opt_if_two_stage_pso,\n   opt_best_velocity)
+}
+
+class "SwarmPSO" as sources.pso.SwarmPSO {
+  c1 : float
+  c2 : float
+  inertia : float
+  c_setter(it, opt_setter)
+  generate_initial_population(\n opt_if_two_stage_pso,\n opt_best_velocity,\n opt_multistart,\n opt_number_of_starts)
+  inertia_setter(\n it, \n opt_setter, \n opt_starting_inertia, \n opt_stop_inertia)
+}
+
+sources.common_elements.Swarm <|-- sources.pso.SwarmPSO : extends
+sources.common_elements.Swarm <|-- sources.abc_alg.SwarmABC :extends
+sources.common_elements.PropagatedElement <|-- sources.pso.Particle : extends
+sources.common_elements.PropagatedElement <|-- sources.abc_alg.Food : extends
+sources.common_elements.PropagatedElement -u-> sources.common_elements.ModelProperties : uses
+sources.common_elements.Swarm -u-> sources.common_elements.ModelProperties : uses
+sources.abc_alg.Food -l--> sources.abc_alg.SwarmABC : uses
+sources.pso.Particle -d-> sources.pso.SwarmPSO : uses
+sources.pso.SwarmPSO -[hidden]u-> sources.common_elements.Swarm
+@enduml

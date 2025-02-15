@@ -26,7 +26,6 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.orbit_table = None
-        self.canvas = None
         self.plot_properties_list = None
         self.translator = QTranslator()
         self.language_version = "PL"

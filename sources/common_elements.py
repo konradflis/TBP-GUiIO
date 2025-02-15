@@ -78,6 +78,7 @@ class PropagatedElement:
         self.model = model
         self.score = np.inf
 
+
     def propagate(self, time_vect, time_span):
         """
         Method propagating the initial conditions using the defined differential equations.

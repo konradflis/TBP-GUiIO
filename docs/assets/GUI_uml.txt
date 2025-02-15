@@ -1,0 +1,72 @@
+@startuml classes_GUI
+set namespaceSeparator none
+skinparam linetype ortho
+class "App" as gui_files.gui.App {
+  language_version : str
+  orbit_table : QTableWidget
+  plot_properties_list : list
+  translator : QTranslator
+  ui : UiMainWindow
+  additional_validation(\n validated_field, \n parent_object_name, \n child_name, \n limitation)
+  button_clicked_abc()
+  button_clicked_pso()
+  button_clicked_pso2()
+  combobox_language_selected(index)
+  introduction_logic()
+  set_validations()
+  show_error(message)
+}
+
+class "UserInputs" as gui_files.user_inputs.UserInputs {
+  filepath : str
+  mandatory_abc : MandatorySettingsABC
+  mandatory_pso : MandatorySettingsPSO
+  mandatory_pso2_1 : MandatorySettingsPSO
+  mandatory_pso2_2 : MandatorySettingsPSO
+  optional_abc : OptionalSettingsABC
+  optional_pso : OptionalSettingsPSO
+  optional_pso2_1 : OptionalSettingsPSO
+  optional_pso2_2 : OptionalSettingsPSO
+  settings : PlotSettings
+  ui : UiMainWindow
+  validations : Validations
+  abc_logic()
+  checkbox_pso_inertia_selected(checked, method)
+  checkbox_pso_n_selected(checked, method)
+  combobox_dimensions_method(index)
+  combobox_generating_method(index)
+  combobox_pso_inertia_selected(index, method)
+  combobox_pso_n_selected(index, method)
+  combobox_wheel_method(index)
+  general_settings()
+  get_text_value(input_box)
+  inactive_cycles_mod(checked)
+  multistart_setter(checked)
+  orbit_combobox_selected(index)
+  pso2_logic()
+  pso_logic()
+  radiobutton_plot_type_clicked()
+  set_user_inputs_ui(ui)
+}
+class "Visualisation" as gui_files.visualisation.Visualisation {
+  canvas : FigureCanvasQTAgg
+  _language_version : str
+  _plot_properties_list : list
+  results : ndarray
+  ui :  UiMainWindow
+  orbit_show_table()
+  plotting_charts(method, settings)
+  refresh_widgets()
+  set_visualisation_ui(ui)
+  show_results(method)
+}
+class "UiMainWindow" as gui_files.TBP_visualisations.UiMainWindow {
+ setupUi()
+ retranslateUi()
+}
+gui_files.gui.App --|> gui_files.TBP_visualisations.UiMainWindow : extends
+gui_files.visualisation.Visualisation --> gui_files.TBP_visualisations.UiMainWindow : uses
+gui_files.user_inputs.UserInputs --> gui_files.TBP_visualisations.UiMainWindow : uses
+gui_files.gui.App .u.> gui_files.visualisation.Visualisation : depends on
+gui_files.gui.App .u.> gui_files.user_inputs.UserInputs : depends on
+@enduml

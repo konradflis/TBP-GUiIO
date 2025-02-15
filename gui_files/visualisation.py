@@ -24,8 +24,7 @@ class Visualisation:
     """
     Class handling visualisation of the results.
     """
-    def __init__(self, app):
-        self.app = app
+    def __init__(self):
         self.ui = None
         self.results = None
         self.canvas = None

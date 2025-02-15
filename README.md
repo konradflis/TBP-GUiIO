@@ -46,6 +46,8 @@ The requirements are gathered below. You can find them in 'requirements.txt'.
 | pytest-qt           | 4.2.0     | Unit tests - PyQt elements                |
 
 ## Usage
+Let's explore this project structure and ways to use it!
+#### Structure
 This project is built using the following, simplified structure:
 ```
 Three-body-problem/
@@ -69,17 +71,42 @@ Three-body-problem/
 │── 📁 orbits/                         # Text files with raw NASA orbits - processed by sources/data_load.py
 │── 📁 LICENCES/                       # Licences for external sources used in this project
 │── 📄 Combinear.qss                   # .qss template with pre-prepared GUI style 
-│── 📄 requirements.txt                # .txt file with libraries required to run this project locally
+└── 📄 requirements.txt                # .txt file with libraries required to run this project locally
 ```
+#### Run me!
 To run the project locally, all the [required libraries](#requirements) should be installed. The file structure should not be modified without further verification of dependencies, as many
 imports are used in each directory. You can start GUI by running `gui.py`.
+#### Next steps
+When app starts, you will find 5 tabs you can interact with:
+- **Introduction**: instructions and tips, original orbit selection,
+- **Settings**: visualisation settings (to be extended),
+- **PSO algorithm**: parameters selection and results visualisation,
+- **Two-stage PSO algorithm**: parameters selection and results visualisation,
+- **ABC algorithm**: parameters selection and results visualisation.
 
+All algorithmic tabs share the same layout patterns:
+
+<img src="docs/assets/app_interface.jpg" alt="Two-stage PSO" width="50%">
+
+You can set your preferred parameters in the control panel on the left. If your choice exceeds the limits, you will notice an error message, and the
+field will turn red for a few seconds. The checkboxes neighbouring the parameters are used to activate the modifications (bottom-left) - additional parameters extending the basic functionalities. You will find more details in `docs/`.
+
+You can run the algorithm by clicking on 'Start'. Depending on your parameters, it can take a few moments to generate the results. The set of plots includes:
+- **Orbit**: comparison of original and propagated orbit,
+- **Positions**: initial and final swarms limited to the first three dimensions,
+- **Velocities**: initial and final swarms limited to the last three dimensions,
+- **Fitness**: objective function values in each iteration.
+
+You can compare the orbits using the score table. It contains the initial state of original and propagated orbit, the difference between them and final objective function value.
 
 ## License
-To be updated
+This project in developed under MIT License. You can find the full clause [here](LICENSES/LICENSE.txt).
 
-### Third-Party Licenses
+#### Third-Party Licenses
 The project includes code and data from third-party sources:
-- Combinear by DevSec Studio, licensed under MIT License. See [LICENCES/Combinear_license.txt](LICENCES/Combinear_license.txt) for details.
+- Combinear by DevSec Studio, licensed under MIT License. See [LICENSES/Combinear_license.txt](LICENSES/Combinear_license.txt) for details.
 - JPL Three-Body Periodic Orbit Catalog data. See [Three Body Periodic Orbits](https://ssd.jpl.nasa.gov/tools/periodic_orbits.html) for details.
+
+#### Credits
+This project was inspired by [this article](https://arxiv.org/abs/2207.13175).
 
