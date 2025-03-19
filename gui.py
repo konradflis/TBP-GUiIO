@@ -229,7 +229,7 @@ if __name__ == '__main__':
     plt.rc('legend', fontsize=7)
     plt.rc('figure', titlesize=7)
 
-    with open("../Combinear.qss", "r", encoding='utf-8') as file:
+    with open("./Combinear.qss", "r", encoding='utf-8') as file:
         stylesheet = file.read()
     app.setStyleSheet(stylesheet)
 

@@ -1,29 +1,25 @@
-[project]
+[tool.poetry]
 name = "tbp-guiio"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "konradflis1",email = "k.flis101@gmail.com"}
-]
+authors = ["KGrobelski <kgrobelski@student.agh.edu.pl>"]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "pylint (>=3.3.5,<4.0.0)",
-    "numpy (>=2.2.3,<3.0.0)",
-    "scipy (>=1.15.2,<2.0.0)",
-    "pandas (>=2.2.3,<3.0.0)",
-    "pyqt6 (>=6.8.1,<7.0.0)",
-    "matplotlib (>=3.10.1,<4.0.0)"
-]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyqt6 = "6.7.1"
+matplotlib = "3.9.2"
+numpy = "1.26.4"
+scipy = "1.13.1"
+pandas = "2.2.2"
+pytest = "7.4.4"
+pytest-cov = "6.0.0"
+pytest-mock = "3.14.0"
+pytest-qt = "4.2.0"
+pylint = "^3.3.5"
 
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-pytest-qt = "^4.4.0"
-pytest-cov = "^6.0.0"
-pytest-mock = "^3.14.0"
-
