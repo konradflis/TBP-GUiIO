@@ -25,9 +25,17 @@ jobs:
             libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
             libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 \
             x11-utils xvfb freeglut3-dev
-      - name: Install Dependencies
+      - name: Install Poetry
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Dodanie Poetry do PATH
+
+      - name: Configure Poetry to use in-project virtual environment
+        run: poetry config virtualenvs.in-project true
+
+      - name: Install dependencies
+        working-directory: TBP-GUIIO
+        run: poetry install --no-interaction --no-root
+        
       - name: Run Pytest
-        run: xvfb-run -a pytest
+        run: poetry run pytest
