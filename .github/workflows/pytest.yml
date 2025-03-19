@@ -34,7 +34,6 @@ jobs:
         run: poetry config virtualenvs.in-project true
 
       - name: Install dependencies
-        working-directory: TBP-GUIIO
         run: poetry install --no-interaction --no-root
         
       - name: Run Pytest
