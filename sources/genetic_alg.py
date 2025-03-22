@@ -23,9 +23,9 @@ class Individual(PropagatedElement):
 
     def mutate(self, mutation_rate: float=0.01, option: bool=False):
         if option:
-            self.genes = self._mutate_1(mutation_rate)
+            self.state = self._mutate_1(mutation_rate)
         else:
-            self.genes = self._mutate_2(mutation_rate)
+            self.state = self._mutate_2(mutation_rate)
         pass
 
 
