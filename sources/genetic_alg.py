@@ -1,16 +1,14 @@
 from dataclasses import dataclass, field
 import numpy as np
 import random
+from common_elements import PropagatedElement
 
 @dataclass
-class Individual:
-    genes: list = field(default_factory=list)
-    fitness: float = 0.0
-
+class Individual(PropagatedElement):
     def __post_init__(self):
-        if not self.genes:
-            self.genes = self.generate_random_genes()
-        self.fitness = self.evaluate_fitness()
+        if not self.state:
+            self.state = self.generate_random_genes()
+        self.score = self.calculate_cost()
 
     def generate_random_genes(self):
         lu_to_km_coeff = 389703
@@ -20,11 +18,7 @@ class Individual:
 
         position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
         velocity = [np.random.uniform(-vel_limits, vel_limits) for _ in range(3)]
-        self.genes = position + velocity
-
-
-    def evaluate_fitness(self):
-        pass
+        self.state = position + velocity
 
 
     def mutate(self, mutation_rate: float=0.01, option: bool=False):
@@ -59,6 +53,7 @@ class Population:
     def initialize_population(self, size: int = 100):
         for _ in range(size):
             self.individuals.append(Individual())
+        return self.individuals
 
     def evaluate_population(self):
         pass
