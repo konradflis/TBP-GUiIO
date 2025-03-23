@@ -1,16 +1,15 @@
 from dataclasses import dataclass, field
 import numpy as np
 import random
-from common_elements import PropagatedElement
+from common_elements import PropagatedElement, ModelProperties
+from constant import DATA_PATH_ORBIT_L2_7
 
-@dataclass
+
 class Individual(PropagatedElement):
-    def __post_init__(self):
-        """
-        Generate a random initial state if not provided and calculate its cost.
-        """
-        if not self.state:
-            self.state = self.generate_random_genes()
+    def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):
+        super().__init__(state, model)
+        if self.state is None:
+            self.generate_random_genes()
         self.score = self.calculate_cost()
 
     def generate_random_genes(self):
@@ -26,19 +25,16 @@ class Individual(PropagatedElement):
         velocity = [np.random.uniform(-vel_limits, vel_limits) for _ in range(3)]
         self.state = position + velocity
 
-
     def mutate(self, mutation_rate: float=0.01, option: bool=False):
         """
         Two mutate options are available:
         - option 1: after implementation add describtion
         - option 2: after implementation add describtion
         """
-
         if option:
             self.state = self._mutate_1(mutation_rate)
         else:
             self.state = self._mutate_2(mutation_rate)
-        pass
 
 
     def _mutate_1(self, mutation_rate: float=0.01):
@@ -68,7 +64,8 @@ class Population:
     size: int
     mutation_rate: float = 0.01
     crossover_rate: float = 0.7
-    individuals: list[Individual] = field(default=None, init=False)
+    individuals: list[Individual] = field(default=list, init=False)
+    parent_list: list[tuple[Individual, Individual]] = field(default=list, init=False)
 
 
     def __post_init__(self):
@@ -77,19 +74,18 @@ class Population:
         """
         self.individuals = self.initialize_population()
 
-    def initialize_population(self, size: int = 100):
+    def initialize_population(self):
         """
         Create a population of random individuals with specified size.
         """
-        for _ in range(size):
-            self.individuals.append(Individual())
-        return self.individuals
+        return [Individual() for _ in range(self.size)]
 
     def evaluate_population(self):
         """
         Evaluate the cost of each individual in the population.
         """
-        pass
+        for individual in self.individuals:
+            individual.fitness = individual.calculate_cost()
 
     def select_parents(self, option: bool=False):
         """
@@ -98,9 +94,9 @@ class Population:
         - option 2: after implementation add describtion
         """
         if option:
-            return self._select_parents_1()
+            self.parent_list = self._select_parents_1()
         else:
-            return self._select_parents_2()
+            self.parent_list = self._select_parents_2()
 
     def _select_parents_1(self):
         """ One of the two select options. """
@@ -108,9 +104,9 @@ class Population:
 
     def _select_parents_2(self):
         """ One of the two select options. """
-        pass
+        return random.choice(self.individuals)
 
-    def crossover(self, parent1: Individual, parent2: Individual, option: bool=False):
+    def crossover(self, parent1: Individual, parent2: Individual, option: bool=False) -> Individual:
         """
         Two select options are available:
         - option 1: after implementation add describtion
@@ -134,7 +130,8 @@ class Population:
         """
         Mutate an individual.
         """
-        pass
+        if random.random() < self.mutation_rate:
+            individual.mutate()
 
     def evolve(self):
         """
@@ -149,7 +146,6 @@ class Population:
             offspring = self.crossover(parent1, parent2)
             self.mutate(offspring)
             new_generation.append(offspring)
-
         self.individuals = new_generation
 
 
@@ -172,4 +168,10 @@ class GeneticAlgorithm:
         """
         Main function of the algorithm.
         """
-        pass
+        for generation in range(self.max_generations):
+            self.population.evolve()
+            best_individual = max(self.population.individuals, key=lambda ind: ind.score)
+
+if __name__ == "__main__":
+    ga = GeneticAlgorithm(population_size=10, max_generations=2)
+    ga.run()
