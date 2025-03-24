@@ -49,12 +49,18 @@ class Individual(PropagatedElement):
         """
         pass
 
-    def crossover(self, other):
+    def crossover(self, other, crossover_1:bool=True):
         """
         How to crossover two individuals.
         """
-        pass
-
+        offspring1_poz_idx = random.choices([1, 2], k=6)
+        if crossover_1:
+            offspring2_poz_idx = [2 if x == 1 else 1 for x in offspring1_poz_idx]
+        else:
+            offspring2_poz_idx = random.choices([1, 2], k=6)
+        offspring1_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring1_poz_idx)]
+        offspring2_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring2_poz_idx)]
+        return offspring1_poz, offspring2_poz
 
 @dataclass
 class Population:
@@ -106,11 +112,11 @@ class Population:
         """ One of the two select options. """
         return random.choice(self.individuals)
 
-    def crossover(self, parent1: Individual, parent2: Individual, option: bool=False) -> Individual:
+    def crossover(self, parent1: Individual, parent2: Individual, option: bool=False) -> []:
         """
         Two select options are available:
-        - option 1: after implementation add describtion
-        - option 2: after implementation add describtion
+        - option 1: Inheritance of some features from one parent and others from the other parent.
+        - option 2: Random features inheritance
         """
         if option:
             return self._crossover_1(parent1, parent2)
@@ -119,12 +125,13 @@ class Population:
 
     def _crossover_1(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        pass
+        offspring1_poz, offspring2_poz = parent1.crossover(parent2)
+        return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def _crossover_2(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        pass
-
+        offspring1_poz, offspring2_poz = parent1.crossover(parent2,False)
+        return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def mutate(self, individual: Individual):
         """
@@ -143,9 +150,11 @@ class Population:
         while len(new_generation) < self.size:
             parent1 = self.select_parents()
             parent2 = self.select_parents()
-            offspring = self.crossover(parent1, parent2)
-            self.mutate(offspring)
-            new_generation.append(offspring)
+            offspring1, offspring2 = self.crossover(parent1, parent2)
+            self.mutate(offspring1)
+            self.mutate(offspring2)
+            new_generation.append(offspring1)
+            new_generation.append(offspring2)
         self.individuals = new_generation
 
 
