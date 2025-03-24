@@ -49,7 +49,7 @@ class Individual(PropagatedElement):
         """
         pass
 
-    def crossover(self, other, crossover_1:bool=True):
+    def crossover(self, other, crossover_1: bool = True):
         """
         How to crossover two individuals.
         """
@@ -60,6 +60,11 @@ class Individual(PropagatedElement):
             offspring2_poz_idx = random.choices([1, 2], k=6)
         offspring1_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring1_poz_idx)]
         offspring2_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring2_poz_idx)]
+        return offspring1_poz, offspring2_poz
+
+    def crossover_else(self, other):
+        offspring1_poz = self.state[:3]+other.state[3:]
+        offspring2_poz = self.state[3:]+other.state[:3]
         return offspring1_poz, offspring2_poz
 
 @dataclass
@@ -112,26 +117,34 @@ class Population:
         """ One of the two select options. """
         return random.choice(self.individuals)
 
-    def crossover(self, parent1: Individual, parent2: Individual, option: bool=False) -> []:
+    def crossover(self, parent1: Individual, parent2: Individual, is_random: bool = False) -> []:
         """
         Two select options are available:
-        - option 1: Inheritance of some features from one parent and others from the other parent.
-        - option 2: Random features inheritance
+        - option 1: Random features inheritance.
+        - option 2: Inheritance of some features from one parent and others from the other parent.
         """
-        if option:
-            return self._crossover_1(parent1, parent2)
-        else:
+        if is_random:
             return self._crossover_2(parent1, parent2)
+        else:
+            return self._crossover_1(parent1, parent2)
 
     def _crossover_1(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        offspring1_poz, offspring2_poz = parent1.crossover(parent2)
-        return Individual(offspring1_poz), Individual(offspring2_poz)
+        if random.random() < self.crossover_rate:
+            offspring1_poz, offspring2_poz = parent1.crossover(parent2)
+            return Individual(offspring1_poz), Individual(offspring2_poz)
+        else:
+            offspring1_poz, offspring2_poz = parent1.crossover_else(parent2)
+            return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def _crossover_2(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        offspring1_poz, offspring2_poz = parent1.crossover(parent2,False)
-        return Individual(offspring1_poz), Individual(offspring2_poz)
+        if random.random() < self.crossover_rate:
+            offspring1_poz, offspring2_poz = parent1.crossover(parent2, False)
+            return Individual(offspring1_poz), Individual(offspring2_poz)
+        else:
+            offspring1_poz, offspring2_poz = parent1.crossover_else(parent2)
+            return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def mutate(self, individual: Individual):
         """
