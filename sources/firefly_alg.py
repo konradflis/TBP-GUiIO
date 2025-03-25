@@ -1,9 +1,9 @@
+# pylint: disable=R0801, W0612
 """
 Firefly Algorithm implementation for orbital trajectory optimization.
 
 Based on Xin-She Yang's Firefly Algorithm (2009) & adaptations for 3 body problem
 """
-
 from copy import deepcopy
 import numpy as np
 from sources.common_elements import PropagatedElement, ModelProperties, Swarm
@@ -144,11 +144,11 @@ def firefly_alg(mandatory, optional=None):
                         gamma,
                         mandatory.beta0
                     )
-        # pylint: disable=R0801
+
         swarm.update_global_best()
         print('global best score: ', swarm.global_best_score)
         best_scores_vector.append(swarm.global_best_score)
-    # pylint: disable=R0801
+
     final_swarm = deepcopy(swarm)
     return [
         initial_swarm,
