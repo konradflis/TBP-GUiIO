@@ -135,8 +135,8 @@ def firefly_alg(mandatory, optional=None):
         gamma = mandatory.gamma # light absorption
 
         # check all fireflies in pairs
-        for i, firefly_i in enumerate(swarm.elements):
-            for j, firefly_j in enumerate(swarm.elements):
+        for firefly_i in swarm.elements:
+            for firefly_j in swarm.elements:
                 if firefly_j.brightness > firefly_i.brightness:
                     firefly_i.move_towards(
                         firefly_j,
@@ -148,7 +148,7 @@ def firefly_alg(mandatory, optional=None):
         swarm.update_global_best()
         print('global best score: ', swarm.global_best_score)
         best_scores_vector.append(swarm.global_best_score)
-
+    # pylint: disable=R0801
     final_swarm = deepcopy(swarm)
     return [
         initial_swarm,
