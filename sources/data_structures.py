@@ -126,7 +126,7 @@ class OptionalSettingsFA:
                  ):
         self.alpha_decay = alpha_decay          # Exponential decay rate for alpha
 
-        # TODO FOR FURTHER IMPOLEMENTATION ( NOT USED YET)
+        #  FOR FURTHER IMPLEMENTATION ( NOT USED YET)
         self.attractiveness_function = attractiveness_function
         self.distance_metric = distance_metric
         self.randomization_type = randomization_type

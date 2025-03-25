@@ -1,5 +1,10 @@
+"""
+Firefly Algorithm implementation for orbital trajectory optimization.
+
+Based on Xin-She Yang's Firefly Algorithm (2009) & adaptations for 3 body problem
+"""
+
 from copy import deepcopy
-import random
 import numpy as np
 from sources.common_elements import PropagatedElement, ModelProperties, Swarm
 from sources.data_structures import MandatorySettingsFA, OptionalSettingsFA
@@ -11,7 +16,9 @@ class SwarmFirefly(Swarm):
     Defines its basic characteristics.
     """
 
-    def generate_initial_population(self):
+    def generate_initial_population(self,
+                                    opt_if_two_stage_pso=0,
+                                    opt_best_velocity=None):
         """
         Generates initial population of fireflies, based on the initial points
         that are passed as an argument.
@@ -50,8 +57,8 @@ class Firefly(PropagatedElement):
         # Calculate distance and attractiveness
         r = np.linalg.norm(self.state - other.state) # cartesian distance
         beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
-        # beta can also be defined as β = beta0 / (1 + gamma * r**2) - therefore beta decreases monotonically -
-        # inversed squared
+        # beta can also be defined as β = beta0 / (1 + gamma * r**2) - therefore beta
+        # decreases monotonically - inversed squared
 
 
         # Generate random vector in with support of swarm (take first row to get vector)
@@ -61,7 +68,8 @@ class Firefly(PropagatedElement):
 
         # Update position
         # XIN-SHE YANG proposed 3 types of
-        new_state = self.state + beta * (other.state - self.state) + alpha * random_vector # movement of fireflies
+        new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
+        # movement of fireflies
 
         # Apply bounds
         clipped_state = temp_swarm.generate_initial_population()[0]
@@ -122,19 +130,21 @@ def firefly_alg(mandatory, optional=None):
     for it in range(mandatory.max_iterations):
         print("iter. no. ", it)
         # update parameters
-        alpha = mandatory.alpha_initial * np.exp(-optional.alpha_decay * it) # Attractiveness varies with distance r via exp[−γr]
+        alpha = mandatory.alpha_initial * np.exp(-optional.alpha_decay * it)
+        # Attractiveness varies with distance r via exp[−γr]
         gamma = mandatory.gamma # light absorption
 
         # check all fireflies in pairs
-        for i in range(len(swarm.elements)):
-            for j in range(len(swarm.elements)):
-                if swarm.elements[j].brightness > swarm.elements[i].brightness:
-                    swarm.elements[i].move_towards(
-                        swarm.elements[j],
+        for i, firefly_i in enumerate(swarm.elements):
+            for j, firefly_j in enumerate(swarm.elements):
+                if firefly_j.brightness > firefly_i.brightness:
+                    firefly_i.move_towards(
+                        firefly_j,
                         alpha,
                         gamma,
                         mandatory.beta0
                     )
+        # pylint: disable=R0801
         swarm.update_global_best()
         print('global best score: ', swarm.global_best_score)
         best_scores_vector.append(swarm.global_best_score)
