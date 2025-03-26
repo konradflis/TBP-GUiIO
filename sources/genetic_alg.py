@@ -54,17 +54,23 @@ class Individual(PropagatedElement):
         How to crossover two individuals.
         """
         offspring1_poz_idx = random.choices([1, 2], k=6)
+        while offspring1_poz_idx == [1]*6 or offspring1_poz_idx == [2]*6:
+            offspring1_poz_idx = random.choices([1, 2], k=6)
+
         if crossover_1:
             offspring2_poz_idx = [2 if x == 1 else 1 for x in offspring1_poz_idx]
         else:
             offspring2_poz_idx = random.choices([1, 2], k=6)
+            while offspring2_poz_idx == [1]*6 or offspring2_poz_idx == [2]*6:
+                offspring2_poz_idx = random.choices([1, 2], k=6)
+
         offspring1_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring1_poz_idx)]
         offspring2_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring2_poz_idx)]
         return offspring1_poz, offspring2_poz
 
-    def crossover_else(self, other):
-        offspring1_poz = self.state[:3]+other.state[3:]
-        offspring2_poz = self.state[3:]+other.state[:3]
+    def crossover_copy(self, other):
+        offspring1_poz = self.state
+        offspring2_poz = other.state
         return offspring1_poz, offspring2_poz
 
 @dataclass
@@ -117,34 +123,31 @@ class Population:
         """ One of the two select options. """
         return random.choice(self.individuals)
 
-    def crossover(self, parent1: Individual, parent2: Individual, is_random: bool = False) -> []:
+    def crossover(self, parent1: Individual, parent2: Individual) -> []:
         """
         Two select options are available:
-        - option 1: Random features inheritance.
-        - option 2: Inheritance of some features from one parent and others from the other parent.
+        - probability 0% - 35%: Inheritance of some features from one parent and others from the other parent.
+        - probability 35% - 70%: Random features inheritance.
+        - probability 70% - 100%: No crossover - parents copy.
         """
-        if is_random:
+        probability = random.random()
+        if probability < self.crossover_rate/2:
+            return self._crossover_1(parent1, parent2)
+        elif self.crossover_rate/2 <= probability < self.crossover_rate:
             return self._crossover_2(parent1, parent2)
         else:
-            return self._crossover_1(parent1, parent2)
+            offspring1_poz, offspring2_poz = parent1.crossover_copy(parent2)
+            return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def _crossover_1(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        if random.random() < self.crossover_rate:
-            offspring1_poz, offspring2_poz = parent1.crossover(parent2)
-            return Individual(offspring1_poz), Individual(offspring2_poz)
-        else:
-            offspring1_poz, offspring2_poz = parent1.crossover_else(parent2)
-            return Individual(offspring1_poz), Individual(offspring2_poz)
+        offspring1_poz, offspring2_poz = parent1.crossover(parent2)
+        return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def _crossover_2(self, parent1: Individual, parent2: Individual):
         """ One of the two select options. """
-        if random.random() < self.crossover_rate:
-            offspring1_poz, offspring2_poz = parent1.crossover(parent2, False)
-            return Individual(offspring1_poz), Individual(offspring2_poz)
-        else:
-            offspring1_poz, offspring2_poz = parent1.crossover_else(parent2)
-            return Individual(offspring1_poz), Individual(offspring2_poz)
+        offspring1_poz, offspring2_poz = parent1.crossover(parent2, False)
+        return Individual(offspring1_poz), Individual(offspring2_poz)
 
     def mutate(self, individual: Individual):
         """
