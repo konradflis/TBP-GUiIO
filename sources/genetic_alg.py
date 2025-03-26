@@ -53,16 +53,17 @@ class Individual(PropagatedElement):
         """
         How to crossover two individuals.
         """
-        offspring1_poz_idx = random.choices([1, 2], k=6)
-        while offspring1_poz_idx == [1]*6 or offspring1_poz_idx == [2]*6:
-            offspring1_poz_idx = random.choices([1, 2], k=6)
+
 
         if crossover_1:
+            offspring1_poz_idx = random.choices([1, 2], k=6)
+            while offspring1_poz_idx == [1] * 6 or offspring1_poz_idx == [2] * 6:
+                offspring1_poz_idx = random.choices([1, 2], k=6)
             offspring2_poz_idx = [2 if x == 1 else 1 for x in offspring1_poz_idx]
         else:
-            offspring2_poz_idx = random.choices([1, 2], k=6)
-            while offspring2_poz_idx == [1]*6 or offspring2_poz_idx == [2]*6:
-                offspring2_poz_idx = random.choices([1, 2], k=6)
+            point = random.randint(1, 5)
+            offspring1_poz_idx = self.state[:point] + other.state[point:]
+            offspring2_poz_idx = self.state[point:] + other.state[:point]
 
         offspring1_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring1_poz_idx)]
         offspring2_poz = [self.state[i] if par == 1 else other.state[i] for i, par in enumerate(offspring2_poz_idx)]
