@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 import numpy as np
 import random
+from copy import deepcopy
 from common_elements import PropagatedElement, ModelProperties
 from constant import DATA_PATH_ORBIT_L2_7
-
 
 class Individual(PropagatedElement):
     def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):
@@ -41,13 +41,23 @@ class Individual(PropagatedElement):
         """
         One of the two mutate options.
         """
-        pass
+        shift = random.uniform(-0.1, 0.1)
+        mutation_idx = random.randint(0, len(self.state) - 1)
+        mutation = deepcopy(self.state)
+        mutation[mutation_idx] += shift
+        return mutation
 
     def _mutate_2(self, mutation_rate: float=0.01):
         """
         One of the two mutate options.
         """
-        pass
+        mutation_idx1, mutation_idx2 = random.choices([0, 1, 2, 3, 4, 5], k=random.randint(1, 6))
+        shift1 = random.uniform(-0.1, 0.1)
+        shift2 = random.uniform(-0.1, 0.1)
+        mutation= deepcopy(self.state)
+        mutation[mutation_idx1] += shift1
+        mutation[mutation_idx2] += shift2
+        return mutation
 
     def crossover(self, other, crossover_1: bool = True):
         """
