@@ -167,7 +167,7 @@ class Population:
         Mutate an individual.
         """
         if random.random() < self.mutation_rate:
-            individual.mutate()
+            individual.mutate(random.choice([True, False]))
 
     def evolve(self):
         """
