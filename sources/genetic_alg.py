@@ -41,7 +41,11 @@ class Individual(PropagatedElement):
         """
         One of the two mutate options.
         """
-        pass
+        mutate_index = random.randint(0, 5)
+        shift = random.uniform(-0.001,0.001)
+        self.state[mutate_index]+=shift
+        return self.state
+
 
     def _mutate_2(self, mutation_rate: float=0.01):
         """
