@@ -40,9 +40,10 @@ class Individual(PropagatedElement):
     def _mutate_1(self, mutation_rate: float=0.01):
         """
         One of the two mutate options.
+        Method that mutates a single gene with constant shift.
         """
         mutate_index = random.randint(0, 5)
-        shift = random.uniform(-0.001,0.001)
+        shift = 0.001
         self.state[mutate_index]+=shift
         return self.state
 
@@ -50,8 +51,15 @@ class Individual(PropagatedElement):
     def _mutate_2(self, mutation_rate: float=0.01):
         """
         One of the two mutate options.
+        Method that mutates random numbers genes with random shift.
         """
-        pass
+        indexes = random.sample([0, 1, 2, 3, 4, 5], k=random.randint(2, 6))
+        for i in indexes:
+            shift = random.uniform(-0.001,0.001)
+            self.state[i]+=shift
+        return self.state
+
+
 
     def crossover(self, other, crossover_1: bool = True):
         """
