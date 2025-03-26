@@ -48,6 +48,24 @@ class MandatorySettingsABC:
         self.neighbours_vel_limits = neighbours_vel_limits
         self.inactive_cycles_limit = inactive_cycles_limit
 
+class MandatorySettingsFA:
+    """
+    Mandatory fields for Firefly Algorithm.
+    """
+    def __init__(self,
+                 max_iterations=10,
+                 population_size=10,
+                 number_of_measurements=35,
+                 alpha_initial=0.5,
+                 gamma=0.1,
+                 beta0=1.0
+                 ):
+        self.max_iterations = max_iterations
+        self.population_size = population_size
+        self.number_of_measurements = number_of_measurements
+        self.alpha_initial = alpha_initial
+        self.gamma = gamma
+        self.beta0 = beta0
 
 class OptionalSettingsPSO:
     """
@@ -94,6 +112,26 @@ class OptionalSettingsABC:
         self.dim_probability = dim_probability
         self.orbit_filepath = orbit_filepath
 
+class OptionalSettingsFA:
+    """
+    Optional fields for Firefly Algorithm.
+    """
+    def __init__(self,
+                 alpha_decay=0.01,
+                 attractiveness_function='exponential',
+                 distance_metric='euclidean',
+                 randomization_type='uniform',
+                 bounds=None,
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
+                 ):
+        self.alpha_decay = alpha_decay          # Exponential decay rate for alpha
+
+        #  FOR FURTHER IMPLEMENTATION ( NOT USED YET)
+        self.attractiveness_function = attractiveness_function
+        self.distance_metric = distance_metric
+        self.randomization_type = randomization_type
+        self.bounds = bounds or [(-500, 500) for _ in range(6)]
+        self.orbit_filepath = orbit_filepath
 
 class PlotSettings:
     """
