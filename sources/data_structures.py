@@ -67,6 +67,8 @@ class MandatorySettingsFA:
         self.gamma = gamma
         self.beta0 = beta0
 
+
+
 class OptionalSettingsPSO:
     """
     Optional fields for PSO algorithm.
@@ -274,5 +276,14 @@ class Validations:
             "ABCneighPercent": ValidatedElement(float, 0, 1,
                                                 "optional_abc.neigh_percent"),
             "multiplePeriods": ValidatedElement(int, 0, 99,
-                                                "optional_abc.multiple_periods")
+                                                "optional_abc.multiple_periods"),
+
+            "FApopulationSize": ValidatedElement(int, 1, 999, "mandatory_fa.num_fireflies"),
+            "FAmaxIterations": ValidatedElement(int, 1, 999, "mandatory_fa.max_iterations"),
+            "FAalpha_initial": ValidatedElement(float, 0.0, 10.0, "mandatory_fa.alpha"),
+            "FAbeta": ValidatedElement(float, 0.0, 10.0, "mandatory_fa.beta"),
+            "FAgamma": ValidatedElement(float, 0.0, 10.0, "mandatory_fa.gamma"),
+            
+            "FAnumberOfMeasurements": ValidatedElement(int, 1, 999, "mandatory_fa.number_of_measurements")
+
         }
