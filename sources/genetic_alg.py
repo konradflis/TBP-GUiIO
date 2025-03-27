@@ -90,6 +90,7 @@ class Individual(PropagatedElement):
         offspring2_poz = other.state
         return offspring1_poz, offspring2_poz
 
+
 @dataclass
 class Population:
     """
@@ -99,7 +100,6 @@ class Population:
     mutation_rate: float = 0.01
     crossover_rate: float = 0.7
     individuals: list[Individual] = field(default=list, init=False)
-    parent_list: list[tuple[Individual, Individual]] = field(default=list, init=False)
 
 
     def __post_init__(self):
@@ -121,24 +121,34 @@ class Population:
         for individual in self.individuals:
             individual.fitness = individual.calculate_cost()
 
-    def select_parents(self, option: bool=False):
+    def select_parents(self, option: bool=True, tournament_size:int = None):
         """
         Two select options are available:
         - option 1: after implementation add describtion
         - option 2: after implementation add describtion
         """
         if option:
-            self.parent_list = self._select_parents_1()
+            return self._tournament_selection(tournament_size)
         else:
-            self.parent_list = self._select_parents_2()
+            return self._roulette_selection()
 
-    def _select_parents_1(self):
+    def _tournament_selection(self, tournament_size: int):
         """ One of the two select options. """
-        return random.choice(self.individuals)
+        if tournament_size is None:
+            tournament_size = self.size // 2
+        tournament = random.sample(self.individuals, tournament_size)
+        best_individual = max(tournament, key=lambda ind: ind.score)
+        return best_individual
 
-    def _select_parents_2(self):
+    def _roulette_selection(self):
         """ One of the two select options. """
-        return random.choice(self.individuals)
+        total_fitness = self.sum_of_fittness()
+        if total_fitness == 0:
+            return random.choice(self.individuals)
+
+        selection_probs = [individual.score / total_fitness for individual in self.individuals]
+        selected_index = random.choices(range(len(self.individuals)), weights=selection_probs, k=1)[0]
+        return self.individuals[selected_index]
 
     def crossover(self, parent1: Individual, parent2: Individual) -> []:
         """
@@ -194,9 +204,14 @@ class Population:
             offspring1, offspring2 = self.crossover(parent1, parent2)
             self.mutate(offspring1)
             self.mutate(offspring2)
+            offspring1.calculate_cost()
+            offspring2.calculate_cost()
             new_generation.append(offspring1)
             new_generation.append(offspring2)
         self.individuals = new_generation
+
+    def sum_of_fittness(self):
+        return sum(individual.score for individual in self.individuals)
 
 
 @dataclass
@@ -220,7 +235,10 @@ class GeneticAlgorithm:
         """
         for generation in range(self.max_generations):
             self.population.evolve()
+            print(f"Generation {generation}:")
+            print(f"Population: {self.population}")
             best_individual = max(self.population.individuals, key=lambda ind: ind.score)
+            print(best_individual)
 
 if __name__ == "__main__":
     ga = GeneticAlgorithm(population_size=10, max_generations=2)
