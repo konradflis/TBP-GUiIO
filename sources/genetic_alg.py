@@ -79,7 +79,7 @@ class Individual(PropagatedElement):
         """
         point = random.randint(1, 5)
         offspring1_poz = self.state[:point] + other.state[point:]
-        offspring2_poz = self.state[point:] + other.state[:point]
+        offspring2_poz = other.state[:point] + self.state[point:]
         return offspring1_poz, offspring2_poz
 
     def crossover_copy(self, other):
@@ -241,5 +241,5 @@ class GeneticAlgorithm:
             print(best_individual)
 
 if __name__ == "__main__":
-    ga = GeneticAlgorithm(population_size=10, max_generations=2)
+    ga = GeneticAlgorithm(population_size=10, max_generations=4)
     ga.run()
