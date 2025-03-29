@@ -145,7 +145,7 @@ class Visualisation:
         defined in data_structures.py.
         :return:
         """
-        for method in ["PSO", "PSO2", "ABC"]:
+        for method in ["PSO", "PSO2", "ABC", "FA"]:
             #If number of rows > 0, this element must have been initialised,
             # and thus it should be modified
             result_table = getattr(self.ui, f"{method}resultTable")

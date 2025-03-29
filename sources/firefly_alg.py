@@ -126,17 +126,21 @@ def firefly_alg(mandatory, optional=None):
     initial_swarm = deepcopy(swarm)
     best_scores_vector = []
 
+    best_iteration = None
+    current_best_score = float('inf')
+    
     # MAIN LOOP
     for it in range(mandatory.max_iterations):
         print("iter. no. ", it)
+
         # update parameters
         alpha = mandatory.alpha_initial * np.exp(-optional.alpha_decay * it)
         # Attractiveness varies with distance r via exp[−γr]
         gamma = mandatory.gamma # light absorption
 
         # check all fireflies in pairs
-        for i, firefly_i in enumerate(swarm.elements):
-            for j, firefly_j in enumerate(swarm.elements):
+        for firefly_i in swarm.elements:
+            for firefly_j in swarm.elements:
                 if firefly_j.brightness > firefly_i.brightness:
                     firefly_i.move_towards(
                         firefly_j,
@@ -144,11 +148,19 @@ def firefly_alg(mandatory, optional=None):
                         gamma,
                         mandatory.beta0
                     )
-        # pylint: disable=R0801
         swarm.update_global_best()
-        print('global best score: ', swarm.global_best_score)
-        best_scores_vector.append(swarm.global_best_score)
 
+        # Sprawdzamy, czy znaleziono nowy najlepszy wynik
+        if swarm.global_best_score < current_best_score:
+            current_best_score = swarm.global_best_score
+            best_iteration = it  # Zapisujemy numer pierwszej iteracji z najlepszym wynikiem
+
+        print('global best score: ', swarm.global_best_score)
+        print('global best iteration: ', best_iteration)  # Wyświetlamy pierwszą iterację z najlepszym wynikiem
+        
+        best_scores_vector.append(swarm.global_best_score)
+        
+    # pylint: disable=R0801
     final_swarm = deepcopy(swarm)
     return [
         initial_swarm,

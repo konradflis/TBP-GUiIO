@@ -53,12 +53,12 @@ class MandatorySettingsFA:
     Mandatory fields for Firefly Algorithm.
     """
     def __init__(self,
-                 max_iterations=10,
-                 population_size=10,
-                 number_of_measurements=35,
+                 max_iterations=12,
+                 population_size=32,
+                 number_of_measurements=25,
                  alpha_initial=0.5,
-                 gamma=0.1,
-                 beta0=1.0
+                 gamma=1,
+                 beta0=1
                  ):
         self.max_iterations = max_iterations
         self.population_size = population_size
@@ -66,6 +66,8 @@ class MandatorySettingsFA:
         self.alpha_initial = alpha_initial
         self.gamma = gamma
         self.beta0 = beta0
+
+
 
 class OptionalSettingsPSO:
     """
@@ -274,5 +276,18 @@ class Validations:
             "ABCneighPercent": ValidatedElement(float, 0, 1,
                                                 "optional_abc.neigh_percent"),
             "multiplePeriods": ValidatedElement(int, 0, 99,
-                                                "optional_abc.multiple_periods")
+                                                "optional_abc.multiple_periods"),
+            "FApopulationSize": ValidatedElement(int, 1, 999, 
+                                                 "mandatory_fa.population_size"),
+            "FAmaxIterations": ValidatedElement(int, 1, 999, 
+                                                "mandatory_fa.max_iterations"),
+            "FAalpha_initial": ValidatedElement(float, 0.0, 10.0, 
+                                                "mandatory_fa.alpha_initial"),
+            "FAbeta": ValidatedElement(float, 0.0, 10.0, 
+                                                "mandatory_fa.beta0"),
+            "FAgamma": ValidatedElement(float, 0.0, 10.0, 
+                                        "mandatory_fa.gamma"),
+            "FAnumberOfMeasurements": ValidatedElement(int, 1, 999, 
+                                                "mandatory_fa.number_of_measurements")
+
         }

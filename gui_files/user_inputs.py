@@ -4,7 +4,7 @@ Class handling the fields/checkboxes/comboboxes that are entered or selected by 
 from pathlib import Path
 from sources.data_structures import (MandatorySettingsPSO, MandatorySettingsABC,
                                      OptionalSettingsPSO, OptionalSettingsABC,
-                                     PlotSettings, Validations)
+                                     PlotSettings, Validations,MandatorySettingsFA)
 
 class UserInputs:
     """
@@ -22,6 +22,7 @@ class UserInputs:
         self.optional_pso2_1 = OptionalSettingsPSO()
         self.optional_pso2_2 = OptionalSettingsPSO()
         self.optional_abc = OptionalSettingsABC()
+        self.mandatory_fa = MandatorySettingsFA()
         self.settings = PlotSettings()
         self.validations = Validations()
         self.filepath = "../orbits/L2_7days.txt"
@@ -89,6 +90,14 @@ class UserInputs:
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO21"))
         self.ui.PSO2velocityCheckBox2.toggled.connect(
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO22"))
+
+    #def fa_logic(self):
+
+        """
+        Combines the actions related to FA algorithm.
+        """
+        
+            
 
 
     def abc_logic(self):
