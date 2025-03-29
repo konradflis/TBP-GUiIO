@@ -126,9 +126,13 @@ def firefly_alg(mandatory, optional=None):
     initial_swarm = deepcopy(swarm)
     best_scores_vector = []
 
+    best_iteration = None
+    current_best_score = float('inf')
+    
     # MAIN LOOP
     for it in range(mandatory.max_iterations):
         print("iter. no. ", it)
+
         # update parameters
         alpha = mandatory.alpha_initial * np.exp(-optional.alpha_decay * it)
         # Attractiveness varies with distance r via exp[−γr]
@@ -144,10 +148,18 @@ def firefly_alg(mandatory, optional=None):
                         gamma,
                         mandatory.beta0
                     )
-        # pylint: disable=R0801
         swarm.update_global_best()
+
+        # Sprawdzamy, czy znaleziono nowy najlepszy wynik
+        if swarm.global_best_score < current_best_score:
+            current_best_score = swarm.global_best_score
+            best_iteration = it  # Zapisujemy numer pierwszej iteracji z najlepszym wynikiem
+
         print('global best score: ', swarm.global_best_score)
+        print('global best iteration: ', best_iteration)  # Wyświetlamy pierwszą iterację z najlepszym wynikiem
+        
         best_scores_vector.append(swarm.global_best_score)
+        
     # pylint: disable=R0801
     final_swarm = deepcopy(swarm)
     return [
