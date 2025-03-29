@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from copy import deepcopy
 import numpy as np
 import random
 from common_elements import PropagatedElement, ModelProperties
@@ -135,19 +136,19 @@ class Population:
 
     def _tournament_selection(self, tournament_size: int):
         """ One of the two select options. """
-        copy_list_of_individuals = self.individuals.copy()
+        copy_list_of_individuals = deepcopy(self.individuals)
         if tournament_size is None:
             tournament_size = self.size // 2
         tournament_1 = random.sample(copy_list_of_individuals, tournament_size)
-        parent_1 = max(tournament_1, key=lambda ind: ind.score)
+        parent_1 = min(tournament_1, key=lambda ind: ind.score)
         copy_list_of_individuals.remove(parent_1)
         tournament_2 = random.sample(copy_list_of_individuals, tournament_size)
-        parent_2 = max(tournament_2, key=lambda ind: ind.score)
+        parent_2 = min(tournament_2, key=lambda ind: ind.score)
         return parent_1, parent_2
 
     def _roulette_selection(self):
         """ One of the two select options. """
-        copy_list_of_individuals = self.individuals.copy()
+        copy_list_of_individuals = deepcopy(self.individuals)
         total_fitness = self.sum_of_fittness()
         if total_fitness == 0:
             return tuple(random.sample(copy_list_of_individuals, 2)) 
@@ -246,10 +247,12 @@ class GeneticAlgorithm:
             self.population.evolve()
             print(f"Generation {generation}:")
             print(f"Population: {self.population}")
-            print(f"Individuals: {[ind.state for ind in self.population.individuals]}")
+            print("Individuals:")
+            for ind in self.population.individuals:
+                print(ind.state)
             best_individual = min(self.population.individuals, key=lambda ind: ind.score)
             print("Best score: ", best_individual.score)
 
 if __name__ == "__main__":
-    ga = GeneticAlgorithm(population_size=10, max_generations=20)
+    ga = GeneticAlgorithm(population_size=100, max_generations=50)
     ga.run()
