@@ -221,10 +221,10 @@ class UserInputs:
         """
         orbits = [
             Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_35.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_821.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_1524.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/ID_16.txt"]
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_35.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_821.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_1524.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "ID_16.txt"]
         self.filepath = orbits[index]
         self.optional_pso.orbit_filepath = self.filepath
         self.optional_pso2_1.orbit_filepath = self.filepath
