@@ -23,7 +23,8 @@ class Individual(PropagatedElement):
 
         position = [np.random.uniform(-pos_limits, pos_limits) for _ in range(3)]
         velocity = [np.random.uniform(-vel_limits, vel_limits) for _ in range(3)]
-        self.state = position + velocity
+        initial_random = position + velocity
+        self.state = list(self.model.initial_state + initial_random)
 
     def mutate(self, mutation_rate: float=0.01, option: bool=False):
         """
@@ -245,9 +246,10 @@ class GeneticAlgorithm:
             self.population.evolve()
             print(f"Generation {generation}:")
             print(f"Population: {self.population}")
-            best_individual = max(self.population.individuals, key=lambda ind: ind.score)
-            print(best_individual)
+            print(f"Individuals: {[ind.state for ind in self.population.individuals]}")
+            best_individual = min(self.population.individuals, key=lambda ind: ind.score)
+            print("Best score: ", best_individual.score)
 
 if __name__ == "__main__":
-    ga = GeneticAlgorithm(population_size=10, max_generations=4)
+    ga = GeneticAlgorithm(population_size=10, max_generations=20)
     ga.run()

@@ -126,7 +126,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         Combobox - response to language selection. Loads the English translation file if needed.
         """
         if index: # index is set to 1 only if EN language is selected
-            translation_file = "en_translation.qm"
+            translation_file = "gui_files/en_translation.qm"
             if self.translator.load(translation_file):
                 QCoreApplication.installTranslator(self.translator)
                 self.ui.retranslateUi(self)
