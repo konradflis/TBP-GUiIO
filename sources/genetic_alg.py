@@ -134,21 +134,30 @@ class Population:
 
     def _tournament_selection(self, tournament_size: int):
         """ One of the two select options. """
+        copy_list_of_individuals = self.individuals.copy()
         if tournament_size is None:
             tournament_size = self.size // 2
-        tournament = random.sample(self.individuals, tournament_size)
-        best_individual = max(tournament, key=lambda ind: ind.score)
-        return best_individual
+        tournament_1 = random.sample(copy_list_of_individuals, tournament_size)
+        parent_1 = max(tournament_1, key=lambda ind: ind.score)
+        copy_list_of_individuals.remove(parent_1)
+        tournament_2 = random.sample(copy_list_of_individuals, tournament_size)
+        parent_2 = max(tournament_2, key=lambda ind: ind.score)
+        return parent_1, parent_2
 
     def _roulette_selection(self):
         """ One of the two select options. """
+        copy_list_of_individuals = self.individuals.copy()
         total_fitness = self.sum_of_fittness()
         if total_fitness == 0:
-            return random.choice(self.individuals)
+            return tuple(random.sample(copy_list_of_individuals, 2)) 
 
-        selection_probs = [individual.score / total_fitness for individual in self.individuals]
-        selected_index = random.choices(range(len(self.individuals)), weights=selection_probs, k=1)[0]
-        return self.individuals[selected_index]
+        selection_probs_1 = [individual.score / total_fitness for individual in copy_list_of_individuals]
+        selected_index_1 = random.choices(range(len(copy_list_of_individuals)), weights=selection_probs_1, k=1)[0]
+        parent_1 = copy_list_of_individuals.pop(selected_index_1)
+        selection_probs_2 = [individual.score / total_fitness for individual in copy_list_of_individuals]
+        selected_index_2 = random.choices(range(len(copy_list_of_individuals)), weights=selection_probs_2, k=1)[0]
+        parent_2 = copy_list_of_individuals.pop(selected_index_2)
+        return parent_1, parent_2
 
     def crossover(self, parent1: Individual, parent2: Individual) -> []:
         """
@@ -199,8 +208,7 @@ class Population:
         new_generation = []
 
         while len(new_generation) < self.size:
-            parent1 = self.select_parents()
-            parent2 = self.select_parents()
+            parent1, parent2 = self.select_parents()
             offspring1, offspring2 = self.crossover(parent1, parent2)
             self.mutate(offspring1)
             self.mutate(offspring2)
