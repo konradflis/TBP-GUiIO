@@ -112,7 +112,7 @@ class UserInputs:
         """
         Combines the actions related to GEN algorithm.
         """
-        self.ui.GEN_pop_size
+        pass
 
     def radiobutton_plot_type_clicked(self):
         """

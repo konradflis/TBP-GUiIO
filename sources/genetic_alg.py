@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from copy import deepcopy
 import numpy as np
 import random
-from common_elements import PropagatedElement, ModelProperties
-from constant import DATA_PATH_ORBIT_L2_7
+from .common_elements import PropagatedElement, ModelProperties
+from .constant import DATA_PATH_ORBIT_L2_7
 
 
 class Individual(PropagatedElement):
@@ -243,6 +243,7 @@ class GeneticAlgorithm:
         """
         Main function of the algorithm.
         """
+        # run powinno przyjmowac obiekt z ktorego wyciaga sobie poszczegolne parametry, tak jak w pso
         for generation in range(self.max_generations):
             self.population.evolve()
             print(f"Generation {generation}:")
@@ -252,6 +253,7 @@ class GeneticAlgorithm:
                 print(ind.state)
             best_individual = min(self.population.individuals, key=lambda ind: ind.score)
             print("Best score: ", best_individual.score)
+            # potrzebne jest zwracanie takie jak w pso do plotowania
 
 if __name__ == "__main__":
     ga = GeneticAlgorithm(population_size=100, max_generations=50)

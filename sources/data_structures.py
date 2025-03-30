@@ -252,5 +252,13 @@ class Validations:
             "ABCneighPercent": ValidatedElement(float, 0, 1,
                                                 "optional_abc.neigh_percent"),
             "multiplePeriods": ValidatedElement(int, 0, 99,
-                                                "optional_abc.multiple_periods")
+                                                "optional_abc.multiple_periods"),
+            "GEN_pop_size": ValidatedElement(int, 1, 999,
+                                                "mandatory_gen.population_size"),
+            "GEN_max_gen": ValidatedElement(int, 1, 999,
+                                                "mandatory_gen.max_generations"),
+            "GEN_mut_rate": ValidatedElement(float, 0, 1,
+                                                "mandatory_gen.mutation_rate"),
+            "GEN_cross_rate": ValidatedElement(float, 0, 1,
+                                                "mandatory_gen.crossover_rate")
         }

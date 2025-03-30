@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
 from gui_files.user_inputs import UserInputs
 from gui_files.visualisation import Visualisation
-from sources import abc_alg, pso
+from sources import abc_alg, pso, genetic_alg
 
 class App(QMainWindow, UserInputs, Visualisation):
     # pylint: disable=R0902, R0903, R0913, R0917
@@ -39,10 +39,12 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.pso_logic()
         self.pso2_logic()
         self.abc_logic()
+        self.gen_logic()
 
         self.ui.PSOstartButton.clicked.connect(self.button_clicked_pso)
         self.ui.PSO2startButton.clicked.connect(self.button_clicked_pso2)
         self.ui.ABCstartButton.clicked.connect(self.button_clicked_abc)
+        self.ui.GENstartButton.clicked.connect(self.button_clicked_gen)
 
         self.ui.comboBoxLanguage.currentIndexChanged.connect(
             self.combobox_language_selected)
@@ -214,6 +216,20 @@ class App(QMainWindow, UserInputs, Visualisation):
 
         self.plotting_charts("ABC", self.settings)
         self.show_results("ABC")
+        self.refresh_widgets()
+
+    def button_clicked_gen(self):
+        """
+        Starts the genetic algorithm as a response to clicking the button.
+        """
+        ga = genetic_alg.GeneticAlgorithm(self.mandatory_gen.population_size,
+                                          self.mandatory_gen.max_generations,
+                                          self.mandatory_gen.mutation_rate,
+                                          self.mandatory_gen.crossover_rate,)
+        self.plot_properties_list = ga.run()
+
+        self.plotting_charts("GEN", self.settings)
+        self.show_results("GEN")
         self.refresh_widgets()
 
 

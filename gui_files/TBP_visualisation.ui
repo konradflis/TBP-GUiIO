@@ -2449,7 +2449,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
         </item>
        </widget>
-       <widget class="QPushButton" name="GEN_Start">
+       <widget class="QPushButton" name="GENstartButton">
         <property name="geometry">
          <rect>
           <x>260</x>

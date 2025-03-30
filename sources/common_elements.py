@@ -6,7 +6,7 @@ from copy import deepcopy
 import numpy as np
 from scipy import integrate
 from numpy import linalg
-from sources import data_load
+from . import data_load
 
 
 class ModelProperties:
