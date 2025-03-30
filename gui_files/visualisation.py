@@ -103,13 +103,10 @@ class Visualisation:
         :return: None
         """
         params = common_elements.final_plot(*self._plot_properties_list[:4], settings)
-
         self.results = plot_functions.present_results(
             self._plot_properties_list[3],
             self._plot_properties_list[1].global_best_state)
-
         fig_orbits = plot_functions.plot_propagated_trajectories(*params[:4])
-
         self._plot_properties_list[1].convert_to_metric_units()
         self._plot_properties_list[3] = data_load.convert_to_metric_units(
             self._plot_properties_list[3])

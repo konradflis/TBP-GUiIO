@@ -100,15 +100,26 @@ class MandatorySettingsGEN:
     Mandatory fields for GEN algorithm.
     """
     def __init__(self,
-                 population_size=100,
-                 max_generations=50,
+                 population_size=10,
+                 number_of_measurements=35,
+                 max_generations=5,
                  mutation_rate=0.01,
                  crossover_rate=0.7,
                  ):
         self.population_size = population_size
+        self.number_of_measurements = number_of_measurements
         self.max_generations = max_generations
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
+
+class OptionalSettingsGEN:
+    """
+    Optional fields for GEN algorithm.
+    """
+    def __init__(self,
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
+                 ):
+        self.orbit_filepath = orbit_filepath
 
 
 class PlotSettings:

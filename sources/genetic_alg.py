@@ -2,21 +2,18 @@ from dataclasses import dataclass, field
 from copy import deepcopy
 import numpy as np
 import random
+
+from sources.data_structures import MandatorySettingsGEN, OptionalSettingsGEN
 from sources.common_elements import PropagatedElement, ModelProperties
 from sources.constant import DATA_PATH_ORBIT_L2_7
 
 
 class Individual(PropagatedElement):
-    def __init__(self, state=None, model=None):
-        if model is None:
-            model = ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)
+    def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):
         super().__init__(state, model)
-
         if self.state is None:
             self.generate_random_genes()
-
-        self.model = model
-        self.calculate_cost()
+        self.score = self.calculate_cost()
 
     def generate_random_genes(self):
         """
@@ -104,10 +101,12 @@ class Population:
     Main idea list of Individuals.
     """
     size: int
+    model: ModelProperties
     mutation_rate: float = 0.01
     crossover_rate: float = 0.7
-    model: ModelProperties = field(default_factory=lambda: ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35))
-    individuals: list[Individual] = field(default_factory=list, init=False)
+    individuals: list[Individual] = field(default=list, init=False)
+    global_best_state: list = None
+    global_best_score: float = np.inf
 
 
     def __post_init__(self):
@@ -115,13 +114,13 @@ class Population:
         If no individuals are provided, create a population of random individuals.
         """
         self.individuals = self.initialize_population()
+        self.elements = self.individuals #Just for plotting purposes
 
     def initialize_population(self):
         """
         Create a population of random individuals with specified size.
         """
-        individuals = [Individual(model=self.model) for _ in range(self.size)]
-        return individuals
+        return [Individual() for _ in range(self.size)]
 
     def evaluate_population(self):
         """
@@ -129,6 +128,8 @@ class Population:
         """
         for individual in self.individuals:
             individual.fitness = individual.calculate_cost()
+        self.global_best_state = min(self.individuals, key=lambda ind: ind.score).state
+        self.global_best_score = min(self.individuals, key=lambda ind: ind.score).score
 
     def select_parents(self, option: bool=True, tournament_size:int = None):
         """
@@ -145,7 +146,7 @@ class Population:
         """ One of the two select options. """
         copy_list_of_individuals = deepcopy(self.individuals)
         if tournament_size is None:
-            tournament_size = self.size // 10
+            tournament_size = self.size // 2
         tournament_1 = random.sample(copy_list_of_individuals, tournament_size)
         parent_1 = min(tournament_1, key=lambda ind: ind.score)
         copy_list_of_individuals.remove(parent_1)
@@ -209,7 +210,7 @@ class Population:
         if random.random() < self.mutation_rate:
             individual.mutate(random.choice([True, False]))
 
-    def evolve(self, option: bool=True, tournament_size:int = None):
+    def evolve(self):
         """
         Create a new generation.
         """
@@ -217,7 +218,7 @@ class Population:
         new_generation = []
 
         while len(new_generation) < self.size:
-            parent1, parent2 = self.select_parents(option, tournament_size)
+            parent1, parent2 = self.select_parents()
             offspring1, offspring2 = self.crossover(parent1, parent2)
             self.mutate(offspring1)
             self.mutate(offspring2)
@@ -226,36 +227,66 @@ class Population:
             new_generation.append(offspring1)
             new_generation.append(offspring2)
         self.individuals = new_generation
+        self.elements = self.individuals  # Just for plotting purposes
+        self.global_best_state = min(self.individuals, key=lambda ind: ind.score).state
+        self.global_best_score = min(self.individuals, key=lambda ind: ind.score).score
 
     def sum_of_fittness(self):
         return sum(individual.score for individual in self.individuals)
 
+    def convert_to_metric_units(self):
+        """
+        Converts the LU and LU/TU units to km and km/s respectively
+        """
+        lu_to_km_coeff = 389703
+        tu_to_s_coeff = 382981
+        self.global_best_state[:3] = np.array(self.global_best_state)[:3] * lu_to_km_coeff
+        self.global_best_state[3:] = np.array(self.global_best_state)[3:] * (lu_to_km_coeff / tu_to_s_coeff)
 
-def genetic_alg(population_size:int, max_generaton:int, mutation_rate: float = 0.01, crossover_rate: float = 0.7,
-                option: bool = True, tournament_size: int = None, file_path: str = DATA_PATH_ORBIT_L2_7,
-                number_of_measurements: int = 35):
-    best_scores_vector = []
-    model = ModelProperties(filepath=file_path, number_of_measurements=number_of_measurements)
-    population = Population(size=population_size, mutation_rate=mutation_rate, crossover_rate=crossover_rate, model=model)
-    best_individual = None
-    best_individual_init = min(population.individuals, key=lambda ind: ind.score)
-    best_scores_vector.append(best_individual_init.score)
-    for generation in range(max_generaton):
-        population.evolve(option, tournament_size)
-        print(f"Generation {generation}:")
-        print(f"Population: {population}")
-        best_individual = min(population.individuals, key=lambda ind: ind.score)
-        best_scores_vector.append(best_individual.score)
-        print("Best score: ", best_individual.score)
-        # potrzebne jest zwracanie takie jak w pso do plotowania
-    return [
-        best_individual_init,
-        best_individual,
-        model.chosen_states,
-        model.initial_state,
-        max_generaton,
-        best_scores_vector
-    ]
+
+@dataclass
+class GeneticAlgorithm:
+    mandatory: MandatorySettingsGEN
+    optional: OptionalSettingsGEN = field(default=OptionalSettingsGEN)
+    population: Population = field(init=False)
+
+    def __post_init__(self):
+        self.model = ModelProperties(self.optional.orbit_filepath, self.mandatory.number_of_measurements)
+        self.population = Population(
+            size=self.mandatory.population_size,
+            model=self.model,
+            mutation_rate=self.mandatory.mutation_rate,
+            crossover_rate=self.mandatory.crossover_rate
+        )
+
+    def run(self):
+        """
+        Main function of the algorithm.
+        """
+
+        best_scores_vector = []
+        initial_population = deepcopy(self.population)
+        for generation in range(self.mandatory.max_generations):
+            self.population.evolve()
+            print(f"Generation {generation}:")
+            print(f"Population: {self.population}")
+            print("Individuals:")
+            for ind in self.population.individuals:
+                print(ind.state)
+            print("Best score: ", self.population.global_best_score)
+            best_scores_vector.append(self.population.global_best_score)
+
+        final_population = deepcopy(self.population)
+        return [
+            initial_population,
+            final_population,
+            self.model.chosen_states,
+            self.model.initial_state,
+            self.mandatory.max_generations,
+            best_scores_vector]
 
 if __name__ == "__main__":
-    genetic_alg(80, 30, tournament_size=5, mutation_rate=0.1)
+    mandatory_ga = MandatorySettingsGEN()
+    optional_ga = OptionalSettingsGEN()
+    ga = GeneticAlgorithm(mandatory_ga, optional_ga)
+    ga.run()
