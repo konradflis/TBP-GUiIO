@@ -95,6 +95,22 @@ class OptionalSettingsABC:
         self.orbit_filepath = orbit_filepath
 
 
+class MandatorySettingsGEN:
+    """
+    Mandatory fields for GEN algorithm.
+    """
+    def __init__(self,
+                 population_size=100,
+                 max_generations=50,
+                 mutation_rate=0.01,
+                 crossover_rate=0.7,
+                 ):
+        self.population_size = population_size
+        self.max_generations = max_generations
+        self.mutation_rate = mutation_rate
+        self.crossover_rate = crossover_rate
+
+
 class PlotSettings:
     """
     Settings for plotting trajectories.

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>799</width>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -118,17 +118,20 @@
         </property>
         <property name="html">
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.875pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:16pt; font-weight:696;&quot;&gt;Problem Trzech Ciał&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:10pt;&quot;&gt;Aplikacja wizualizująca działanie algorytmów przybliżonych&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:8pt; color:#787878;&quot;&gt;Konrad Flis, Automatyka i Robotyka WEAIiIB AGH&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-size:8pt; color:#949494;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:696;&quot;&gt;Instrukcje i wskazówki:&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;1. Należy wypełnić wszystkie pola obowiązkowe (pola tekstowe spoza obszaru &amp;quot;Modyfikacje&amp;quot;).&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;2. Aby użyć modyfikacji, należy zaznaczyć odpowiednie pole wyboru. Aby zrezygnować z modyfikacji, wystarczy je odznaczyć.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:9pt;&quot;&gt;3. Szczegóły dotyczące parametrów poszczególnych algorytmów znajdują się w dokumentacji.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:696;&quot;&gt;Problem Trzech Ciał&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Aplikacja wizualizująca działanie algorytmów przybliżonych&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; color:#787878;&quot;&gt;Konrad Flis, Automatyka i Robotyka WEAIiIB AGH&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; color:#949494;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:696;&quot;&gt;Instrukcje i wskazówki:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1. Należy wypełnić wszystkie pola obowiązkowe (pola tekstowe spoza obszaru &amp;quot;Modyfikacje&amp;quot;).&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;2. Aby użyć modyfikacji, należy zaznaczyć odpowiednie pole wyboru. Aby zrezygnować z modyfikacji, wystarczy je odznaczyć.&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3. Szczegóły dotyczące parametrów poszczególnych algorytmów znajdują się w dokumentacji.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QComboBox" name="comboBoxLanguage">
@@ -180,7 +183,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -490,7 +492,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -779,7 +780,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -1089,7 +1089,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -1248,7 +1247,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -1875,7 +1873,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -2124,6 +2121,361 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="genethic">
+       <attribute name="title">
+        <string>Algorytm Genetyczny</string>
+       </attribute>
+       <widget class="QTableWidget" name="GENresultTable">
+        <property name="geometry">
+         <rect>
+          <x>400</x>
+          <y>360</y>
+          <width>371</width>
+          <height>150</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget_5">
+        <property name="geometry">
+         <rect>
+          <x>400</x>
+          <y>0</y>
+          <width>371</width>
+          <height>361</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="GENtabOrbit">
+         <attribute name="title">
+          <string>Orbita</string>
+         </attribute>
+         <widget class="QWidget" name="gridLayoutWidget_17">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>-1</y>
+            <width>371</width>
+            <height>341</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridOrbitGEN"/>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="GENtabPosition">
+         <attribute name="title">
+          <string>Położenia</string>
+         </attribute>
+         <widget class="QWidget" name="gridLayoutWidget_18">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>-1</y>
+            <width>371</width>
+            <height>341</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridPositionGEN"/>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="GENtabVelocity">
+         <attribute name="title">
+          <string>Prędkości</string>
+         </attribute>
+         <widget class="QWidget" name="gridLayoutWidget_19">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>-1</y>
+            <width>371</width>
+            <height>341</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridVelocityGEN"/>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="GENtabError">
+         <attribute name="title">
+          <string>Błąd</string>
+         </attribute>
+         <widget class="QWidget" name="gridLayoutWidget_20">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>-1</y>
+            <width>371</width>
+            <height>341</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridErrorGEN"/>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="label_31">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>71</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Parametry</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_34">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>90</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Population size</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_35">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>90</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Max generations</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_36">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>110</y>
+          <width>90</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Mutation rate</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_37">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>140</y>
+          <width>90</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Crossover rate</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="GEN_pop_size">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>50</y>
+          <width>70</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="GEN_max_gen">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>80</y>
+          <width>70</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>50</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="GEN_mut_rate">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>110</y>
+          <width>70</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>0.01</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="GEN_cross_rate">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>140</y>
+          <width>70</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>0.7</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="GEN_mutations">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>200</y>
+          <width>111</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="currentText">
+         <string>PLACEHOLDER</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_38">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>200</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Mutacje</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_39">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>230</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Krzyzowanie</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="GEN_cross">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>230</y>
+          <width>111</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="currentText">
+         <string>PLACEHOLDER</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_51">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>260</y>
+          <width>91</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Selekcja</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="GEN_selection">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>260</y>
+          <width>111</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QPushButton" name="GEN_Start">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>90</y>
+          <width>75</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+       <widget class="Line" name="line_6">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>0</y>
+          <width>20</width>
+          <height>531</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -2133,7 +2485,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>799</width>
      <height>22</height>
     </rect>
    </property>

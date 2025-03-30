@@ -4,7 +4,7 @@ Class handling the fields/checkboxes/comboboxes that are entered or selected by 
 from pathlib import Path
 from sources.data_structures import (MandatorySettingsPSO, MandatorySettingsABC,
                                      OptionalSettingsPSO, OptionalSettingsABC,
-                                     PlotSettings, Validations)
+                                     PlotSettings, Validations, MandatorySettingsGEN)
 
 class UserInputs:
     """
@@ -22,6 +22,7 @@ class UserInputs:
         self.optional_pso2_1 = OptionalSettingsPSO()
         self.optional_pso2_2 = OptionalSettingsPSO()
         self.optional_abc = OptionalSettingsABC()
+        self.mandatory_gen = MandatorySettingsGEN()
         self.settings = PlotSettings()
         self.validations = Validations()
         self.filepath = "../orbits/L2_7days.txt"
@@ -106,6 +107,12 @@ class UserInputs:
             self.combobox_wheel_method)
         self.ui.ABCinactiveCyclesCheckBox.toggled.connect(
             self.inactive_cycles_mod)
+        
+    def gen_logic(self):
+        """
+        Combines the actions related to GEN algorithm.
+        """
+        self.ui.GEN_pop_size
 
     def radiobutton_plot_type_clicked(self):
         """
