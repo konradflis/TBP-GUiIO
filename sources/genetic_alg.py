@@ -2,16 +2,21 @@ from dataclasses import dataclass, field
 from copy import deepcopy
 import numpy as np
 import random
-from .common_elements import PropagatedElement, ModelProperties
-from .constant import DATA_PATH_ORBIT_L2_7
+from sources.common_elements import PropagatedElement, ModelProperties
+from sources.constant import DATA_PATH_ORBIT_L2_7
 
 
 class Individual(PropagatedElement):
-    def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):
+    def __init__(self, state=None, model=None):
+        if model is None:
+            model = ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)
         super().__init__(state, model)
+
         if self.state is None:
             self.generate_random_genes()
-        self.score = self.calculate_cost()
+
+        self.model = model
+        self.calculate_cost()
 
     def generate_random_genes(self):
         """
@@ -101,7 +106,8 @@ class Population:
     size: int
     mutation_rate: float = 0.01
     crossover_rate: float = 0.7
-    individuals: list[Individual] = field(default=list, init=False)
+    model: ModelProperties = field(default_factory=lambda: ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35))
+    individuals: list[Individual] = field(default_factory=list, init=False)
 
 
     def __post_init__(self):
@@ -114,7 +120,8 @@ class Population:
         """
         Create a population of random individuals with specified size.
         """
-        return [Individual() for _ in range(self.size)]
+        individuals = [Individual(model=self.model) for _ in range(self.size)]
+        return individuals
 
     def evaluate_population(self):
         """
@@ -138,7 +145,7 @@ class Population:
         """ One of the two select options. """
         copy_list_of_individuals = deepcopy(self.individuals)
         if tournament_size is None:
-            tournament_size = self.size // 2
+            tournament_size = self.size // 10
         tournament_1 = random.sample(copy_list_of_individuals, tournament_size)
         parent_1 = min(tournament_1, key=lambda ind: ind.score)
         copy_list_of_individuals.remove(parent_1)
@@ -202,7 +209,7 @@ class Population:
         if random.random() < self.mutation_rate:
             individual.mutate(random.choice([True, False]))
 
-    def evolve(self):
+    def evolve(self, option: bool=True, tournament_size:int = None):
         """
         Create a new generation.
         """
@@ -210,7 +217,7 @@ class Population:
         new_generation = []
 
         while len(new_generation) < self.size:
-            parent1, parent2 = self.select_parents()
+            parent1, parent2 = self.select_parents(option, tournament_size)
             offspring1, offspring2 = self.crossover(parent1, parent2)
             self.mutate(offspring1)
             self.mutate(offspring2)
@@ -224,37 +231,31 @@ class Population:
         return sum(individual.score for individual in self.individuals)
 
 
-@dataclass
-class GeneticAlgorithm:
-    population_size: int
-    max_generations: int
-    mutation_rate: float = 0.01
-    crossover_rate: float = 0.7
-    population: Population = field(init=False)
-
-    def __post_init__(self):
-        self.population = Population(
-            size=self.population_size,
-            mutation_rate=self.mutation_rate,
-            crossover_rate=self.crossover_rate
-        )
-
-    def run(self):
-        """
-        Main function of the algorithm.
-        """
-        # run powinno przyjmowac obiekt z ktorego wyciaga sobie poszczegolne parametry, tak jak w pso
-        for generation in range(self.max_generations):
-            self.population.evolve()
-            print(f"Generation {generation}:")
-            print(f"Population: {self.population}")
-            print("Individuals:")
-            for ind in self.population.individuals:
-                print(ind.state)
-            best_individual = min(self.population.individuals, key=lambda ind: ind.score)
-            print("Best score: ", best_individual.score)
-            # potrzebne jest zwracanie takie jak w pso do plotowania
+def genetic_alg(population_size:int, max_generaton:int, mutation_rate: float = 0.01, crossover_rate: float = 0.7,
+                option: bool = True, tournament_size: int = None, file_path: str = DATA_PATH_ORBIT_L2_7,
+                number_of_measurements: int = 35):
+    best_scores_vector = []
+    model = ModelProperties(filepath=file_path, number_of_measurements=number_of_measurements)
+    population = Population(size=population_size, mutation_rate=mutation_rate, crossover_rate=crossover_rate, model=model)
+    best_individual = None
+    best_individual_init = min(population.individuals, key=lambda ind: ind.score)
+    best_scores_vector.append(best_individual_init.score)
+    for generation in range(max_generaton):
+        population.evolve(option, tournament_size)
+        print(f"Generation {generation}:")
+        print(f"Population: {population}")
+        best_individual = min(population.individuals, key=lambda ind: ind.score)
+        best_scores_vector.append(best_individual.score)
+        print("Best score: ", best_individual.score)
+        # potrzebne jest zwracanie takie jak w pso do plotowania
+    return [
+        best_individual_init,
+        best_individual,
+        model.chosen_states,
+        model.initial_state,
+        max_generaton,
+        best_scores_vector
+    ]
 
 if __name__ == "__main__":
-    ga = GeneticAlgorithm(population_size=100, max_generations=50)
-    ga.run()
+    genetic_alg(80, 30, tournament_size=5, mutation_rate=0.1)
