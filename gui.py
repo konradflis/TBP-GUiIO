@@ -222,12 +222,11 @@ class App(QMainWindow, UserInputs, Visualisation):
         """
         Starts the genetic algorithm as a response to clicking the button.
         """
-        ga = genetic_alg.GeneticAlgorithm(self.mandatory_gen.population_size,
-                                          self.mandatory_gen.max_generations,
-                                          self.mandatory_gen.mutation_rate,
-                                          self.mandatory_gen.crossover_rate,)
-        self.plot_properties_list = ga.run()
-
+        self.plot_properties_list = genetic_alg.genetic_alg(self.mandatory_gen.population_size,
+                                                            self.mandatory_gen.max_generations,
+                                                            self.mandatory_gen.mutation_rate,
+                                                            self.mandatory_gen.crossover_rate)
+        
         self.plotting_charts("GEN", self.settings)
         self.show_results("GEN")
         self.refresh_widgets()
