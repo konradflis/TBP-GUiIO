@@ -273,5 +273,7 @@ class Validations:
             "GEN_mut_rate": ValidatedElement(float, 0, 1,
                                                 "mandatory_gen.mutation_rate"),
             "GEN_cross_rate": ValidatedElement(float, 0, 1,
-                                                "mandatory_gen.crossover_rate")
+                                                "mandatory_gen.crossover_rate"),
+            "GENnumberOfMeasurements": ValidatedElement(int, 1, 250,
+                                                        "mandatory_gen.number_of_measurements")
         }
