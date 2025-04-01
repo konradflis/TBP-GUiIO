@@ -49,7 +49,7 @@ class Firefly(PropagatedElement):
         self.calculate_cost()
         self.brightness = 1 / (self.score + 1e-10) # 1e-10 to escape from division by zero
 
-    def move_towards(self, other, alpha, gamma, beta0, attractiveness_function):
+    def move_towards(self, other, alpha, gamma, beta0, attractiveness_function, movement_type):
         """
         Firefly movement with auto-matched randomization ranges
         using the same limits as in Swarm's initialization
@@ -72,10 +72,24 @@ class Firefly(PropagatedElement):
         temp_population = temp_swarm.generate_initial_population()
         random_vector = temp_population[0] - self.model.initial_state
 
-        # Update position
-        # XIN-SHE YANG proposed 3 types of
-        new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
-        # movement of fireflies
+        # All ideas Xin-She Yang mentioned are implemented below (except adaptive scaling)
+        if movement_type == 'linear':
+            new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
+
+        elif movement_type == 'exponential':
+            exp_attractiveness = beta * np.exp(-gamma * r **2)
+            new_state = self.state + exp_attractiveness * (other.state - self.state) + alpha * (random_vector - 0.5)
+
+        elif movement_type == 'gaussian':
+            gaussian_noise = np.random.normal(0, 1, size=self.state.shape)
+            new_state = self.state + beta * (other.state - self.state) + alpha * gaussian_noise
+
+        else:
+            raise ValueError(
+                f"Unknown movement_type: '{movement_type}'. "
+                "Expected 'linear' / 'exponential' / 'gaussian' / 'scaled'"
+            )
+
 
         # Apply bounds
         clipped_state = temp_swarm.generate_initial_population()[0]
@@ -154,7 +168,8 @@ def firefly_alg(mandatory, optional=None):
                             alpha,
                             gamma,
                             mandatory.beta0,
-                            optional.attractiveness_function
+                            optional.attractiveness_function,
+                            optional.movement_type
                         )
         elif optional.compare_type == 'all-all-no-duplicates':
             for idx, firefly_i in enumerate(swarm.elements):
@@ -165,7 +180,8 @@ def firefly_alg(mandatory, optional=None):
                             alpha,
                             gamma,
                             mandatory.beta0,
-                            optional.attractiveness_function
+                            optional.attractiveness_function,
+                            optional.movement_type
                         )
                     else: # common case: firefly i bigger than j, reversed operation
                           # in compare to this from above
@@ -176,7 +192,8 @@ def firefly_alg(mandatory, optional=None):
                             alpha,
                             gamma,
                             mandatory.beta0,
-                            optional.attractiveness_function
+                            optional.attractiveness_function,
+                            optional.movement_type
                         )
         elif optional.compare_type == 'by-pairs':
             for idx in range(len(swarm.elements) - 1):
@@ -186,7 +203,8 @@ def firefly_alg(mandatory, optional=None):
                             alpha,
                             gamma,
                             mandatory.beta0,
-                            optional.attractiveness_function
+                            optional.attractiveness_function,
+                            optional.movement_type
                         )
                     else: # common case: firefly i bigger than j, reversed operation
                           # in compare to this from above
@@ -197,7 +215,8 @@ def firefly_alg(mandatory, optional=None):
                             alpha,
                             gamma,
                             mandatory.beta0,
-                            optional.attractiveness_function
+                            optional.attractiveness_function,
+                            optional.movement_type
                         )
         else:
             raise ValueError(
