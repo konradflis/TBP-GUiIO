@@ -156,17 +156,42 @@ def firefly_alg(mandatory, optional=None):
                             mandatory.beta0,
                             optional.attractiveness_function
                         )
-        elif optional.compare_type == 'by-pairs':
-            for idx in range(len(swarm.elements)-1):
-                    if swarm.elements[idx].brightness > swarm.elements[idx+1].brightness:
-                        swarm.elements[idx+1].move_towards(
+        elif optional.compare_type == 'all-all-no-duplicates':
+            for idx, firefly_i in enumerate(swarm.elements):
+                for firefly_j in swarm.elements[idx + 1:]:  # Avoid duplicate comparisons
+                    if firefly_j.brightness > firefly_i.brightness:
+                        firefly_i.move_towards(
                             swarm.elements[idx],
                             alpha,
                             gamma,
                             mandatory.beta0,
                             optional.attractiveness_function
                         )
-                    else:
+                    else: # common case: firefly i bigger than j, reversed operation
+                          # in compare to this from above
+                        # in case brightnesses are equal, fireflies moves  for beta0 value
+                        # in random way for any beta type
+                        firefly_j.move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function
+                        )
+        elif optional.compare_type == 'by-pairs':
+            for idx in range(len(swarm.elements) - 1):
+                    if swarm.elements[idx].brightness > swarm.elements[idx + 1].brightness:
+                        swarm.elements[idx + 1].move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function
+                        )
+                    else: # common case: firefly i bigger than j, reversed operation
+                          # in compare to this from above
+                        # in case brightnesses are equal, fireflies moves  for beta0 value
+                        # in random way for any beta type
                         swarm.elements[idx].move_towards(
                             swarm.elements[idx + 1],
                             alpha,
@@ -177,17 +202,17 @@ def firefly_alg(mandatory, optional=None):
         else:
             raise ValueError(
                 f"Unknown compare_type: '{optional.compare_type}'. "
-                "Expected 'all-to-all' or 'by-pairs'."
+                "Expected 'all-to-all', 'all-to-all-no-duplicates' or 'by-pairs'."
             )
         swarm.update_global_best()
 
-        # Sprawdzamy, czy znaleziono nowy najlepszy wynik
+
         if swarm.global_best_score < current_best_score:
             current_best_score = swarm.global_best_score
-            best_iteration = it  # Zapisujemy numer pierwszej iteracji z najlepszym wynikiem
+            best_iteration = it
 
         print('global best score: ', swarm.global_best_score)
-        print('global best iteration: ', best_iteration)  # Wyświetlamy pierwszą iterację z najlepszym wynikiem
+        print('global best iteration: ', best_iteration)
 
         best_scores_vector.append(swarm.global_best_score)
     # END MAIN LOOP
