@@ -120,14 +120,17 @@ class OptionalSettingsFA:
     """
     def __init__(self,
                  alpha_decay=0.01,
-                 attractiveness_function='quadratic_decay',
+                 attractiveness_function='exponential',
                  distance_metric='euclidean',
+                 compare_type='by-pairs',
                  randomization_type='uniform',
                  bounds=None,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
         self.alpha_decay = alpha_decay          #  decay rate for alpha
-        self.attractiveness_function = attractiveness_function
+        self.attractiveness_function = attractiveness_function # exponential or
+        # quadratic_decay (suggested when distances are relatively small)
+        self.compare_type = compare_type # 'all-all' / 'by-pairs'
 
         #  FOR FURTHER IMPLEMENTATION ( NOT USED YET)
         self.distance_metric = distance_metric

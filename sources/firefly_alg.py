@@ -144,17 +144,41 @@ def firefly_alg(mandatory, optional=None):
         # Attractiveness varies with distance r via exp[−γr]
         gamma = mandatory.gamma # light absorption
 
-        # check all fireflies in pairs
-        for firefly_i in swarm.elements:
-            for firefly_j in swarm.elements:
-                if firefly_j.brightness > firefly_i.brightness:
-                    firefly_i.move_towards(
-                        firefly_j,
-                        alpha,
-                        gamma,
-                        mandatory.beta0,
-                        optional.attractiveness_function
-                    )
+        # check all fireflies by all-all method
+        if optional.compare_type == 'all-all':
+            for firefly_i in swarm.elements:
+                for firefly_j in swarm.elements:
+                    if firefly_j.brightness > firefly_i.brightness:
+                        firefly_i.move_towards(
+                            firefly_j,
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function
+                        )
+        elif optional.compare_type == 'by-pairs':
+            for idx in range(len(swarm.elements)-1):
+                    if swarm.elements[idx].brightness > swarm.elements[idx+1].brightness:
+                        swarm.elements[idx+1].move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function
+                        )
+                    else:
+                        swarm.elements[idx].move_towards(
+                            swarm.elements[idx + 1],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function
+                        )
+        else:
+            raise ValueError(
+                f"Unknown compare_type: '{optional.compare_type}'. "
+                "Expected 'all-to-all' or 'by-pairs'."
+            )
         swarm.update_global_best()
 
         # Sprawdzamy, czy znaleziono nowy najlepszy wynik
@@ -164,9 +188,10 @@ def firefly_alg(mandatory, optional=None):
 
         print('global best score: ', swarm.global_best_score)
         print('global best iteration: ', best_iteration)  # Wyświetlamy pierwszą iterację z najlepszym wynikiem
-        
+
         best_scores_vector.append(swarm.global_best_score)
-        
+    # END MAIN LOOP
+
     # pylint: disable=R0801
     final_swarm = deepcopy(swarm)
     return [
