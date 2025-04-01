@@ -49,27 +49,47 @@ class Firefly(PropagatedElement):
         self.calculate_cost()
         self.brightness = 1 / (self.score + 1e-10) # 1e-10 to escape from division by zero
 
-    def move_towards(self, other, alpha, gamma, beta0):
+    def move_towards(self, other, alpha, gamma, beta0, attractiveness_function, movement_type):
         """
         Firefly movement with auto-matched randomization ranges
         using the same limits as in Swarm's initialization
         """
         # Calculate distance and attractiveness
         r = np.linalg.norm(self.state - other.state) # cartesian distance
-        beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
-        # beta can also be defined as β = beta0 / (1 + gamma * r**2) - therefore beta
+        if attractiveness_function == 'exponential':
+            beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
         # decreases monotonically - inversed squared
-
+        elif attractiveness_function == 'quadratic_decay':
+            beta = beta0 / ( 1 + gamma * r ** 2) # attractiveness function - inversed squared
+        else:
+            raise ValueError(
+                f"Unknown attractiveness_function: '{attractiveness_function}'. "
+                "Expected 'exponential' or 'quadratic_decay'."
+            )
 
         # Generate random vector in with support of swarm (take first row to get vector)
         temp_swarm = Swarm(1, 1, self.model)
         temp_population = temp_swarm.generate_initial_population()
         random_vector = temp_population[0] - self.model.initial_state
 
-        # Update position
-        # XIN-SHE YANG proposed 3 types of
-        new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
-        # movement of fireflies
+        # All ideas Xin-She Yang mentioned are implemented below (except adaptive scaling)
+        if movement_type == 'linear':
+            new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
+
+        elif movement_type == 'exponential':
+            exp_attractiveness = beta * np.exp(-gamma * r **2)
+            new_state = self.state + exp_attractiveness * (other.state - self.state) + alpha * (random_vector - 0.5)
+
+        elif movement_type == 'gaussian':
+            gaussian_noise = np.random.normal(0, 1, size=self.state.shape)
+            new_state = self.state + beta * (other.state - self.state) + alpha * gaussian_noise
+
+        else:
+            raise ValueError(
+                f"Unknown movement_type: '{movement_type}'. "
+                "Expected 'linear' / 'exponential' / 'gaussian' / 'scaled'"
+            )
+
 
         # Apply bounds
         clipped_state = temp_swarm.generate_initial_population()[0]
@@ -138,28 +158,84 @@ def firefly_alg(mandatory, optional=None):
         # Attractiveness varies with distance r via exp[−γr]
         gamma = mandatory.gamma # light absorption
 
-        # check all fireflies in pairs
-        for firefly_i in swarm.elements:
-            for firefly_j in swarm.elements:
-                if firefly_j.brightness > firefly_i.brightness:
-                    firefly_i.move_towards(
-                        firefly_j,
-                        alpha,
-                        gamma,
-                        mandatory.beta0
-                    )
+        # check all fireflies by all-all method
+        if optional.compare_type == 'all-all':
+            for firefly_i in swarm.elements:
+                for firefly_j in swarm.elements:
+                    if firefly_j.brightness > firefly_i.brightness:
+                        firefly_i.move_towards(
+                            firefly_j,
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function,
+                            optional.movement_type
+                        )
+        elif optional.compare_type == 'all-all-no-duplicates':
+            for idx, firefly_i in enumerate(swarm.elements):
+                for firefly_j in swarm.elements[idx + 1:]:  # Avoid duplicate comparisons
+                    if firefly_j.brightness > firefly_i.brightness:
+                        firefly_i.move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function,
+                            optional.movement_type
+                        )
+                    else: # common case: firefly i bigger than j, reversed operation
+                          # in compare to this from above
+                        # in case brightnesses are equal, fireflies moves  for beta0 value
+                        # in random way for any beta type
+                        firefly_j.move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function,
+                            optional.movement_type
+                        )
+        elif optional.compare_type == 'by-pairs':
+            for idx in range(len(swarm.elements) - 1):
+                    if swarm.elements[idx].brightness > swarm.elements[idx + 1].brightness:
+                        swarm.elements[idx + 1].move_towards(
+                            swarm.elements[idx],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function,
+                            optional.movement_type
+                        )
+                    else: # common case: firefly i bigger than j, reversed operation
+                          # in compare to this from above
+                        # in case brightnesses are equal, fireflies moves  for beta0 value
+                        # in random way for any beta type
+                        swarm.elements[idx].move_towards(
+                            swarm.elements[idx + 1],
+                            alpha,
+                            gamma,
+                            mandatory.beta0,
+                            optional.attractiveness_function,
+                            optional.movement_type
+                        )
+        else:
+            raise ValueError(
+                f"Unknown compare_type: '{optional.compare_type}'. "
+                "Expected 'all-to-all', 'all-to-all-no-duplicates' or 'by-pairs'."
+            )
         swarm.update_global_best()
 
-        # Sprawdzamy, czy znaleziono nowy najlepszy wynik
+
         if swarm.global_best_score < current_best_score:
             current_best_score = swarm.global_best_score
-            best_iteration = it  # Zapisujemy numer pierwszej iteracji z najlepszym wynikiem
+            best_iteration = it
 
         print('global best score: ', swarm.global_best_score)
-        print('global best iteration: ', best_iteration)  # Wyświetlamy pierwszą iterację z najlepszym wynikiem
-        
+        print('global best iteration: ', best_iteration)
+
         best_scores_vector.append(swarm.global_best_score)
-        
+    # END MAIN LOOP
+
     # pylint: disable=R0801
     final_swarm = deepcopy(swarm)
     return [

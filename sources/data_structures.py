@@ -122,18 +122,26 @@ class OptionalSettingsFA:
                  alpha_decay=0.01,
                  attractiveness_function='exponential',
                  distance_metric='euclidean',
-                 randomization_type='uniform',
+                 compare_type='all-all',
+                 movement_type='linear',
                  bounds=None,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
-        self.alpha_decay = alpha_decay          # Exponential decay rate for alpha
+        self.alpha_decay = alpha_decay          #  decay rate for alpha
+        self.attractiveness_function = attractiveness_function # exponential OR
+        # quadratic_decay (suggested when distances are relatively small)
+        self.compare_type = compare_type # 'all-all' compares all fireflies with
+                                         # each other twice - O(n**2)
+        # 'all-all-no-duplicates' compares all fireflies with each other once - O(n**2) halfed
+        # 'by-pairs' compares 1st to 2nd, 2nd to 3rd, etc. - O(n) but lower accuracy
 
-        #  FOR FURTHER IMPLEMENTATION ( NOT USED YET)
-        self.attractiveness_function = attractiveness_function
-        self.distance_metric = distance_metric
-        self.randomization_type = randomization_type
+        self.movement_type = movement_type # 'linear' is linear movement
+        # 'exponential' is movement with exponential attractiveness decay
+        # 'gaussian' is movement with gaussian randomness
         self.bounds = bounds or [(-500, 500) for _ in range(6)]
         self.orbit_filepath = orbit_filepath
+        self.distance_metric = distance_metric
+
 
 class PlotSettings:
     """
