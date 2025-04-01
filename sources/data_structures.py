@@ -117,10 +117,12 @@ class OptionalSettingsGEN:
     Optional fields for GEN algorithm.
     """
     def __init__(self,
-                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
-                 ):
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
+                 select_parent_opt=True, tournament_size=None, mutate_opt=True):
         self.orbit_filepath = orbit_filepath
-
+        self.select_parent_opt = select_parent_opt
+        self.tournament_size = tournament_size
+        self.mutate_opt = mutate_opt
 
 class PlotSettings:
     """

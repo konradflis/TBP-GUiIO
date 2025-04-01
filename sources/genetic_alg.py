@@ -107,6 +107,7 @@ class Population:
     individuals: list[Individual] = field(default=list, init=False)
     global_best_state: list = None
     global_best_score: float = np.inf
+    mutate_option: bool = True
 
 
     def __post_init__(self):
@@ -146,7 +147,7 @@ class Population:
         """ One of the two select options. """
         copy_list_of_individuals = deepcopy(self.individuals)
         if tournament_size is None:
-            tournament_size = self.size // 2
+            tournament_size = self.size // 10
         tournament_1 = random.sample(copy_list_of_individuals, tournament_size)
         parent_1 = min(tournament_1, key=lambda ind: ind.score)
         copy_list_of_individuals.remove(parent_1)
@@ -208,9 +209,9 @@ class Population:
         Mutate an individual.
         """
         if random.random() < self.mutation_rate:
-            individual.mutate(random.choice([True, False]))
+            individual.mutate(self.mutate_option)
 
-    def evolve(self):
+    def evolve(self, option: bool=True, tournament_size:int = None):
         """
         Create a new generation.
         """
@@ -218,7 +219,7 @@ class Population:
         new_generation = []
 
         while len(new_generation) < self.size:
-            parent1, parent2 = self.select_parents()
+            parent1, parent2 = self.select_parents(option, tournament_size)
             offspring1, offspring2 = self.crossover(parent1, parent2)
             self.mutate(offspring1)
             self.mutate(offspring2)
@@ -256,7 +257,8 @@ class GeneticAlgorithm:
             size=self.mandatory.population_size,
             model=self.model,
             mutation_rate=self.mandatory.mutation_rate,
-            crossover_rate=self.mandatory.crossover_rate
+            crossover_rate=self.mandatory.crossover_rate,
+            mutate_option=self.optional.mutate_opt # dodac do gui
         )
 
     def run(self):
@@ -267,7 +269,8 @@ class GeneticAlgorithm:
         best_scores_vector = []
         initial_population = deepcopy(self.population)
         for generation in range(self.mandatory.max_generations):
-            self.population.evolve()
+            self.population.evolve(option=self.optional.select_parent_opt,
+                                   tournament_size=self.optional.tournament_size) # dodac do gui
             print(f"Generation {generation}:")
             print(f"Population: {self.population}")
             print("Individuals:")
