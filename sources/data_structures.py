@@ -120,16 +120,16 @@ class OptionalSettingsFA:
     """
     def __init__(self,
                  alpha_decay=0.01,
-                 attractiveness_function='exponential',
+                 attractiveness_function='quadratic_decay',
                  distance_metric='euclidean',
                  randomization_type='uniform',
                  bounds=None,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
-        self.alpha_decay = alpha_decay          # Exponential decay rate for alpha
+        self.alpha_decay = alpha_decay          #  decay rate for alpha
+        self.attractiveness_function = attractiveness_function
 
         #  FOR FURTHER IMPLEMENTATION ( NOT USED YET)
-        self.attractiveness_function = attractiveness_function
         self.distance_metric = distance_metric
         self.randomization_type = randomization_type
         self.bounds = bounds or [(-500, 500) for _ in range(6)]

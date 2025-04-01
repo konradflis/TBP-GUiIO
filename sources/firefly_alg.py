@@ -49,17 +49,23 @@ class Firefly(PropagatedElement):
         self.calculate_cost()
         self.brightness = 1 / (self.score + 1e-10) # 1e-10 to escape from division by zero
 
-    def move_towards(self, other, alpha, gamma, beta0):
+    def move_towards(self, other, alpha, gamma, beta0, attractiveness_function):
         """
         Firefly movement with auto-matched randomization ranges
         using the same limits as in Swarm's initialization
         """
         # Calculate distance and attractiveness
         r = np.linalg.norm(self.state - other.state) # cartesian distance
-        beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
-        # beta can also be defined as β = beta0 / (1 + gamma * r**2) - therefore beta
+        if attractiveness_function == 'exponential':
+            beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
         # decreases monotonically - inversed squared
-
+        elif attractiveness_function == 'quadratic_decay':
+            beta = beta0 / ( 1 + gamma * r ** 2) # attractiveness function - inversed squared
+        else:
+            raise ValueError(
+                f"Unknown attractiveness_function: '{attractiveness_function}'. "
+                "Expected 'exponential' or 'quadratic_decay'."
+            )
 
         # Generate random vector in with support of swarm (take first row to get vector)
         temp_swarm = Swarm(1, 1, self.model)
@@ -146,7 +152,8 @@ def firefly_alg(mandatory, optional=None):
                         firefly_j,
                         alpha,
                         gamma,
-                        mandatory.beta0
+                        mandatory.beta0,
+                        optional.attractiveness_function
                     )
         swarm.update_global_best()
 
