@@ -114,7 +114,8 @@ class UserInputs:
         """
         Combines the actions related to GEN algorithm.
         """
-        pass
+        self.ui.GEN_mutations.currentIndexChanged.connect(self.combobox_mutate)
+        self.ui.GEN_selection.currentIndexChanged.connect(self.combobox_select_parent)
 
     def radiobutton_plot_type_clicked(self):
         """
@@ -222,6 +223,12 @@ class UserInputs:
         :param index: indicates the index of modification
         """
         self.optional_abc.probability_distribution_setter = index
+
+    def combobox_mutate(self, index):
+        self.optional_gen.mutate_opt = index
+
+    def combobox_select_parent(self, index):
+        self.optional_gen.select_parent_opt = index
 
     def orbit_combobox_selected(self, index):
         """

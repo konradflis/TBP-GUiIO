@@ -36,9 +36,9 @@ class Individual(PropagatedElement):
         - option 2: after implementation add describtion
         """
         if option:
-            self.state = self._mutate_1(mutation_rate)
-        else:
             self.state = self._mutate_2(mutation_rate)
+        else:
+            self.state = self._mutate_1(mutation_rate)
 
 
     def _mutate_1(self, mutation_rate: float=0.01):
@@ -132,7 +132,7 @@ class Population:
         self.global_best_state = min(self.individuals, key=lambda ind: ind.score).state
         self.global_best_score = min(self.individuals, key=lambda ind: ind.score).score
 
-    def select_parents(self, option: bool=True, tournament_size:int = None):
+    def select_parents(self, option: bool=False, tournament_size:int = None):
         """
         Two select options are available:
         - option 1: after implementation add describtion
@@ -209,7 +209,7 @@ class Population:
         Mutate an individual.
         """
         if random.random() < self.mutation_rate:
-            individual.mutate(self.mutate_option)
+            individual.mutate(self.mutation_rate, self.mutate_option)
 
     def evolve(self, option: bool=True, tournament_size:int = None):
         """
@@ -265,7 +265,6 @@ class GeneticAlgorithm:
         """
         Main function of the algorithm.
         """
-
         best_scores_vector = []
         initial_population = deepcopy(self.population)
         for generation in range(self.mandatory.max_generations):

@@ -118,7 +118,7 @@ class OptionalSettingsGEN:
     """
     def __init__(self,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
-                 select_parent_opt=True, tournament_size=None, mutate_opt=True):
+                 select_parent_opt=False, tournament_size=None, mutate_opt=False):
         self.orbit_filepath = orbit_filepath
         self.select_parent_opt = select_parent_opt
         self.tournament_size = tournament_size
