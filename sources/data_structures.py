@@ -166,11 +166,13 @@ class OptionalSettingsGEN:
     """
     def __init__(self,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
-                 select_parent_opt=False, tournament_size=None, mutate_opt=False):
+                 select_parent_opt=False, tournament_size=None, mutate_opt=False, both_methods=True, single_point=True):
         self.orbit_filepath = orbit_filepath
         self.select_parent_opt = select_parent_opt
         self.tournament_size = tournament_size
         self.mutate_opt = mutate_opt
+        self.both_methods = both_methods
+        self.single_point = single_point
 
 class PlotSettings:
     """
