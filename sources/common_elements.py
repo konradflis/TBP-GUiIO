@@ -221,10 +221,10 @@ def final_plot(
     series2 = []
 
     for source in initial_swarm.elements:
-        series1.append(data_load.convert_to_metric_units(deepcopy(source.state)))
+        series1.append(data_load.convert_to_metric_units(deepcopy(np.array(source.state))))
 
     for source in final_swarm.elements:
-        series2.append(data_load.convert_to_metric_units(deepcopy(source.state)))
+        series2.append(data_load.convert_to_metric_units(deepcopy(np.array(source.state))))
 
     found_solution = PropagatedElement(final_swarm.global_best_state, final_swarm.model)
     global_best_solution = PropagatedElement(initial_state, initial_swarm.model)
@@ -250,5 +250,5 @@ def final_plot(
         propagated_trajectory = data_load.convert_to_metric_units(
             found_solution.propagate(time_vect, time_span * settings.periods).y[:3])
 
-    return (original_trajectory, propagated_trajectory, initial_state[:3] * 389703,
-            final_swarm.global_best_state[:3] * 389703, series1, series2)
+    return (original_trajectory, propagated_trajectory, np.array(initial_state)[:3] * 389703,
+            np.array(final_swarm.global_best_state)[:3] * 389703, series1, series2)

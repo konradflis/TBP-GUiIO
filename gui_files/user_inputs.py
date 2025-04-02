@@ -4,7 +4,8 @@ Class handling the fields/checkboxes/comboboxes that are entered or selected by 
 from pathlib import Path
 from sources.data_structures import (MandatorySettingsPSO, MandatorySettingsABC,
                                      OptionalSettingsPSO, OptionalSettingsABC,
-                                     PlotSettings, Validations,MandatorySettingsFA)
+                                     PlotSettings, Validations, MandatorySettingsGEN,
+                                     OptionalSettingsGEN)
 
 class UserInputs:
     """
@@ -22,6 +23,8 @@ class UserInputs:
         self.optional_pso2_1 = OptionalSettingsPSO()
         self.optional_pso2_2 = OptionalSettingsPSO()
         self.optional_abc = OptionalSettingsABC()
+        self.mandatory_gen = MandatorySettingsGEN()
+        self.optional_gen = OptionalSettingsGEN()
         self.mandatory_fa = MandatorySettingsFA()
         self.settings = PlotSettings()
         self.validations = Validations()
@@ -115,6 +118,13 @@ class UserInputs:
             self.combobox_wheel_method)
         self.ui.ABCinactiveCyclesCheckBox.toggled.connect(
             self.inactive_cycles_mod)
+        
+    def gen_logic(self):
+        """
+        Combines the actions related to GEN algorithm.
+        """
+        self.ui.GEN_mutations.currentIndexChanged.connect(self.combobox_mutate)
+        self.ui.GEN_selection.currentIndexChanged.connect(self.combobox_select_parent)
 
     def radiobutton_plot_type_clicked(self):
         """
@@ -222,6 +232,12 @@ class UserInputs:
         :param index: indicates the index of modification
         """
         self.optional_abc.probability_distribution_setter = index
+
+    def combobox_mutate(self, index):
+        self.optional_gen.mutate_opt = index
+
+    def combobox_select_parent(self, index):
+        self.optional_gen.select_parent_opt = index
 
     def orbit_combobox_selected(self, index):
         """

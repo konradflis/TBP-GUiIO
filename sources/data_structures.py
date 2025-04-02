@@ -143,6 +143,35 @@ class OptionalSettingsFA:
         self.distance_metric = distance_metric
 
 
+class MandatorySettingsGEN:
+    """
+    Mandatory fields for GEN algorithm.
+    """
+    def __init__(self,
+                 population_size=10,
+                 number_of_measurements=35,
+                 max_generations=5,
+                 mutation_rate=0.01,
+                 crossover_rate=0.7,
+                 ):
+        self.population_size = population_size
+        self.number_of_measurements = number_of_measurements
+        self.max_generations = max_generations
+        self.mutation_rate = mutation_rate
+        self.crossover_rate = crossover_rate
+
+class OptionalSettingsGEN:
+    """
+    Optional fields for GEN algorithm.
+    """
+    def __init__(self,
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
+                 select_parent_opt=False, tournament_size=None, mutate_opt=False):
+        self.orbit_filepath = orbit_filepath
+        self.select_parent_opt = select_parent_opt
+        self.tournament_size = tournament_size
+        self.mutate_opt = mutate_opt
+
 class PlotSettings:
     """
     Settings for plotting trajectories.
@@ -285,6 +314,17 @@ class Validations:
                                                 "optional_abc.neigh_percent"),
             "multiplePeriods": ValidatedElement(int, 0, 99,
                                                 "optional_abc.multiple_periods"),
+
+            "GEN_pop_size": ValidatedElement(int, 1, 999,
+                                                "mandatory_gen.population_size"),
+            "GEN_max_gen": ValidatedElement(int, 1, 999,
+                                                "mandatory_gen.max_generations"),
+            "GEN_mut_rate": ValidatedElement(float, 0, 1,
+                                                "mandatory_gen.mutation_rate"),
+            "GEN_cross_rate": ValidatedElement(float, 0, 1,
+                                                "mandatory_gen.crossover_rate"),
+            "GENnumberOfMeasurements": ValidatedElement(int, 1, 250,
+                                                        "mandatory_gen.number_of_measurements")
             "FApopulationSize": ValidatedElement(int, 1, 999, 
                                                  "mandatory_fa.population_size"),
             "FAmaxIterations": ValidatedElement(int, 1, 999, 
@@ -299,3 +339,4 @@ class Validations:
                                                 "mandatory_fa.number_of_measurements")
 
         }
+

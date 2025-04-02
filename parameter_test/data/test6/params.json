@@ -1,0 +1,7 @@
+{
+    "population_size": 100,
+    "max_generations": 100,
+    "mutation_rate": 0.05,
+    "crossover_rate": 0.9,
+    "tournament_size": 5
+}
