@@ -6,7 +6,7 @@ from sources.data_structures import MandatorySettingsGEN, OptionalSettingsGEN
 from sources.common_elements import PropagatedElement, ModelProperties
 from sources.constant import DATA_PATH_ORBIT_L2_7
 from copy import deepcopy
-from constant import DATA_PATH_ORBIT_L2_7
+from sources.constant import DATA_PATH_ORBIT_L2_7
 
 class Individual(PropagatedElement):
     def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):

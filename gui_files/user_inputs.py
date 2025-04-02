@@ -5,7 +5,7 @@ from pathlib import Path
 from sources.data_structures import (MandatorySettingsPSO, MandatorySettingsABC,
                                      OptionalSettingsPSO, OptionalSettingsABC,
                                      PlotSettings, Validations, MandatorySettingsGEN,
-                                     OptionalSettingsGEN)
+                                     OptionalSettingsGEN, MandatorySettingsFA, OptionalSettingsFA)
 
 class UserInputs:
     """

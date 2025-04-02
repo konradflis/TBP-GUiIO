@@ -324,7 +324,7 @@ class Validations:
             "GEN_cross_rate": ValidatedElement(float, 0, 1,
                                                 "mandatory_gen.crossover_rate"),
             "GENnumberOfMeasurements": ValidatedElement(int, 1, 250,
-                                                        "mandatory_gen.number_of_measurements")
+                                                        "mandatory_gen.number_of_measurements"),
             "FApopulationSize": ValidatedElement(int, 1, 999, 
                                                  "mandatory_fa.population_size"),
             "FAmaxIterations": ValidatedElement(int, 1, 999, 

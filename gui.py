@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from gui_files.TBP_visualisation import Ui_MainWindow
 from gui_files.user_inputs import UserInputs
 from gui_files.visualisation import Visualisation
-from sources import abc_alg, pso, genetic_alg
+from sources import abc_alg, pso, genetic_alg, firefly_alg
 
 class App(QMainWindow, UserInputs, Visualisation):
     # pylint: disable=R0902, R0903, R0913, R0917
