@@ -25,6 +25,7 @@ class UserInputs:
         self.optional_abc = OptionalSettingsABC()
         self.mandatory_gen = MandatorySettingsGEN()
         self.optional_gen = OptionalSettingsGEN()
+        self.mandatory_fa = MandatorySettingsFA()
         self.settings = PlotSettings()
         self.validations = Validations()
         self.filepath = "../orbits/L2_7days.txt"
@@ -92,6 +93,14 @@ class UserInputs:
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO21"))
         self.ui.PSO2velocityCheckBox2.toggled.connect(
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO22"))
+
+    #def fa_logic(self):
+
+        """
+        Combines the actions related to FA algorithm.
+        """
+        
+            
 
 
     def abc_logic(self):
@@ -237,10 +246,10 @@ class UserInputs:
         """
         orbits = [
             Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_35.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_821.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/L2_1524.txt",
-            Path(__file__).resolve().parent.parent / "orbits" / "orbits/ID_16.txt"]
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_35.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_821.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "L2_1524.txt",
+            Path(__file__).resolve().parent.parent / "orbits" / "ID_16.txt"]
         self.filepath = orbits[index]
         self.optional_pso.orbit_filepath = self.filepath
         self.optional_pso2_1.orbit_filepath = self.filepath

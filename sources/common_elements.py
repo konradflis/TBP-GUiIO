@@ -132,6 +132,7 @@ class Swarm:
         self.max_iterations = max_iterations
         self.elements = []
         self.global_best_score = np.inf
+        self.global_iteration = np.inf
         self.global_best_state = []
         self.model = model
 
@@ -183,6 +184,7 @@ class Swarm:
         iteration_best_state = self.elements[iteration_best_score_idx].state
         if self.elements[iteration_best_score_idx].score < self.global_best_score:
             self.global_best_score = self.elements[iteration_best_score_idx].score
+  #          self.global_best_score = 
             self.global_best_state = iteration_best_state
 
     def convert_to_metric_units(self):

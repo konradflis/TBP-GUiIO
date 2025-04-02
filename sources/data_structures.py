@@ -48,6 +48,26 @@ class MandatorySettingsABC:
         self.neighbours_vel_limits = neighbours_vel_limits
         self.inactive_cycles_limit = inactive_cycles_limit
 
+class MandatorySettingsFA:
+    """
+    Mandatory fields for Firefly Algorithm.
+    """
+    def __init__(self,
+                 max_iterations=12,
+                 population_size=32,
+                 number_of_measurements=25,
+                 alpha_initial=0.5,
+                 gamma=1,
+                 beta0=1
+                 ):
+        self.max_iterations = max_iterations
+        self.population_size = population_size
+        self.number_of_measurements = number_of_measurements
+        self.alpha_initial = alpha_initial
+        self.gamma = gamma
+        self.beta0 = beta0
+
+
 
 class OptionalSettingsPSO:
     """
@@ -93,6 +113,34 @@ class OptionalSettingsABC:
         self.neigh_percent = neigh_percent
         self.dim_probability = dim_probability
         self.orbit_filepath = orbit_filepath
+
+class OptionalSettingsFA:
+    """
+    Optional fields for Firefly Algorithm.
+    """
+    def __init__(self,
+                 alpha_decay=0.01,
+                 attractiveness_function='exponential',
+                 distance_metric='euclidean',
+                 compare_type='all-all',
+                 movement_type='linear',
+                 bounds=None,
+                 orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
+                 ):
+        self.alpha_decay = alpha_decay          #  decay rate for alpha
+        self.attractiveness_function = attractiveness_function # exponential OR
+        # quadratic_decay (suggested when distances are relatively small)
+        self.compare_type = compare_type # 'all-all' compares all fireflies with
+                                         # each other twice - O(n**2)
+        # 'all-all-no-duplicates' compares all fireflies with each other once - O(n**2) halfed
+        # 'by-pairs' compares 1st to 2nd, 2nd to 3rd, etc. - O(n) but lower accuracy
+
+        self.movement_type = movement_type # 'linear' is linear movement
+        # 'exponential' is movement with exponential attractiveness decay
+        # 'gaussian' is movement with gaussian randomness
+        self.bounds = bounds or [(-500, 500) for _ in range(6)]
+        self.orbit_filepath = orbit_filepath
+        self.distance_metric = distance_metric
 
 
 class MandatorySettingsGEN:
@@ -266,6 +314,7 @@ class Validations:
                                                 "optional_abc.neigh_percent"),
             "multiplePeriods": ValidatedElement(int, 0, 99,
                                                 "optional_abc.multiple_periods"),
+
             "GEN_pop_size": ValidatedElement(int, 1, 999,
                                                 "mandatory_gen.population_size"),
             "GEN_max_gen": ValidatedElement(int, 1, 999,
@@ -276,4 +325,18 @@ class Validations:
                                                 "mandatory_gen.crossover_rate"),
             "GENnumberOfMeasurements": ValidatedElement(int, 1, 250,
                                                         "mandatory_gen.number_of_measurements")
+            "FApopulationSize": ValidatedElement(int, 1, 999, 
+                                                 "mandatory_fa.population_size"),
+            "FAmaxIterations": ValidatedElement(int, 1, 999, 
+                                                "mandatory_fa.max_iterations"),
+            "FAalpha_initial": ValidatedElement(float, 0.0, 10.0, 
+                                                "mandatory_fa.alpha_initial"),
+            "FAbeta": ValidatedElement(float, 0.0, 10.0, 
+                                                "mandatory_fa.beta0"),
+            "FAgamma": ValidatedElement(float, 0.0, 10.0, 
+                                        "mandatory_fa.gamma"),
+            "FAnumberOfMeasurements": ValidatedElement(int, 1, 999, 
+                                                "mandatory_fa.number_of_measurements")
+
         }
+

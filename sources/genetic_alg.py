@@ -2,11 +2,11 @@ from dataclasses import dataclass, field
 from copy import deepcopy
 import numpy as np
 import random
-
 from sources.data_structures import MandatorySettingsGEN, OptionalSettingsGEN
 from sources.common_elements import PropagatedElement, ModelProperties
 from sources.constant import DATA_PATH_ORBIT_L2_7
-
+from copy import deepcopy
+from constant import DATA_PATH_ORBIT_L2_7
 
 class Individual(PropagatedElement):
     def __init__(self, state=None, model=ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)):
@@ -46,6 +46,7 @@ class Individual(PropagatedElement):
         One of the two mutate options.
         Method that mutates a single gene with constant shift.
         """
+
         mutate_index = random.randint(0, 5)
         shift = 0.001
         self.state[mutate_index]+=shift
@@ -57,11 +58,13 @@ class Individual(PropagatedElement):
         One of the two mutate options.
         Method that mutates random numbers genes with random shift.
         """
+
         indexes = random.sample([0, 1, 2, 3, 4, 5], k=random.randint(2, 6))
         for i in indexes:
             shift = random.uniform(-0.001,0.001)
             self.state[i]+=shift
         return self.state
+
 
     def crossover_1(self, other):
         """

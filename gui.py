@@ -39,12 +39,15 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.pso_logic()
         self.pso2_logic()
         self.abc_logic()
+
         self.gen_logic()
+        #self.fa_logic()
 
         self.ui.PSOstartButton.clicked.connect(self.button_clicked_pso)
         self.ui.PSO2startButton.clicked.connect(self.button_clicked_pso2)
         self.ui.ABCstartButton.clicked.connect(self.button_clicked_abc)
         self.ui.GENstartButton.clicked.connect(self.button_clicked_gen)
+        self.ui.FAstartButton.clicked.connect(self.button_clicked_fa)
 
         self.ui.comboBoxLanguage.currentIndexChanged.connect(
             self.combobox_language_selected)
@@ -218,6 +221,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.show_results("ABC")
         self.refresh_widgets()
 
+
     def button_clicked_gen(self):
         """
         Starts the genetic algorithm as a response to clicking the button.
@@ -226,6 +230,20 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.plot_properties_list = ga.run()
         self.plotting_charts("GEN", self.settings)
         self.show_results("GEN")
+        self.refresh_widgets()
+
+    def button_clicked_fa(self):
+        """
+        Starts the PSO algorithm as a response to clicking the button.
+        """
+
+        self.plot_properties_list = firefly_alg.firefly_alg(
+
+            self.mandatory_fa)
+        
+
+        self.plotting_charts("FA", self.settings)
+        self.show_results("FA")
         self.refresh_widgets()
 
 
