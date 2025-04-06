@@ -41,7 +41,7 @@ class App(QMainWindow, UserInputs, Visualisation):
         self.abc_logic()
 
         self.gen_logic()
-        #self.fa_logic()
+        self.fa_logic()
 
         self.ui.PSOstartButton.clicked.connect(self.button_clicked_pso)
         self.ui.PSO2startButton.clicked.connect(self.button_clicked_pso2)
@@ -239,7 +239,7 @@ class App(QMainWindow, UserInputs, Visualisation):
 
         self.plot_properties_list = firefly_alg.firefly_alg(
 
-            self.mandatory_fa)
+            self.mandatory_fa, self.optional_fa)
         
 
         self.plotting_charts("FA", self.settings)

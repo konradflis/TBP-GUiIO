@@ -120,10 +120,10 @@ class OptionalSettingsFA:
     """
     def __init__(self,
                  alpha_decay=0.01,
-                 attractiveness_function='exponential',
+                 attractiveness_function=0,
                  distance_metric='euclidean',
-                 compare_type='all-all',
-                 movement_type='linear',
+                 compare_type=0,
+                 movement_type=0,
                  bounds=None,
                  orbit_filepath=Path(__file__).resolve().parent.parent / "orbits" / "L2_7days.txt"
                  ):
@@ -338,7 +338,9 @@ class Validations:
             "FAgamma": ValidatedElement(float, 0.0, 10.0, 
                                         "mandatory_fa.gamma"),
             "FAnumberOfMeasurements": ValidatedElement(int, 1, 999, 
-                                                "mandatory_fa.number_of_measurements")
+                                                "mandatory_fa.number_of_measurements"),
+            "FAalfadecay": ValidatedElement(float, 0.0, 10.0, 
+                                        "optional_fa.alpha_decay")
 
         }
 

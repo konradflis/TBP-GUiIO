@@ -2773,7 +2773,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>480</y>
+          <y>410</y>
           <width>75</width>
           <height>23</height>
          </rect>
@@ -2840,24 +2840,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <string>Funkcja atrakcyjnosci</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_137">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>340</y>
-          <width>181</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Geometria</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_207">
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>370</y>
+          <y>340</y>
           <width>181</width>
           <height>21</height>
          </rect>
@@ -2870,7 +2857,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>400</y>
+          <y>370</y>
           <width>181</width>
           <height>21</height>
          </rect>
@@ -2878,6 +2865,100 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="text">
          <string>Typ ruchu</string>
         </property>
+       </widget>
+       <widget class="QLineEdit" name="FAalfadecay">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>280</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>6</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="FAatractivnes">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>310</y>
+          <width>71</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="currentText">
+         <string>rozpad wykładniczy</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>rozpad wykładniczy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>rozpad kwadratowy</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QComboBox" name="FAcompra">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>340</y>
+          <width>71</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="currentText">
+         <string>każdy - każdy</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>każdy - każdy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>każdy - każdy bez duplikatów</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>pary</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QComboBox" name="FAmovementtype">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>370</y>
+          <width>71</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="currentText">
+         <string>ruch liniowy</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>ruch liniowy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>wykładniczy spadek</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>losowy gaussowski</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </widget>

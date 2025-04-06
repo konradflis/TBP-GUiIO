@@ -26,6 +26,7 @@ class UserInputs:
         self.mandatory_gen = MandatorySettingsGEN()
         self.optional_gen = OptionalSettingsGEN()
         self.mandatory_fa = MandatorySettingsFA()
+        self.optional_fa = OptionalSettingsFA()
         self.settings = PlotSettings()
         self.validations = Validations()
         self.filepath = "../orbits/L2_7days.txt"
@@ -94,14 +95,16 @@ class UserInputs:
         self.ui.PSO2velocityCheckBox2.toggled.connect(
             lambda checked: self.checkbox_pso_n_selected(checked, "PSO22"))
 
-    #def fa_logic(self):
+    def fa_logic(self):
+
+        self.ui.FAatractivnes.currentIndexChanged.connect(self.combobox_atractivnes)
+        self.ui.FAcompra.currentIndexChanged.connect(self.combobox_comparsion)
+        self.ui.FAmovementtype.currentIndexChanged.connect(self.combobox_move_type)
 
         """
         Combines the actions related to FA algorithm.
-        """
-        
-            
 
+                """
 
     def abc_logic(self):
         """
@@ -238,6 +241,15 @@ class UserInputs:
 
     def combobox_select_parent(self, index):
         self.optional_gen.select_parent_opt = index
+
+    def combobox_atractivnes(self, index):
+        self.optional_fa.attractiveness_function = index
+
+    def combobox_comparsion(self, index):
+        self.optional_fa.compare_type = index
+
+    def combobox_move_type(self, index):
+        self.optional_fa.movement_type = index
 
     def orbit_combobox_selected(self, index):
         """

@@ -56,10 +56,10 @@ class Firefly(PropagatedElement):
         """
         # Calculate distance and attractiveness
         r = np.linalg.norm(self.state - other.state) # cartesian distance
-        if attractiveness_function == 'exponential':
+        if attractiveness_function == 0:
             beta = beta0 * np.exp(-gamma * r ** 2) # attractiveness function - exponential
         # decreases monotonically - inversed squared
-        elif attractiveness_function == 'quadratic_decay':
+        elif attractiveness_function == 1:
             beta = beta0 / ( 1 + gamma * r ** 2) # attractiveness function - inversed squared
         else:
             raise ValueError(
@@ -73,14 +73,14 @@ class Firefly(PropagatedElement):
         random_vector = temp_population[0] - self.model.initial_state
 
         # All ideas Xin-She Yang mentioned are implemented below (except adaptive scaling)
-        if movement_type == 'linear':
+        if movement_type == 0: 
             new_state = self.state + beta * (other.state - self.state) + alpha * random_vector
 
-        elif movement_type == 'exponential':
+        elif movement_type == 1:
             exp_attractiveness = beta * np.exp(-gamma * r **2)
             new_state = self.state + exp_attractiveness * (other.state - self.state) + alpha * (random_vector - 0.5)
 
-        elif movement_type == 'gaussian':
+        elif movement_type == 2:
             gaussian_noise = np.random.normal(0, 1, size=self.state.shape)
             new_state = self.state + beta * (other.state - self.state) + alpha * gaussian_noise
 
@@ -152,14 +152,13 @@ def firefly_alg(mandatory, optional=None):
     # MAIN LOOP
     for it in range(mandatory.max_iterations):
         print("iter. no. ", it)
-
         # update parameters
         alpha = mandatory.alpha_initial * np.exp(-optional.alpha_decay * it)
         # Attractiveness varies with distance r via exp[−γr]
         gamma = mandatory.gamma # light absorption
 
         # check all fireflies by all-all method
-        if optional.compare_type == 'all-all':
+        if optional.compare_type == 0:  #'all-all':
             for firefly_i in swarm.elements:
                 for firefly_j in swarm.elements:
                     if firefly_j.brightness > firefly_i.brightness:
@@ -171,7 +170,7 @@ def firefly_alg(mandatory, optional=None):
                             optional.attractiveness_function,
                             optional.movement_type
                         )
-        elif optional.compare_type == 'all-all-no-duplicates':
+        elif optional.compare_type == 1: #'all-all-no-duplicates':
             for idx, firefly_i in enumerate(swarm.elements):
                 for firefly_j in swarm.elements[idx + 1:]:  # Avoid duplicate comparisons
                     if firefly_j.brightness > firefly_i.brightness:
@@ -195,7 +194,7 @@ def firefly_alg(mandatory, optional=None):
                             optional.attractiveness_function,
                             optional.movement_type
                         )
-        elif optional.compare_type == 'by-pairs':
+        elif optional.compare_type == 2: # 'by-pairs':
             for idx in range(len(swarm.elements) - 1):
                     if swarm.elements[idx].brightness > swarm.elements[idx + 1].brightness:
                         swarm.elements[idx + 1].move_towards(
