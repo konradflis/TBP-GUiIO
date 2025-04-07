@@ -16,8 +16,8 @@ dt = 0.002
 num_steps = 800
 lu_to_km_coeff = 389703
 tu_to_s_coeff = 382981
-pos_limits = 0 / lu_to_km_coeff
-vel_limits = 0 / (lu_to_km_coeff / tu_to_s_coeff)
+pos_limits = 250 / lu_to_km_coeff
+vel_limits = 0.1 / (lu_to_km_coeff / tu_to_s_coeff)
 crossover_rate = 0.6
 mutation_rate = 0.05
 
