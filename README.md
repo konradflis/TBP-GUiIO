@@ -71,7 +71,9 @@ Three-body-problem/
 │   ├── 📄 en_translation.es             # Translations - TypeScript - English version definition
 │   ├── 📄 user_inputs.py                # GUI file - input elements definitions
 │   └── 📄 visualisation.py              # GUI file - visualisation elements - plots and tables
-│── 📁 tests/                          # Unit tests
+│── 📁 tests/                          # Tests
+│   ├── 📄 firefly_test.py             # Firefly tests script
+│   ├── 📄 results_firefly             # Firefly tests script - results
 │   └── 📄 test_algorithms.py            # pytest file with unit tests for algorithms
 │── 📁 orbits/                         # Text files with raw NASA orbits - processed by sources/data_load.py
 │── 📁 LICENCES/                       # Licences for external sources used in this project
