@@ -48,6 +48,10 @@ fitnesses = np.zeros(pop_size, dtype=np.float32)
 target_positions = np.array(original_trajectory, dtype=np.float32, order='C')
 target_positions = np.ravel(target_positions)
 
+# Initialise lists for saving the best results
+best_individuals = []
+best_fitnesses = []
+
 # Copy the initial trajectory to GPU
 d_target_positions = cuda.to_device(target_positions)
 
@@ -67,10 +71,16 @@ for i in range(num_generations):
     fitnesses = d_fitnesses.copy_to_host()
     chromosomes = d_chromosomes.copy_to_host()
 
-    # Display the value of the best fitness in the generation
+    # Display the value of the best fitness and the corresponding individual
     best_fitness = np.min(fitnesses)
+    best_inx = np.argwhere(fitnesses == best_fitness)[0][0]
+    best_individual = chromosomes[best_inx]
     print(f"Best fitness: {best_fitness}")
-    # print(fitnesses)
+    print(f"Best individual: {best_individual}")
+
+    # Save the results
+    best_fitnesses.append(best_fitness)
+    best_individuals.append(best_individual)
 
     # Create the new generation
     new_chromosomes = []
