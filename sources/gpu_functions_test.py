@@ -138,3 +138,13 @@ for t in range(num_steps):
 fig = plot_propagated_trajectories(np.transpose(original_trajectory), np.transpose(propagated_trajectory),
                                    model.initial_state.copy(), solution)
 plt.show()
+
+# Convert the original and propagated trajectory data to metric units
+for i in range(original_trajectory.shape[0]):
+    original_trajectory[i] = convert_to_metric_units(original_trajectory[i])
+    propagated_trajectory[i] = convert_to_metric_units(propagated_trajectory[i])
+    
+# Plot the converted versions
+fig = plot_propagated_trajectories(np.transpose(original_trajectory), np.transpose(propagated_trajectory),
+                                   model.initial_state.copy(), solution)
+plt.show()
