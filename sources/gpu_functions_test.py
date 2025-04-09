@@ -1,19 +1,25 @@
+import copy
+
 import numpy as np
 from numba import cuda
 from time import time
+import matplotlib.pyplot as plt
 
 from common_elements import ModelProperties
 from constant import DATA_PATH_ORBIT_L2_7
 from gpu_functions import rk4_step_cpu, propagate_gpu, select_parents, crossover, mutate
+from data_load import convert_to_metric_units
+from plot_functions import plot_propagated_trajectories, dim3_scatter_plot
+
 
 # Set the parameters
 pop_size = 100
 chrom_size = 6
-num_generations = 5
+num_generations = 10
 model = ModelProperties(filepath=DATA_PATH_ORBIT_L2_7, number_of_measurements=35)
 mu = 0.01215058560962404
-dt = 0.002
-num_steps = 800
+dt = 0.001
+num_steps = 1600
 lu_to_km_coeff = 389703
 tu_to_s_coeff = 382981
 pos_limits = 250 / lu_to_km_coeff
@@ -50,6 +56,7 @@ target_positions = np.ravel(target_positions)
 
 # Initialise lists for saving the best results
 best_individuals = []
+best_individuals_converted = []
 best_fitnesses = []
 
 # Copy the initial trajectory to GPU
@@ -75,12 +82,20 @@ for i in range(num_generations):
     best_fitness = np.min(fitnesses)
     best_inx = np.argwhere(fitnesses == best_fitness)[0][0]
     best_individual = chromosomes[best_inx]
+    best_individual_converted = convert_to_metric_units(copy.deepcopy(best_individual))
     print(f"Best fitness: {best_fitness}")
     print(f"Best individual: {best_individual}")
+    print(f"x:    {best_individual_converted[0]} m")
+    print(f"y:    {best_individual_converted[1]} m")
+    print(f"z:    {best_individual_converted[2]} m")
+    print(f"v_x: {best_individual_converted[3]}  m/s")
+    print(f"v_y: {best_individual_converted[4]}  m/s")
+    print(f"v_z: {best_individual_converted[5]}  ms/s")
 
     # Save the results
     best_fitnesses.append(best_fitness)
     best_individuals.append(best_individual)
+    best_individuals_converted.append(best_individual_converted)
 
     # Create the new generation
     new_chromosomes = []
@@ -106,3 +121,20 @@ for i in range(num_generations):
 
 end = time()
 print(f"Time elapsed {end-start}")
+
+# Pick the best solution from the run
+min_fitness = min(best_fitnesses)
+min_inx = best_fitnesses.index(min_fitness)
+solution = best_individuals[min_inx]
+
+# Propagate the solution (CPU)
+propagated_trajectory = np.zeros((num_steps, 6))
+state = solution
+for t in range(num_steps):
+    propagated_trajectory[t] = state
+    state = rk4_step_cpu(state, dt, mu)
+
+# Plot the propagated solution and compare it with the initial one
+fig = plot_propagated_trajectories(np.transpose(original_trajectory), np.transpose(propagated_trajectory),
+                                   model.initial_state.copy(), solution)
+plt.show()
