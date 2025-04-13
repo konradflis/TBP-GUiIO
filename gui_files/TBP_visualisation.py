@@ -992,6 +992,7 @@ class Ui_MainWindow(object):
         self.FAatractivnes.setObjectName("FAatractivnes")
         self.FAatractivnes.addItem("")
         self.FAatractivnes.addItem("")
+        self.FAatractivnes.addItem("")
         self.FAcompra = QtWidgets.QComboBox(parent=self.FA)
         self.FAcompra.setGeometry(QtCore.QRect(220, 340, 71, 20))
         self.FAcompra.setObjectName("FAcompra")
@@ -1020,7 +1021,7 @@ class Ui_MainWindow(object):
         self.language_EN.setObjectName("language_EN")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(6)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
@@ -1198,9 +1199,10 @@ class Ui_MainWindow(object):
         self.label_68.setText(_translate("MainWindow", "Funkcja atrakcyjnosci"))
         self.label_207.setText(_translate("MainWindow", "Typ porównania"))
         self.label_208.setText(_translate("MainWindow", "Typ ruchu"))
-        self.FAatractivnes.setCurrentText(_translate("MainWindow", "rozpad wykładniczy"))
-        self.FAatractivnes.setItemText(0, _translate("MainWindow", "rozpad wykładniczy"))
-        self.FAatractivnes.setItemText(1, _translate("MainWindow", "rozpad kwadratowy"))
+        self.FAatractivnes.setCurrentText(_translate("MainWindow", "rozklad wykładniczy"))
+        self.FAatractivnes.setItemText(0, _translate("MainWindow", "rozklad wykładniczy"))
+        self.FAatractivnes.setItemText(1, _translate("MainWindow", "rozklad kwadratowy"))
+        self.FAatractivnes.setItemText(2, _translate("MainWindow", "rozklad adaptacyjny"))
         self.FAcompra.setCurrentText(_translate("MainWindow", "każdy - każdy"))
         self.FAcompra.setItemText(0, _translate("MainWindow", "każdy - każdy"))
         self.FAcompra.setItemText(1, _translate("MainWindow", "każdy - każdy bez duplikatów"))
@@ -1212,13 +1214,3 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.FA), _translate("MainWindow", "Firefly"))
         self.language_PL.setText(_translate("MainWindow", "PL"))
         self.language_EN.setText(_translate("MainWindow", "EN"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())
