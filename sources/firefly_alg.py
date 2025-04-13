@@ -62,7 +62,7 @@ class Firefly(PropagatedElement):
         elif attractiveness_function == 1:
             beta = beta0 / ( 1 + gamma * r ** 2) # attractiveness function - inversed squared
         elif attractiveness_function == 2:
-            beta = beta0 / (1 + np.exp(gamma * (r - 1))) # Adaptive attractiveness using a sigmoid-like function shifts more dynamically with r
+            beta = beta0 / ( 1 + np.exp(gamma * (r -1))) # adaptive attractiveness function - sigmoid like
         else:
             raise ValueError(
                 f"Unknown attractiveness_function: '{attractiveness_function}'. "
