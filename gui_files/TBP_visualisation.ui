@@ -27,7 +27,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="usesScrollButtons">
        <bool>true</bool>
@@ -2891,16 +2891,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </rect>
         </property>
         <property name="currentText">
-         <string>rozpad wykładniczy</string>
+         <string>rozkład wykładniczy</string>
         </property>
         <item>
          <property name="text">
-          <string>rozpad wykładniczy</string>
+          <string>rozkład wykładniczy</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>rozpad kwadratowy</string>
+          <string>rozkład kwadratowy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>rozk lad adaptacyjny</string>
          </property>
         </item>
        </widget>
